@@ -14,4 +14,5 @@ void	sigint_handler(int sig)
 void	signals(void)
 {
 	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
