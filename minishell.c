@@ -49,12 +49,14 @@ int	main(void)
 	char	**args;
 	int		nr_args;
 
+	setbuf(stdout, NULL);
 	signals();
 	line = readline(PROMPT);
 	while (line)
 	{
 		if (ft_strlen(line))
 			add_history(line);
+		expand_args(&line);
 		args = ft_split(line, ' ');
 		nr_args = count_strs(args);
 		if (nr_args)

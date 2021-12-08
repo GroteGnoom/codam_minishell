@@ -26,4 +26,5 @@ int		ft_echo(char **args, int nr_args);
 int		ft_pwd(void);
 int		ft_cd(char **args);
 
+void	expand_args(char **sp);
 #endif
