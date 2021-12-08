@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <readline/readline.h>
 
-/*void rl_replace_line (const char *text, int clear_undo);*/
-/*rl_replace_line("", 0);*/
 void	sigint_handler(int sig)
 {
 	printf("\n");
@@ -16,4 +14,5 @@ void	sigint_handler(int sig)
 void	signals(void)
 {
 	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
