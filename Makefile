@@ -4,11 +4,12 @@ NAME = minishell
 LIBFT_DIR = Libft
 LIBFT = $(LIBFT_DIR)/libft.a
 FLAGS = -Wall -Wextra -Werror
+READLINE_DIR = ~/homebrew/Cellar/readline/8.1.1
 
 all: libft $(NAME)
 
 $(NAME): $(SRC) $(LIBFT) $(NAME).h
-	gcc $(FLAGS) -I. $(SRC) $(LIBFT) -lreadline -o $(NAME)
+	gcc $(FLAGS) -I. $(SRC) $(LIBFT) -I $(READLINE_DIR)/include/ -L $(READLINE_DIR)/lib/ -lreadline -o $(NAME)
 
 libft:
 	$(MAKE) bonus -C $(LIBFT_DIR)
