@@ -1,5 +1,4 @@
 #include "libft.h"
-static int	ft_numlen(int nbr);
 
 static char	*ft_numcpy(long nbr, int len, char *str);
 
@@ -26,23 +25,6 @@ char	*ft_itoa(int n)
 	str[len] = '\0';
 	ft_numcpy(nbr, len, str);
 	return (str);
-}
-
-static int	ft_numlen(int nbr)
-{
-	int	i;
-
-	i = 0;
-	if (nbr == 0)
-		i++;
-	if (nbr < 0)
-		nbr *= -1;
-	while (nbr != 0)
-	{
-		nbr = nbr / 10;
-		i++;
-	}
-	return (i);
 }
 
 static char	*ft_numcpy(long nbr, int len, char *str)
