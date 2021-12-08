@@ -66,7 +66,7 @@ int	main(void)
 			if (!ft_strcmp(args[0], "cd"))
 				ft_cd(args);
 			if (!ft_strcmp(args[0], "pwd"))
-				ft_pwd(1);
+				ft_pwd();
 		}
 		free(line);
 		line = readline(PROMPT);

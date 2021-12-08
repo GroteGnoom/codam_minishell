@@ -23,7 +23,7 @@ void	ft_child_process(t_pipe pipex, int *pipefd, char **envp);
 void	signals(void);
 
 int		ft_echo(char **args, int nr_args);
-int		ft_pwd(int print);
+int		ft_pwd(void);
 int		ft_cd(char **args);
 
 #endif
