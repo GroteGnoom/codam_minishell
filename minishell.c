@@ -43,12 +43,14 @@ void	handle_exit(char **args, int nr_args)
 		exit(ft_atoi(args[1]));
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	char	**args;
 	int		nr_args;
 
+	(void)argc;
+	(void)argv;
 	setbuf(stdout, NULL);
 	signals();
 	line = readline(PROMPT);
@@ -69,6 +71,8 @@ int	main(void)
 				ft_cd(args);
 			if (!ft_strcmp(args[0], "pwd"))
 				ft_pwd();
+			if (!ft_strcmp(args[0], "env"))
+				ft_env(envp);
 		}
 		free(line);
 		line = readline(PROMPT);

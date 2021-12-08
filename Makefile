@@ -1,4 +1,4 @@
-SRC = minishell.c signals.c echo.c pwd.c cd.c expand_args.c
+SRC = minishell.c signals.c echo.c pwd.c cd.c expand_args.c env.c
 
 NAME = minishell
 LIBFT_DIR = Libft
