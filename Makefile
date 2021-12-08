@@ -1,4 +1,4 @@
-SRC = minishell.c
+SRC = minishell.c signals.c
 
 NAME = minishell
 LIBFT_DIR = Libft

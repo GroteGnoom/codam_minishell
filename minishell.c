@@ -1,7 +1,9 @@
+#include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h>
 #include "Libft/libft.h"
+#include "minishell.h"
 
 #define PROMPT "> "
 
@@ -47,6 +49,7 @@ int	main(void)
 	char	**args;
 	int		nr_args;
 
+	signals();
 	line = readline(PROMPT);
 	while (line)
 	{
