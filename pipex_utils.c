@@ -1,3 +1,4 @@
+#include "minishell.h"
 #include <stdlib.h>
 char	**ft_get_commands(char **argv, int len)
 {
