@@ -1,31 +1,22 @@
 #include "minishell.h"
 #include "Libft/libft.h"
+#include <stdio.h>
 static char	**ft_get_data(t_env *s_env);
+
+static void	ft_try_paths(char **paths, char **args, t_env *s_env);
 
 int	ft_executable(char **args, t_env *s_env)
 {
 	pid_t	child;
 	char	**paths;
-	char	*cmd;
 	int		status;
-	int		i;
 
-	i = 0;
 	paths = ft_get_data(s_env);
 	child = fork();
 	if (child < 0)
 		return (1);
 	if (child == 0)
-	{
-		while (paths[i])
-		{
-			cmd = ft_strjoin(paths[i], args[0]);
-			if (!access(cmd, F_OK & X_OK))
-				execve(cmd, args, s_env->env);
-			free(cmd);
-			i++;
-		}
-	}
+		ft_try_paths(paths, args, s_env);
 	waitpid(-1, &status, 0);
 	return (0);
 }
@@ -54,4 +45,24 @@ static char	**ft_get_data(t_env *s_env)
 		i++;
 	}
 	return (paths);
+}
+
+static void	ft_try_paths(char **paths, char **args, t_env *s_env)
+{
+	char	*cmd;
+	int		i;
+
+	i = 0;
+	while (paths[i])
+	{
+		if (!ft_strchr(args[0], '/'))
+			cmd = ft_strjoin(paths[i], args[0]);
+		else
+			cmd = args[0];
+		printf("%s\n", cmd);
+		if (!access(cmd, F_OK & X_OK))
+			execve(cmd, args, s_env->env);
+		free(cmd);
+		i++;
+	}
 }
