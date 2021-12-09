@@ -53,6 +53,8 @@ int	main(int argc, char **argv, char **envp)
 				ft_env(s_env.env);
 			else if (!ft_strcmp(args[0], "export"))
 				last_exit_status = ft_export(args, &s_env);
+			else if (!ft_strcmp(args[0], "unset"))
+				last_exit_status = ft_unset(args, &s_env);
 			else
 				last_exit_status = ft_executable(args, &s_env);
 		}

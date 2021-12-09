@@ -1,6 +1,5 @@
 #include "minishell.h"
 #include "Libft/libft.h"
-#include <stdio.h>
 static char	**ft_get_data(t_env *s_env);
 
 static void	ft_try_paths(char **paths, char **args, t_env *s_env);
@@ -59,7 +58,6 @@ static void	ft_try_paths(char **paths, char **args, t_env *s_env)
 			cmd = ft_strjoin(paths[i], args[0]);
 		else
 			cmd = args[0];
-		printf("%s\n", cmd);
 		if (!access(cmd, F_OK & X_OK))
 			execve(cmd, args, s_env->env);
 		free(cmd);
