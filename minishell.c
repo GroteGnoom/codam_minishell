@@ -73,6 +73,8 @@ int	main(int argc, char **argv, char **envp)
 				ft_pwd();
 			if (!ft_strcmp(args[0], "env"))
 				ft_env(envp);
+			else
+				ft_export(args, envp);
 		}
 		free(line);
 		line = readline(PROMPT);

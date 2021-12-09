@@ -26,6 +26,7 @@ int		ft_echo(char **args, int nr_args);
 int		ft_pwd(void);
 int		ft_cd(char **args);
 void	ft_env(char **envp);
+int		ft_export(char **args, char **envp);
 
 void	expand_args(char **sp);
 #endif
