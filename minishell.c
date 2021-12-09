@@ -43,16 +43,18 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (!ft_strcmp(args[0], "exit"))
 				last_exit_status = ft_exit(args, nr_args);
-			if (!ft_strcmp(args[0], "echo"))
+			else if (!ft_strcmp(args[0], "echo"))
 				last_exit_status = ft_echo(args, nr_args);
-			if (!ft_strcmp(args[0], "cd"))
+			else if (!ft_strcmp(args[0], "cd"))
 				last_exit_status = ft_cd(args);
-			if (!ft_strcmp(args[0], "pwd"))
+			else if (!ft_strcmp(args[0], "pwd"))
 				last_exit_status = ft_pwd();
-			if (!ft_strcmp(args[0], "env"))
+			else if (!ft_strcmp(args[0], "env"))
 				ft_env(s_env.env);
-			if (!ft_strcmp(args[0], "export"))
+			else if (!ft_strcmp(args[0], "export"))
 				last_exit_status = ft_export(args, &s_env);
+			else
+				last_exit_status = ft_executable(args, &s_env);
 		}
 		free(line);
 		line = readline(PROMPT);
