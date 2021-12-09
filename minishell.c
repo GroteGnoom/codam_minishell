@@ -7,17 +7,6 @@
 
 #define PROMPT "> "
 
-int	is_int(char *s)
-{
-	while (*s)
-	{
-		if (!ft_isdigit(*s))
-			return (0);
-		s++;
-	}
-	return (1);
-}
-
 int	count_strs(char **s)
 {
 	int	i;
@@ -28,32 +17,19 @@ int	count_strs(char **s)
 	return (i);
 }
 
-void	handle_exit(char **args, int nr_args)
-{
-	if (nr_args == 1)
-		exit(0);
-	if (!is_int(args[1]))
-	{
-		printf("minishell: exit: numeric argument required\n");
-		exit(255);
-	}
-	if (nr_args > 2)
-		printf("minishell: exit: too many arguments\n");
-	else
-		exit(ft_atoi(args[1]));
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	char	**args;
 	int		nr_args;
+	int		last_exit_status;
 
 	(void)argc;
 	(void)argv;
 	setbuf(stdout, NULL);
 	signals();
 	line = readline(PROMPT);
+	last_exit_status = 0;
 	while (line)
 	{
 		if (ft_strlen(line))
@@ -64,17 +40,17 @@ int	main(int argc, char **argv, char **envp)
 		if (nr_args)
 		{
 			if (!ft_strcmp(args[0], "exit"))
-				handle_exit(args, nr_args);
+				last_exit_status = ft_exit(args, nr_args);
 			if (!ft_strcmp(args[0], "echo"))
-				ft_echo(args, nr_args);
+				last_exit_status = ft_echo(args, nr_args);
 			if (!ft_strcmp(args[0], "cd"))
-				ft_cd(args);
+				last_exit_status = ft_cd(args);
 			if (!ft_strcmp(args[0], "pwd"))
-				ft_pwd();
+				last_exit_status = ft_pwd();
 			if (!ft_strcmp(args[0], "env"))
-				ft_env(envp);
+				last_exit_status = ft_env(envp);
 			else
-				ft_export(args, envp);
+				last_exit_status = ft_export(args, envp);
 		}
 		free(line);
 		line = readline(PROMPT);
