@@ -19,11 +19,13 @@ int	ft_export(char **args, t_env *s_env)
 		env = ft_substr(args[1], 0, ft_strlen(args[1]) - ft_strlen(env));
 	else
 		return (export_attribute(s_env, args[1]));
-	while (!env_str)
+	while (!env_str && i < s_env->size)
 	{
 		env_str = ft_strnstr(s_env->env[i], env, ft_strlen(s_env->env[i]));
 		i++;
 	}
+	if (i == s_env->size)
+		return (export_attribute(s_env, args[1]));
 	s_env->env[i - 1] = args[1];
 	return (0);
 }
