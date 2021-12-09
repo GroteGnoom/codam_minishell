@@ -17,7 +17,7 @@ int	ft_executable(char **args, t_env *s_env)
 	if (child == 0)
 		ft_try_paths(paths, args, s_env);
 	waitpid(-1, &status, 0);
-	return (0);
+	return (WEXITSTATUS(status));
 }
 
 static char	**ft_get_data(t_env *s_env)
