@@ -4,7 +4,12 @@ SRC = minishell.c signals.c echo.c pwd.c cd.c expand_args.c env.c export.c\
 NAME = minishell
 LIBFT_DIR = Libft
 LIBFT = $(LIBFT_DIR)/libft.a
-FLAGS = -Wall -Wextra -Werror
+ifndef DEBUG
+	FLAGS = -Wall -Wextra -Werror
+else
+	FLAGS = -Wall -Wextra
+endif
+
 READLINE_DIR = ~/homebrew/Cellar/readline/8.1.1
 
 all: libft $(NAME)
