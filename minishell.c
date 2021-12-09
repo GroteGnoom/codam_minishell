@@ -23,11 +23,13 @@ int	main(int argc, char **argv, char **envp)
 	char	**args;
 	int		nr_args;
 	int		last_exit_status;
+	t_env	s_env;
 
 	(void)argc;
 	(void)argv;
 	setbuf(stdout, NULL);
 	signals();
+	copy_env(envp, &s_env);
 	line = readline(PROMPT);
 	last_exit_status = 0;
 	while (line)
@@ -48,9 +50,9 @@ int	main(int argc, char **argv, char **envp)
 			if (!ft_strcmp(args[0], "pwd"))
 				last_exit_status = ft_pwd();
 			if (!ft_strcmp(args[0], "env"))
-				last_exit_status = ft_env(envp);
-			else
-				last_exit_status = ft_export(args, envp);
+				ft_env(s_env.env);
+			if (!ft_strcmp(args[0], "export"))
+				last_exit_status = ft_export(args, &s_env);
 		}
 		free(line);
 		line = readline(PROMPT);
