@@ -12,6 +12,8 @@ int	ft_export(char **args, t_env *s_env)
 	char	*env_str;
 	int		i;
 
+	if (!args[1])
+		return (ft_export_print(s_env->env));
 	env_str = NULL;
 	i = 0;
 	env = ft_strchr(args[1], '=');

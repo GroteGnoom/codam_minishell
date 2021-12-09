@@ -50,7 +50,7 @@ int	main(int argc, char **argv, char **envp)
 			else if (!ft_strcmp(args[0], "pwd"))
 				last_exit_status = ft_pwd();
 			else if (!ft_strcmp(args[0], "env"))
-				ft_env(s_env.env);
+				last_exit_status = ft_env(s_env.env);
 			else if (!ft_strcmp(args[0], "export"))
 				last_exit_status = ft_export(args, &s_env);
 			else if (!ft_strcmp(args[0], "unset"))

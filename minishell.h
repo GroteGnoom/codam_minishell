@@ -31,7 +31,7 @@ void	signals(void);
 int		ft_echo(char **args, int nr_args);
 int		ft_pwd(void);
 int		ft_cd(char **args);
-void	ft_env(char **envp);
+int		ft_env(char **envp);
 int		ft_export(char **args, t_env *s_env);
 int		ft_exit(char **args, int nr_args);
 void	copy_env(char **envp, t_env *s_env);
@@ -39,4 +39,5 @@ int		ft_unset(char **args, t_env *s_env);
 
 int		ft_executable(char **args, t_env *s_env);
 void	expand_args(char **sp);
+int		ft_export_print(char **envp);
 #endif
