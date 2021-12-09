@@ -14,13 +14,14 @@ void	ft_replace(char **sp, int start, int len, char *rep)
 	*sp = new;
 }
 
-void	expand_args(char **sp)
+void	expand_args(char **sp, int last_exit_status)
 {
 	char	*s;
 	int		i;
 	char	*envname;
 	char	*env;
 	int		envlen;
+	char	*les;
 
 	s = *sp;
 	i = 0;
@@ -29,6 +30,12 @@ void	expand_args(char **sp)
 		if (s[i] == '$')
 		{
 			i++;
+			if (s[i] == '?')
+			{
+				les = ft_itoa(last_exit_status);
+				ft_replace(sp, i - 1, 2, les);
+				continue ;
+			}
 			envlen = 0;
 			while (s[i + envlen] && s[i + envlen] != ' ')
 				envlen++;

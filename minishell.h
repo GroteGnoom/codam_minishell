@@ -38,6 +38,6 @@ void	copy_env(char **envp, t_env *s_env);
 int		ft_unset(char **args, t_env *s_env);
 
 int		ft_executable(char **args, t_env *s_env);
-void	expand_args(char **sp);
+void	expand_args(char **sp, int last_exit_status);
 int		ft_export_print(char **envp);
 #endif

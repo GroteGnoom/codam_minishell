@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (ft_strlen(line))
 			add_history(line);
-		expand_args(&line);
+		expand_args(&line, last_exit_status);
 		args = ft_split(line, ' ');
 		nr_args = count_strs(args);
 		if (nr_args)
