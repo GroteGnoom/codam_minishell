@@ -1,6 +1,18 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+enum e_part_type {
+	SPACES,
+	SINGLE_QUOTED,
+	DOUBLE_QUOTED,
+	NORMAL
+};
+
+typedef struct s_part {
+	char				*part;
+	enum e_part_type	type;
+}	t_part;
+
 typedef struct s_pipe
 {
 	int		infile;
@@ -44,4 +56,5 @@ int		ft_unset(char **args, t_env *s_env);
 int		ft_executable(char **args, t_env *s_env);
 void	expand_args(char **sp, int last_exit_status);
 int		ft_export_print(char **envp);
+t_part	*quote_split(char *s);
 #endif
