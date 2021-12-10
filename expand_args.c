@@ -1,5 +1,6 @@
 #include "Libft/libft.h"
 #include "stdio.h"
+#include "minishell.h"
 
 void	ft_replace(char **sp, int start, int len, char *rep)
 {
@@ -21,7 +22,6 @@ void	expand_args(char **sp, int last_exit_status)
 	char	*envname;
 	char	*env;
 	int		envlen;
-	char	*les;
 
 	s = *sp;
 	i = 0;
@@ -32,8 +32,8 @@ void	expand_args(char **sp, int last_exit_status)
 			i++;
 			if (s[i] == '?')
 			{
-				les = ft_itoa(last_exit_status);
-				ft_replace(sp, i - 1, 2, les);
+				env = ft_itoa(last_exit_status);
+				ft_replace(sp, i - 1, 2, env);
 				continue ;
 			}
 			envlen = 0;
@@ -46,5 +46,15 @@ void	expand_args(char **sp, int last_exit_status)
 			s = *sp;
 		}
 		i++;
+	}
+}
+
+void	expand_unquoted_args(t_part *parts, int last_exit_status)
+{
+	while (parts->part)
+	{
+		if (parts->type == NORMAL || parts->type == DOUBLE_QUOTED)
+			expand_args(&(parts->part), last_exit_status);
+		parts++;
 	}
 }

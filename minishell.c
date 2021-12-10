@@ -25,6 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	int		last_exit_status;
 	int		i;
 	t_env	s_env;
+	t_part	*parts;
 
 	(void)argc;
 	(void)argv;
@@ -38,8 +39,9 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (ft_strlen(line))
 			add_history(line);
-		expand_args(&line, last_exit_status);
-		args = ft_split(line, ' ');
+		parts = quote_split(line);
+		expand_unquoted_args(parts, last_exit_status);
+		args = parts_to_strings(parts);
 		nr_args = count_strs(args);
 		if (nr_args)
 		{

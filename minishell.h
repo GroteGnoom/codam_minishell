@@ -58,4 +58,5 @@ void	expand_args(char **sp, int last_exit_status);
 int		ft_export_print(char **envp);
 t_part	*quote_split(char *s);
 void	expand_unquoted_args(t_part *parts, int last_exit_status);
+char	**parts_to_strings(t_part *parts);
 #endif

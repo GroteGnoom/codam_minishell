@@ -99,3 +99,21 @@ t_part	*quote_split(char *s)
 	}
 	return (parts);
 }
+
+char	**parts_to_strings(t_part *parts)
+{
+	int		n;
+	char	**strs;
+
+	n = 0;
+	while (parts[n].part)
+		n++;
+	strs = malloc(n * sizeof(char *));
+	n = 0;
+	while (parts[n].part)
+	{
+		strs[n] = parts[n].part;
+		n++;
+	}
+	return (strs);
+}
