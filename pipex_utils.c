@@ -9,8 +9,7 @@ char	**ft_get_commands(char **argv, int len, t_pipe *pipex)
 
 	i = 0;
 	j = 0;
-	commands = malloc((len + 1) * sizeof(char *));
-	commands[len] = NULL;
+	commands = ft_calloc((len + 1) * sizeof(char *), 1);
 	while (j < len)
 	{
 		commands[j] = argv[i];

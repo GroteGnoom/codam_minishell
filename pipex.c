@@ -33,6 +33,7 @@ int	ft_pipex(int argc, char **argv, char **envp)
 	}
 	else
 		pipex.outfile = STDOUT_FILENO;
+	printf("infile = %i\noutfile = %i\n", pipex.infile, pipex.outfile);
 	if (pipex.infile < 0 || pipex.outfile < 0)
 	{
 		perror("bash: input");

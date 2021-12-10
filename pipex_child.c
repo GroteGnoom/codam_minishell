@@ -49,7 +49,7 @@ static void	ft_try_paths(t_pipe pipex, char **envp)
 	while (pipex.paths[i])
 	{
 		pipex.cmd = ft_strjoin(pipex.paths[i], pipex.cmd_flag[0]);
-		if (!access(pipex.cmd, F_OK & X_OK))
+		if (!access(pipex.cmd, F_OK) && !access(pipex.cmd, X_OK))
 			execve(pipex.cmd, pipex.cmd_flag, envp);
 		free(pipex.cmd);
 		i++;

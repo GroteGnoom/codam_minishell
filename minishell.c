@@ -48,7 +48,10 @@ int	main(int argc, char **argv, char **envp)
 			while (i < nr_args)
 			{
 				if (!ft_strcmp(args[i], "|"))
+				{
 					last_exit_status = ft_pipex(nr_args, args, s_env.env);
+					break ;
+				}
 				i++;
 			}
 			if (!ft_strcmp(args[0], "exit"))
