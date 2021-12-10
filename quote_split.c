@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "minishell.h"
 
+#define SPECIAL_CHARS " \"'|"
+
 int	skip_until(char **s, char c)
 {
 	int	i;
@@ -43,7 +45,7 @@ static int	ft_count_parts(char *s)
 		else if (*s == '|') //todo: others
 			s++;
 		else
-			while (*s && *s != '"' && *s != '\'' && *s != ' ' && *s != '|')
+			while (*s && !ft_strchr(SPECIAL_CHARS, *s))
 				s++;
 	}
 	return (w);
@@ -75,7 +77,7 @@ int	part_len_type(char *s, enum e_part_type *type)
 		return (skip(&s, '|')); //TODO only works for one pipe
 	}
 	else
-		while (s[i] && s[i] != '"' && s[i] != '\'' && s[i] != ' ' && s[i] != '|')
+		while (s[i] && !ft_strchr(SPECIAL_CHARS, s[i]))
 			i++;
 	*type = NORMAL;
 	return (i);
