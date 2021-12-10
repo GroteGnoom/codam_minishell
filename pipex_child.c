@@ -23,10 +23,6 @@ void	ft_child_process(t_pipe pipex, int *pipefd, char **envp)
 		ft_dup2(pipefd[2 * pipex.iter - 2], pipefd[2 * pipex.iter + 1]);
 	ft_close_pipes(pipex, pipefd);
 	ft_try_paths(pipex, envp);
-	ft_putstr_fd("bash: ", 2);
-	ft_putstr_fd(pipex.cmd_flag[0], 2);
-	ft_putstr_fd(": command not found\n", 2);
-	exit(127);
 }
 
 static void	ft_dup2(int first, int second)
@@ -51,6 +47,10 @@ static void	ft_try_paths(t_pipe pipex, char **envp)
 		free(pipex.cmd);
 		i++;
 	}
+	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd(pipex.cmd_flag[0], 2);
+	ft_putstr_fd(": command not found\n", 2);
+	exit(127);
 }
 
 static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex)

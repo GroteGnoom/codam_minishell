@@ -63,4 +63,8 @@ static void	ft_try_paths(char **paths, char **args, t_env *s_env)
 		free(cmd);
 		i++;
 	}
+	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd(args[0], 2);
+	ft_putstr_fd(": command not found\n", 2);
+	exit(127);
 }
