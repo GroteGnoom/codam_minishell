@@ -58,7 +58,7 @@ static void	ft_try_paths(char **paths, char **args, t_env *s_env)
 			cmd = ft_strjoin(paths[i], args[0]);
 		else
 			cmd = args[0];
-		if (!access(cmd, F_OK & X_OK))
+		if (!access(cmd, F_OK) && !access(cmd, X_OK))
 			execve(cmd, args, s_env->env);
 		free(cmd);
 		i++;

@@ -54,6 +54,8 @@ int	main(int argc, char **argv, char **envp)
 				}
 				i++;
 			}
+			last_exit_status = ft_redirect_in(args, &s_env, argc);
+			// if (args[1] && !ft_strcmp(args[1], "<"))
 			if (!ft_strcmp(args[0], "exit"))
 				last_exit_status = ft_exit(args, nr_args);
 			else if (!ft_strcmp(args[0], "echo"))
