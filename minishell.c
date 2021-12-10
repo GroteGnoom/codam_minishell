@@ -24,6 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	int		nr_args;
 	int		last_exit_status;
 	int		i;
+	int		comm;
 	t_env	s_env;
 	t_part	*parts;
 
@@ -35,6 +36,7 @@ int	main(int argc, char **argv, char **envp)
 	line = readline(PROMPT);
 	last_exit_status = 0;
 	i = 0;
+	comm = 0;
 	while (line)
 	{
 		if (ft_strlen(line))
@@ -45,33 +47,57 @@ int	main(int argc, char **argv, char **envp)
 		nr_args = count_strs(args);
 		if (nr_args)
 		{
-			while (i < nr_args)
+			if (comm == 0)
 			{
-				if (!ft_strcmp(args[i], "|"))
+				while (i < nr_args)
 				{
-					last_exit_status = ft_pipex(nr_args, args, s_env.env);
-					break ;
+					if (!ft_strcmp(args[i], "|"))
+					{
+						last_exit_status = ft_pipex(nr_args, args, s_env.env);
+						comm = 1;
+						break ;
+					}
+					if (!ft_strcmp(args[i], "<"))
+					{
+						last_exit_status = ft_redirect_in(args, &s_env, nr_args);
+						comm = 1;
+						break ;
+					}
+					if (!ft_strcmp(args[i], ">"))
+					{
+						last_exit_status = ft_redirect_out(args, &s_env, nr_args);
+						comm = 1;
+						break ;
+					}
+					if (!ft_strcmp(args[i], ">>"))
+					{
+						last_exit_status = ft_redirect_out_app(args, &s_env, nr_args);
+						comm = 1;
+						break ;
+					}
+					i++;
 				}
-				i++;
 			}
-			last_exit_status = ft_redirect_in(args, &s_env, argc);
-			// if (args[1] && !ft_strcmp(args[1], "<"))
-			if (!ft_strcmp(args[0], "exit"))
-				last_exit_status = ft_exit(args, nr_args);
-			else if (!ft_strcmp(args[0], "echo"))
-				last_exit_status = ft_echo(args, nr_args);
-			else if (!ft_strcmp(args[0], "cd"))
-				last_exit_status = ft_cd(args);
-			else if (!ft_strcmp(args[0], "pwd"))
-				last_exit_status = ft_pwd();
-			else if (!ft_strcmp(args[0], "env"))
-				last_exit_status = ft_env(s_env.env);
-			else if (!ft_strcmp(args[0], "export"))
-				last_exit_status = ft_export(args, &s_env);
-			else if (!ft_strcmp(args[0], "unset"))
-				last_exit_status = ft_unset(args, &s_env);
-			else
-				last_exit_status = ft_executable(args, &s_env);
+			if (comm == 0)
+			{
+				if (!ft_strcmp(args[0], "exit"))
+					last_exit_status = ft_exit(args, nr_args);
+				else if (!ft_strcmp(args[0], "echo"))
+					last_exit_status = ft_echo(args, nr_args);
+				else if (!ft_strcmp(args[0], "cd"))
+					last_exit_status = ft_cd(args);
+				else if (!ft_strcmp(args[0], "pwd"))
+					last_exit_status = ft_pwd();
+				else if (!ft_strcmp(args[0], "env"))
+					last_exit_status = ft_env(s_env.env);
+				else if (!ft_strcmp(args[0], "export"))
+					last_exit_status = ft_export(args, &s_env);
+				else if (!ft_strcmp(args[0], "unset"))
+					last_exit_status = ft_unset(args, &s_env);
+				else
+					last_exit_status = ft_executable(args, &s_env);
+			}
+			comm = 0;
 		}
 		free(line);
 		line = readline(PROMPT);
