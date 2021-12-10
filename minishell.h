@@ -62,4 +62,6 @@ void	expand_unquoted_args(t_part *parts, int last_exit_status);
 char	**parts_to_strings(t_part *parts);
 
 int		ft_redirect_in(char **args, t_env *s_env, int argc);
+int		ft_redirect_out(char **args, t_env *s_env, int argc);
+int		ft_redirect_out_app(char **args, t_env *s_env, int argc);
 #endif
