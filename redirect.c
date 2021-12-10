@@ -82,3 +82,29 @@ int	ft_redirect_out_app(char **args, t_env *s_env, int argc)
 		return (1);
 	return (ret);
 }
+
+int	ft_redirect_here_doc(char **args, t_env *s_env)
+{
+	char	**new_args;
+	char	*final;
+	pid_t	child;
+	int		status;
+	int		i;
+
+	i = 0;
+	while (ft_strcmp(args[i], "<<") != 0)
+		i++;
+	final = ft_strdup(args[i + 1]);
+	child = fork();
+	if (child < 0)
+		perror("Fork: ");
+	if (child == 0)
+	{
+		new_args = here_doc(final);
+		printf("%s\n%s\n\n", new_args[0], new_args[1]);
+		ft_executable(new_args, s_env);
+		exit(0);
+	}
+	waitpid(-1, &status, 0);
+	return (0);
+}

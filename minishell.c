@@ -75,6 +75,12 @@ int	main(int argc, char **argv, char **envp)
 						comm = 1;
 						break ;
 					}
+					if (!ft_strcmp(args[i], "<<"))
+					{
+						last_exit_status = ft_redirect_here_doc(args, &s_env);
+						comm = 1;
+						break ;
+					}
 					i++;
 				}
 			}
