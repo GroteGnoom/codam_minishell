@@ -23,6 +23,7 @@ int	main(int argc, char **argv, char **envp)
 	char	**args;
 	int		nr_args;
 	int		last_exit_status;
+	int		i;
 	t_env	s_env;
 
 	(void)argc;
@@ -32,6 +33,7 @@ int	main(int argc, char **argv, char **envp)
 	copy_env(envp, &s_env);
 	line = readline(PROMPT);
 	last_exit_status = 0;
+	i = 0;
 	while (line)
 	{
 		if (ft_strlen(line))
@@ -41,6 +43,12 @@ int	main(int argc, char **argv, char **envp)
 		nr_args = count_strs(args);
 		if (nr_args)
 		{
+			while (i < nr_args)
+			{
+				if (!ft_strcmp(args[i], "|"))
+					last_exit_status = ft_pipex(nr_args, args, s_env.env);
+				i++;
+			}
 			if (!ft_strcmp(args[0], "exit"))
 				last_exit_status = ft_exit(args, nr_args);
 			else if (!ft_strcmp(args[0], "echo"))
