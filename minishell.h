@@ -57,4 +57,5 @@ int		ft_executable(char **args, t_env *s_env);
 void	expand_args(char **sp, int last_exit_status);
 int		ft_export_print(char **envp);
 t_part	*quote_split(char *s);
+void	expand_unquoted_args(t_part *parts, int last_exit_status);
 #endif
