@@ -104,16 +104,24 @@ char	**parts_to_strings(t_part *parts)
 {
 	int		n;
 	char	**strs;
+	int		i;
 
 	n = 0;
+	i = 0;
 	while (parts[n].part)
 		n++;
 	strs = malloc(n * sizeof(char *));
 	n = 0;
+	i = 0;
 	while (parts[n].part)
 	{
-		strs[n] = parts[n].part;
+		if (parts[n].type != SPACES)
+		{
+			strs[i] = parts[n].part;
+			i++;
+		}
 		n++;
 	}
+	strs[i] = NULL;
 	return (strs);
 }
