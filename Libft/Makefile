@@ -46,6 +46,7 @@ FILES =	ft_atoi.c\
 		ft_putendl_fd.c\
 		ft_putnbr_fd.c\
 		ft_numlen.c\
+		ft_realloc.c\
 
 FILES_BONUS =	ft_lstnew_bonus.c\
 				ft_lstadd_front_bonus.c\
