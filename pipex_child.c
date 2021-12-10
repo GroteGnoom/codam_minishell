@@ -13,12 +13,10 @@ void	ft_child_process(t_pipe pipex, int *pipefd, char **envp)
 {
 	if (pipex.iter == 0)
 	{
-		printf("pipefd[1] = %i\ninfile = %i\niter = %i\n", pipefd[1], pipex.infile, pipex.iter);
 		ft_dup2(pipex.infile, pipefd[1]);
 	}
 	else if (pipex.iter == pipex.size - 1)
 	{
-		printf("pipefd[0] = %i\noutfile = %i\niter = %i\n", pipefd[2 * pipex.iter - 2], pipex.outfile, pipex.iter);
 		ft_dup2(pipefd[2 * pipex.iter - 2], pipex.outfile);
 	}
 	else
@@ -33,7 +31,6 @@ void	ft_child_process(t_pipe pipex, int *pipefd, char **envp)
 
 static void	ft_dup2(int first, int second)
 {
-	printf("first = %i\nsecond = %i\n\n", first, second);
 	if (dup2(first, STDIN_FILENO) < 0)
 		perror("dup2");
 	if (dup2(second, STDOUT_FILENO) < 0)
