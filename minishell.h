@@ -7,6 +7,9 @@ typedef struct s_pipe
 	int		outfile;
 	int		size;
 	int		iter;
+	int		len;
+	int		begin;
+	int		end;
 
 	char	**commands;
 	char	**paths;
@@ -21,10 +24,11 @@ typedef struct s_env
 	int		size;
 }	t_env;
 
-char	**ft_get_commands(char **argv, int len);
+char	**ft_get_commands(char **argv, int len, t_pipe *pipex);
 char	**ft_split_commands(char const *s, char c);
 void	ft_close_pipes(t_pipe pipex, int *pipefd);
 void	ft_child_process(t_pipe pipex, int *pipefd, char **envp);
+int		ft_pipex(int argc, char **argv, char **envp);
 
 void	signals(void);
 
