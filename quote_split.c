@@ -40,8 +40,10 @@ static int	ft_count_parts(char *s)
 			skip_until(&s, '\'');
 		else if (*s == ' ')
 			skip(&s, ' ');
+		else if (*s == '|') //todo: others
+			s++;
 		else
-			while (*s && *s != '"' && *s != '\'' && *s != ' ')
+			while (*s && *s != '"' && *s != '\'' && *s != ' ' && *s != '|')
 				s++;
 	}
 	return (w);
@@ -67,8 +69,13 @@ int	part_len_type(char *s, enum e_part_type *type)
 		*type = SPACES;
 		return (skip(&s, ' '));
 	}
+	else if (*s == '|')
+	{
+		*type = SPECIAL;
+		return (skip(&s, '|')); //TODO only works for one pipe
+	}
 	else
-		while (s[i] && s[i] != '"' && s[i] != '\'' && s[i] != ' ')
+		while (s[i] && s[i] != '"' && s[i] != '\'' && s[i] != ' ' && s[i] != '|')
 			i++;
 	*type = NORMAL;
 	return (i);
@@ -90,7 +97,8 @@ t_part	*quote_split(char *s)
 		len = part_len_type(s, &(parts[i].type));
 		parts[i].part = malloc((len + 1) * sizeof(char));
 		parts[i].part[len] = 0;
-		if (parts[i].type == NORMAL || parts[i].type == SPACES)
+		if (parts[i].type == NORMAL || parts[i].type == SPACES
+			|| parts[i].type == SPECIAL)
 			ft_memcpy(parts[i].part, s, len);
 		else
 			ft_memcpy(parts[i].part, s + 1, len - 2);
