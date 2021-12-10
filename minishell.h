@@ -5,7 +5,8 @@ enum e_part_type {
 	SPACES,
 	SINGLE_QUOTED,
 	DOUBLE_QUOTED,
-	NORMAL
+	NORMAL,
+	SPECIAL
 };
 
 typedef struct s_part {
