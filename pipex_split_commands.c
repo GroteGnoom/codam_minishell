@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "Libft/libft.h"
 static int	ft_words(char *s, char c);
 
 static char	*ft_copy(char *arr, char *s, char c);

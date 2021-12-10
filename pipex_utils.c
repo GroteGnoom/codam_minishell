@@ -1,12 +1,13 @@
 #include "minishell.h"
+#include "Libft/libft.h"
 #include <stdlib.h>
-char	**ft_get_commands(char **argv, int len)
+char	**ft_get_commands(char **argv, int len, t_pipe *pipex)
 {
 	char	**commands;
 	int		i;
 	int		j;
 
-	i = 2;
+	i = 0;
 	j = 0;
 	commands = malloc((len + 1) * sizeof(char *));
 	commands[len] = NULL;
@@ -16,6 +17,7 @@ char	**ft_get_commands(char **argv, int len)
 		i++;
 		j++;
 	}
+	pipex->len = j + pipex->begin - pipex->end;
 	return (commands);
 }
 

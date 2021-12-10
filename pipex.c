@@ -1,23 +1,38 @@
 #include "minishell.h"
+#include "Libft/libft.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
-static int		ft_pipex(t_pipe pipe, char **envp);
+static int		ft_pipex_pipe(t_pipe pipe, char **envp);
 
 static t_pipe	ft_get_data(t_pipe pipex, char **envp);
 
 static t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd);
 
-int	main(int argc, char **argv, char **envp)
+static int		ft_get_size(char **argv);
+
+int	ft_pipex(int argc, char **argv, char **envp)
 {
 	t_pipe	pipex;
 	int		status;
 
-	if (argc < 5)
-		perror("Not enough arguments:");
-	pipex.infile = open(argv[1], O_RDONLY);
-	pipex.outfile = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+	pipex.begin = 0;
+	pipex.end = 0;
+	if (!ft_strcmp(argv[0], "<"))
+	{
+		pipex.infile = open(argv[1], O_RDONLY);
+		pipex.begin = 2;
+	}
+	else
+		pipex.infile = STDIN_FILENO;
+	if (!ft_strcmp(argv[argc - 2], ">"))
+	{
+		pipex.outfile = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+		pipex.end = 2;
+	}
+	else
+		pipex.outfile = STDOUT_FILENO;
 	if (pipex.infile < 0 || pipex.outfile < 0)
 	{
 		perror("bash: input");
@@ -26,18 +41,29 @@ int	main(int argc, char **argv, char **envp)
 		write(pipex.outfile, "       0\n", 9);
 		return (0);
 	}
-	if (!*envp)
-	{
-		write(pipex.outfile, "       1\n", 9);
-		exit(0);
-	}
-	pipex.commands = ft_get_commands(argv, argc - 3);
-	pipex.size = argc - 3;
-	status = ft_pipex(pipex, envp);
+	pipex.commands = ft_get_commands(argv, argc, &pipex);
+	pipex.size = ft_get_size(argv);
+	status = ft_pipex_pipe(pipex, envp);
 	return (status);
 }
 
-static int	ft_pipex(t_pipe pipex, char **envp)
+static int	ft_get_size(char **argv)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 1;
+	while (argv[i])
+	{
+		if (!ft_strcmp(argv[i], "|"))
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+static int	ft_pipex_pipe(t_pipe pipex, char **envp)
 {
 	pid_t	child;
 	int		*pipefd;
