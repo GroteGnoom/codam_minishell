@@ -1,5 +1,17 @@
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_next_line_internal.h                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 11:50:29 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 11:50:49 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef GET_NEXT_LINE_INTERNAL_H
+# define GET_NEXT_LINE_INTERNAL_H
 
 # include <stddef.h>
 # include <unistd.h>
