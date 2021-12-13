@@ -5,7 +5,6 @@
 #include <stdio.h>
 static void	ft_dup2(int first, int second);
 
-static void	ft_try_paths(t_pipe pipex, char **envp);
 
 static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex);
 
@@ -22,7 +21,8 @@ void	ft_child_process(t_pipe pipex, int *pipefd, char **envp)
 	else
 		ft_dup2(pipefd[2 * pipex.iter - 2], pipefd[2 * pipex.iter + 1]);
 	ft_close_pipes(pipex, pipefd);
-	ft_try_paths(pipex, envp);
+	pipex.cmd_flag = ft_get_cmd_flag(pipex.commands, pipex.iter, pipex);
+	ft_try_paths(pipex.paths, pipex.cmd_flag, envp);
 }
 
 static void	ft_dup2(int first, int second)
@@ -33,25 +33,6 @@ static void	ft_dup2(int first, int second)
 		perror("dup2");
 }
 
-static void	ft_try_paths(t_pipe pipex, char **envp)
-{
-	int		i;
-
-	i = 0;
-	pipex.cmd_flag = ft_get_cmd_flag(pipex.commands, pipex.iter, pipex);
-	while (pipex.paths[i])
-	{
-		pipex.cmd = ft_strjoin(pipex.paths[i], pipex.cmd_flag[0]);
-		if (!access(pipex.cmd, F_OK) && !access(pipex.cmd, X_OK))
-			execve(pipex.cmd, pipex.cmd_flag, envp);
-		free(pipex.cmd);
-		i++;
-	}
-	ft_putstr_fd("bash: ", 2);
-	ft_putstr_fd(pipex.cmd_flag[0], 2);
-	ft_putstr_fd(": command not found\n", 2);
-	exit(127);
-}
 
 static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex)
 {
