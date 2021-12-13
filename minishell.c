@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include "Libft/libft.h"
 #include "minishell.h"
+#include "get_next_line/get_next_line.h"
 
 #define PROMPT "> "
 
@@ -45,13 +46,16 @@ int	main(int argc, char **argv, char **envp)
 	setbuf(stdout, NULL);
 	signals();
 	copy_env(envp, &s_env);
-	line = readline(PROMPT);
+	if (isatty(STDIN_FILENO))
+		line = readline(PROMPT);
+	else
+		line = get_next_line(STDIN_FILENO);
 	last_exit_status = 0;
 	i = 0;
 	comm = 0;
 	while (line)
 	{
-		if (ft_strlen(line))
+		if (isatty(STDIN_FILENO) && ft_strlen(line))
 			add_history(line);
 		parts = quote_split(line);
 		expand_unquoted_args(parts, last_exit_status);
@@ -118,6 +122,9 @@ int	main(int argc, char **argv, char **envp)
 			comm = 0;
 		}
 		free(line);
-		line = readline(PROMPT);
+		if (isatty(STDIN_FILENO))
+			line = readline(PROMPT);
+		else
+			line = get_next_line(STDIN_FILENO);
 	}
 }

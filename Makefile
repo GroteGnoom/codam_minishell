@@ -5,6 +5,8 @@ SRC = minishell.c signals.c echo.c pwd.c cd.c expand_args.c env.c export.c\
 NAME = minishell
 LIBFT_DIR = Libft
 LIBFT = $(LIBFT_DIR)/libft.a
+GNL_DIR = get_next_line
+GNL = $(GNL_DIR)/get_next_line.a
 ifndef DEBUG
 	FLAGS = -Wall -Wextra -Werror
 else
@@ -13,13 +15,16 @@ endif
 
 READLINE_DIR = ~/homebrew/Cellar/readline/8.1.1
 
-all: libft $(NAME)
+all: libft gnl $(NAME)
 
-$(NAME): $(SRC) $(LIBFT) $(NAME).h
-	gcc $(FLAGS) -I. $(SRC) $(LIBFT) -I $(READLINE_DIR)/include/ -L $(READLINE_DIR)/lib/ -lreadline -o $(NAME)
+$(NAME): $(SRC) $(GNL) $(LIBFT) $(NAME).h
+	gcc $(FLAGS) -I. $(SRC) $(GNL) $(LIBFT) -I $(READLINE_DIR)/include/ -L $(READLINE_DIR)/lib/ -lreadline -o $(NAME)
 
 libft:
 	$(MAKE) bonus -C $(LIBFT_DIR)
+
+gnl:
+	$(MAKE) bonus -C $(GNL_DIR)
 
 clean:
 	$(MAKE) clean -C $(LIBFT_DIR)
