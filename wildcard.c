@@ -6,83 +6,67 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 13:32:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 14:42:09 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/13 16:34:17 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "Libft/libft.h"
 #include <dirent.h>
+#include <stdio.h>
 
-static char	**ft_get_args(struct dirent *dir, t_part *args, DIR *open_dir);
+static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir);
 
-static char	*ft_get_wildcard(t_part *args);
+static char	*ft_get_wildcard(char *file, char *wildcard);
 
-static char	*ft_is_wild(char *file, char *wildcard);
-
-int	ft_wildcard(t_part *args)
+char	*ft_wildcard(char *args)
 {
 	struct dirent	*dir;
 	DIR				*open_dir;
-	char			**new_args;
+	char			*new_args;
 
 	open_dir = opendir(".");
 	if (!open_dir)
-		return (1);
+		return (0);
 	dir = readdir(open_dir);
 	new_args = ft_get_args(dir, args, open_dir);
 	if (!new_args)
-		return (1);
-	ft_redir_args(new_args);
-	return (0);
+		return (0);
+	return (new_args);
 }
 
-static char	**ft_get_args(struct dirent *dir, t_part *args, DIR *open_dir)
+static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir)
 {
-	char	**new_args;
-	char	*wildcard;
+	char	*new_args;
+	char	*file;
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 2;
-	new_args = malloc(1);
-	wildcard = ft_get_wildcard(args);
-	if (!wildcard)
-		return (0);
+	new_args = NULL;
 	while (dir)
 	{
-		new_args = ft_realloc(new_args, (j * sizeof(char *)), \
-		((j - 1) * sizeof(char *)));
-		new_args[j - 1] = NULL;
-		new_args[j - 2] = ft_is_wild(dir->d_name, wildcard);
-		if (new_args[j - 2])
-			j++;
+		file = ft_get_wildcard(dir->d_name, args);
+		if (file)
+		{
+			if (!new_args)
+			{
+				printf("args = %s\n", args);
+				new_args = ft_strdup(file);
+				printf("post args = %s\n", args);
+			}
+			else
+				ft_strjoin_free(&new_args, file);
+			ft_strjoin_free(&new_args, " ");
+		}
 		dir = readdir(open_dir);
 	}
 	closedir(open_dir);
 	return (new_args);
 }
 
-static char	*ft_get_wildcard(t_part *args)
-{
-	int	i;
-
-	i = 0;
-	while (args->part[0])
-	{
-		while (args->part[i])
-		{
-			if (args->part[i] == '*')
-				return (args->part);
-			i++;
-		}
-		args++;
-	}
-	return (0);
-}
-
-static char	*ft_is_wild(char *file, char *wildcard)
+static char	*ft_get_wildcard(char *file, char *wildcard)
 {
 	char	*copy;
 	int		i;
@@ -90,19 +74,26 @@ static char	*ft_is_wild(char *file, char *wildcard)
 
 	i = 0;
 	j = 0;
+	printf("w = %s\n", wildcard);
 	while (wildcard[i] && file[j])
 	{
 		if (wildcard[i] == '*')
 		{
 			i++;
 			while (file[j] && file[j] != wildcard[i])
+			{
 				j++;
+			}
 		}
 		if (wildcard[i] != file[j])
 			return (0);
 		i++;
 		j++;
 	}
+	if (wildcard[i] != file[j])
+		return (0);
+	printf("w2 = %s\n", wildcard);
 	copy = ft_strdup(file);
+	printf("file = %s\n", copy);
 	return (copy);
 }

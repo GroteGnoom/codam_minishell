@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:14:59 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/13 15:16:17 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,6 @@ char	**parts_to_strings(t_part *parts)
 	return (strs);
 }
 
-
 /* we should not lose the information about wheter >'s are quoted or not
  * ">" is not a redirection */
 char	**ft_shell_split_bad(char *s)
@@ -194,7 +193,6 @@ char	**ft_shell_split_bad(char *s)
 	return (pipe_parts);
 }
 
-
 t_part	*ft_shell_split(char *s)
 {
 	t_part	*parts;
@@ -203,7 +201,8 @@ t_part	*ft_shell_split(char *s)
 	int		j;
 
 	parts = quote_split(s);
-	expand_unquoted_args(parts, 0);
+	expand_unquoted_args(parts, 0); // 0 moet last_exit_status worden
+	expand_wildcard(parts);
 	i = 0;
 	j = 1;
 	while (parts[i].part)

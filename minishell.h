@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 13:59:06 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/13 15:34:40 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		ft_export(char **args, t_env *s_env);
 int		ft_exit(char **args, int nr_args);
 void	copy_env(char **envp, t_env *s_env);
 int		ft_unset(char **args, t_env *s_env);
-int		ft_wildcard(t_part *args);
+char	*ft_wildcard(char *args);
 
 int		ft_executable(char **args, t_env *s_env);
 void	expand_args(char **sp, int last_exit_status);
@@ -84,4 +84,5 @@ int		ft_redirect_here_doc(char **args, t_env *s_env);
 char	**here_doc(char *final);
 char	**ft_get_paths(char **env);
 void	ft_redir_args(char **args);
+void	expand_wildcard(t_part *parts);
 #endif
