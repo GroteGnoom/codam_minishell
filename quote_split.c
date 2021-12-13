@@ -210,7 +210,6 @@ t_part *ft_shell_split(char *s)
 			j += 2;
 		i++;
 	}
-	printf("number of total parts: %d\n", i);
 	outparts = malloc((j + 1) * sizeof(*outparts));
 	outparts[j].part = NULL;
 	outparts[0].part = malloc(1);

@@ -50,10 +50,11 @@ typedef struct s_env
 }	t_env;
 
 char	**ft_get_commands(char **argv, int len, t_pipe *pipex);
+char	**ft_get_commands_parts(int nr_parts, t_part *parts, t_pipe *pipex);
 char	**ft_split_commands(char const *s, char c);
 void	ft_close_pipes(t_pipe pipex, int *pipefd);
 void	ft_child_process(t_pipe pipex, int *pipefd, char **envp);
-int		ft_pipex(int argc, char **argv, char **envp);
+int		ft_pipex(int nr_parts, t_part *parts, char **envp);
 
 void	signals(void);
 

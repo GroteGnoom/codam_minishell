@@ -30,6 +30,16 @@ int	count_strs(char **s)
 	return (i);
 }
 
+int	count_parts(t_part *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i].part)
+		i++;
+	return (i);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
@@ -40,6 +50,8 @@ int	main(int argc, char **argv, char **envp)
 	int		comm;
 	t_env	s_env;
 	t_part	*parts;
+	t_part	*processed_parts;
+	int		nr_parts;
 
 	(void)argc;
 	(void)argv;
@@ -61,41 +73,46 @@ int	main(int argc, char **argv, char **envp)
 		expand_unquoted_args(parts, last_exit_status);
 		args = parts_to_strings(parts);
 		nr_args = count_strs(args);
+		processed_parts = ft_shell_split(line);
+		nr_parts = count_parts(processed_parts);
 		if (nr_args)
 		{
 			if (comm == 0)
 			{
-				while (i < nr_args)
+				while (i < nr_parts)
 				{
-					if (!ft_strcmp(args[i], "|"))
+					if (parts[i].type == SPECIAL)
 					{
-						last_exit_status = ft_pipex(nr_args, args, s_env.env);
-						comm = 1;
-						break ;
-					}
-					if (!ft_strcmp(args[i], "<"))
-					{
-						last_exit_status = ft_redirect_in(args, &s_env, nr_args);
-						comm = 1;
-						break ;
-					}
-					if (!ft_strcmp(args[i], ">"))
-					{
-						last_exit_status = ft_redirect_out(args, &s_env, nr_args);
-						comm = 1;
-						break ;
-					}
-					if (!ft_strcmp(args[i], ">>"))
-					{
-						last_exit_status = ft_redirect_out_app(args, &s_env, nr_args);
-						comm = 1;
-						break ;
-					}
-					if (!ft_strcmp(args[i], "<<"))
-					{
-						last_exit_status = ft_redirect_here_doc(args, &s_env);
-						comm = 1;
-						break ;
+						if (!ft_strcmp(parts[i].part, "|"))
+						{
+							last_exit_status = ft_pipex(nr_parts, processed_parts, s_env.env);
+							comm = 1;
+							break ;
+						}
+						if (!ft_strcmp(parts[i].part, "<"))
+						{
+							last_exit_status = ft_redirect_in(args, &s_env, nr_args);
+							comm = 1;
+							break ;
+						}
+						if (!ft_strcmp(parts[i].part, ">"))
+						{
+							last_exit_status = ft_redirect_out(args, &s_env, nr_args);
+							comm = 1;
+							break ;
+						}
+						if (!ft_strcmp(parts[i].part, ">>"))
+						{
+							last_exit_status = ft_redirect_out_app(args, &s_env, nr_args);
+							comm = 1;
+							break ;
+						}
+						if (!ft_strcmp(parts[i].part, "<<"))
+						{
+							last_exit_status = ft_redirect_here_doc(args, &s_env);
+							comm = 1;
+							break ;
+						}
 					}
 					i++;
 				}

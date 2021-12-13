@@ -14,6 +14,25 @@
 #include "Libft/libft.h"
 #include <stdlib.h>
 
+char	**ft_get_commands_parts(int nr_parts, t_part *parts, t_pipe *pipex)
+{
+	char	**commands;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	commands = ft_calloc((nr_parts + 1) * sizeof(char *), 1);
+	while (j < nr_parts)
+	{
+		commands[j] = parts[i].part;
+		i++;
+		j++;
+	}
+	pipex->len = j + pipex->begin - pipex->end;
+	return (commands);
+}
+
 char	**ft_get_commands(char **argv, int len, t_pipe *pipex)
 {
 	char	**commands;

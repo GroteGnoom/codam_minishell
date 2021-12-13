@@ -22,24 +22,25 @@ static int		ft_pipex_pipe(t_pipe pipe, char **envp);
 static t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd);
 
 static int		ft_get_size(char **argv);
+static int		ft_get_size_parts(t_part *parts);
 
-int	ft_pipex(int argc, char **argv, char **envp)
+int	ft_pipex(int nr_parts, t_part *parts, char **envp)
 {
 	t_pipe	pipex;
 	int		status;
 
 	pipex.begin = 0;
 	pipex.end = 0;
-	if (!ft_strcmp(argv[0], "<"))
+	if (parts[0].type == SPECIAL && !ft_strcmp(parts[0].part, "<"))
 	{
-		pipex.infile = open(argv[1], O_RDONLY);
+		pipex.infile = open(parts[0].part, O_RDONLY);
 		pipex.begin = 2;
 	}
 	else
 		pipex.infile = STDIN_FILENO;
-	if (!ft_strcmp(argv[argc - 2], ">"))
+	if (parts[0].type == SPECIAL && !ft_strcmp(parts[nr_parts - 2].part, ">"))
 	{
-		pipex.outfile = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+		pipex.outfile = open(parts[nr_parts -1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		pipex.end = 2;
 	}
 	else
@@ -52,8 +53,8 @@ int	ft_pipex(int argc, char **argv, char **envp)
 		write(pipex.outfile, "       0\n", 9);
 		return (0);
 	}
-	pipex.commands = ft_get_commands(argv, argc, &pipex);
-	pipex.size = ft_get_size(argv);
+	pipex.commands = ft_get_commands_parts(nr_parts, parts, &pipex);
+	pipex.size = ft_get_size_parts(parts);
 	status = ft_pipex_pipe(pipex, envp);
 	return (status);
 }
@@ -68,6 +69,22 @@ static int	ft_get_size(char **argv)
 	while (argv[i])
 	{
 		if (!ft_strcmp(argv[i], "|"))
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+static int	ft_get_size_parts(t_part *parts)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 1;
+	while (parts[i].part)
+	{
+		if (parts[i].type == SPECIAL && !ft_strcmp(parts[i].part, "|"))
 			count++;
 		i++;
 	}
