@@ -63,7 +63,6 @@ int	main(int argc, char **argv, char **envp)
 	else
 		line = get_next_line(STDIN_FILENO);
 	last_exit_status = 0;
-	i = 0;
 	comm = 0;
 	while (line)
 	{
@@ -79,6 +78,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (comm == 0)
 			{
+				i = 0;
 				while (i < nr_parts)
 				{
 					if (parts[i].type == SPECIAL)
