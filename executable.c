@@ -2,7 +2,7 @@
 #include "Libft/libft.h"
 static char	**ft_get_data(t_env *s_env);
 
-static void	ft_try_paths(char **paths, char **args, t_env *s_env);
+static void	ft_try_paths(char **paths, char **args, char **envp);
 
 int	ft_executable(char **args, t_env *s_env)
 {
@@ -15,7 +15,7 @@ int	ft_executable(char **args, t_env *s_env)
 	if (child < 0)
 		return (1);
 	if (child == 0)
-		ft_try_paths(paths, args, s_env);
+		ft_try_paths(paths, args, s_env->env);
 	waitpid(-1, &status, 0);
 	return (WEXITSTATUS(status));
 }
@@ -46,7 +46,7 @@ static char	**ft_get_data(t_env *s_env)
 	return (paths);
 }
 
-static void	ft_try_paths(char **paths, char **args, t_env *s_env)
+static void	ft_try_paths(char **paths, char **args, char **envp)
 {
 	char	*cmd;
 	int		i;
@@ -59,7 +59,7 @@ static void	ft_try_paths(char **paths, char **args, t_env *s_env)
 		else
 			cmd = args[0];
 		if (!access(cmd, F_OK) && !access(cmd, X_OK))
-			execve(cmd, args, s_env->env);
+			execve(cmd, args, envp);
 		free(cmd);
 		i++;
 	}
