@@ -38,7 +38,7 @@ int	ft_pipex(int nr_parts, t_part *parts, char **envp)
 	}
 	else
 		pipex.infile = STDIN_FILENO;
-	if (parts[0].type == SPECIAL && !ft_strcmp(parts[nr_parts - 2].part, ">"))
+	if (parts[nr_parts - 2].type == SPECIAL && !ft_strcmp(parts[nr_parts - 2].part, ">"))
 	{
 		pipex.outfile = open(parts[nr_parts -1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		pipex.end = 2;
