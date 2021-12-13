@@ -151,7 +151,7 @@ char	**parts_to_strings(t_part *parts)
 
 /* we should not lose the information about wheter >'s are quoted or not
  * ">" is not a redirection */
-char	**ft_shell_split(char *s)
+char	**ft_shell_split_bad(char *s)
 {
 	t_part	*parts;
 	char	**pipe_parts;
@@ -191,4 +191,64 @@ char	**ft_shell_split(char *s)
 }
 
 
+t_part *ft_shell_split(char *s)
+{
+	t_part	*parts;
+	t_part	*outparts;
+	int		i;
+	int		j;
+
+	parts = quote_split(s);
+	expand_unquoted_args(parts, 0);
+	i = 0;
+	j = 1;
+	while (parts[i].part)
+	{
+		if (parts[i].type == SPACES)
+			j++;
+		if (parts[i].type == SPECIAL)
+			j += 2;
+		i++;
+	}
+	printf("number of total parts: %d\n", i);
+	outparts = malloc((j + 1) * sizeof(*outparts));
+	outparts[j].part = NULL;
+	outparts[0].part = malloc(1);
+	outparts[0].part[0] = 0;
+	i = 0;
+	j = 0;
+	while (parts[i].part)
+	{
+		if (parts[i].type == SPACES)
+		{
+			if (i != 0 && outparts[j - 1].type != SPECIAL)
+			{
+				j++;
+				outparts[j].part = malloc(1);
+				outparts[j].part[0] = 0;
+			}
+		}
+		else if (parts[i].type == SPECIAL)
+		{
+			if (i != 0 && outparts[j].part[0] != 0)
+			{
+				j++;
+				outparts[j].part = malloc(1);
+				outparts[j].part[0] = 0;
+			}
+			ft_strjoin_free(&(outparts[j].part), parts[i].part);
+			outparts[j].type = SPECIAL;
+			j++;
+			outparts[j].part = malloc(1);
+			outparts[j].part[0] = 0;
+		}
+		else
+		{
+			outparts[j].type = NORMAL;
+			ft_strjoin_free(&(outparts[j].part), parts[i].part);
+		}
+		i++;
+	}
+	return (outparts);
+}
 
