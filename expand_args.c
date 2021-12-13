@@ -40,7 +40,8 @@ void	expand_args(char **sp, int last_exit_status)
 			while (s[i + envlen] && s[i + envlen] != ' ')
 				envlen++;
 			envname = ft_substr(s, i, envlen);
-			env = getenv(envname);
+			env = getenv(envname); /* shouldn't we use our own env?
+			This one doesn't get updated  */
 			if (env)
 				ft_replace(sp, i - 1, envlen + 1, env);
 			s = *sp;
