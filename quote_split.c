@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include "minishell.h"
 
-#define SPECIAL_CHARS " \"'|"
+#define SPECIAL_CHARS " \"'|<>"
 
 int	skip_until(char **s, char c)
 {
@@ -42,8 +42,10 @@ int	skip(char **s, char c)
 
 static int	ft_count_parts(char *s)
 {
-	int	w;
+	int		w;
+	char	*specials;
 
+	specials = "<>|";
 	w = 0;
 	while (*s)
 	{
@@ -54,8 +56,8 @@ static int	ft_count_parts(char *s)
 			skip_until(&s, '\'');
 		else if (*s == ' ')
 			skip(&s, ' ');
-		else if (*s == '|') //todo: others
-			s++;
+		else if (ft_strchr(specials, *s))
+			skip(&s, *s);
 		else
 			while (*s && !ft_strchr(SPECIAL_CHARS, *s))
 				s++;
@@ -65,8 +67,10 @@ static int	ft_count_parts(char *s)
 
 int	part_len_type(char *s, enum e_part_type *type)
 {
-	int	i;
+	int		i;
+	char	*specials;
 
+	specials = "<>|";
 	i = 0;
 	if (*s == '"')
 	{
@@ -83,10 +87,10 @@ int	part_len_type(char *s, enum e_part_type *type)
 		*type = SPACES;
 		return (skip(&s, ' '));
 	}
-	else if (*s == '|')
+	else if (ft_strchr(specials, *s))
 	{
 		*type = SPECIAL;
-		return (skip(&s, '|')); //TODO only works for one pipe
+		return (skip(&s, *s));
 	}
 	else
 		while (s[i] && !ft_strchr(SPECIAL_CHARS, s[i]))
@@ -191,7 +195,7 @@ char	**ft_shell_split_bad(char *s)
 }
 
 
-t_part *ft_shell_split(char *s)
+t_part	*ft_shell_split(char *s)
 {
 	t_part	*parts;
 	t_part	*outparts;
