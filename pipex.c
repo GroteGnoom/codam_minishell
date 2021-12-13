@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:15:46 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/13 14:39:38 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int		ft_pipex_pipe(t_pipe pipe, char **envp);
 
 static t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd);
 
-static int		ft_get_size(char **argv);
+// static int		ft_get_size(char **argv);
 static int		ft_get_size_parts(t_part *parts);
 
 int	ft_pipex(int nr_parts, t_part *parts, char **envp)
@@ -59,21 +59,21 @@ int	ft_pipex(int nr_parts, t_part *parts, char **envp)
 	return (status);
 }
 
-static int	ft_get_size(char **argv)
-{
-	int	i;
-	int	count;
+// static int	ft_get_size(char **argv)
+// {
+// 	int	i;
+// 	int	count;
 
-	i = 0;
-	count = 1;
-	while (argv[i])
-	{
-		if (!ft_strcmp(argv[i], "|"))
-			count++;
-		i++;
-	}
-	return (count);
-}
+// 	i = 0;
+// 	count = 1;
+// 	while (argv[i])
+// 	{
+// 		if (!ft_strcmp(argv[i], "|"))
+// 			count++;
+// 		i++;
+// 	}
+// 	return (count);
+// }
 
 static int	ft_get_size_parts(t_part *parts)
 {

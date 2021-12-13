@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:56 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:16:58 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/13 13:44:28 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_echo(char **args, int nr_args)
 	int	i;
 
 	i = 1;
-	if (!ft_strcmp(args[i], "-n"))
+	while (!ft_strcmp(args[i], "-n"))
 		i++;
 	while (i < nr_args)
 	{
