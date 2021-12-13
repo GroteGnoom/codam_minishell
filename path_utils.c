@@ -3,17 +3,20 @@ void	ft_try_paths(char **paths, char **args, char **envp)
 {
 	char	*cmd;
 	int		i;
+	int		relative;
 
 	i = 0;
 	while (paths[i])
 	{
-		if (!ft_strchr(args[0], '/'))
+		relative = !ft_strchr(args[0], '/');
+		if (relative)
 			cmd = ft_strjoin(paths[i], args[0]);
 		else
 			cmd = args[0];
 		if (!access(cmd, F_OK) && !access(cmd, X_OK))
 			execve(cmd, args, envp);
-		free(cmd);
+		if (relative)
+			free(cmd);
 		i++;
 	}
 	ft_putstr_fd("bash: ", 2);
