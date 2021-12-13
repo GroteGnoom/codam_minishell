@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   pipex_split_commands.c                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 10:15:19 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 10:15:23 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "Libft/libft.h"
+
 static int	ft_words(char *s, char c);
 
 static char	*ft_copy(char *arr, char *s, char c);

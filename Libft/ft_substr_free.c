@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   ft_substr_free.c                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 10:20:56 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 10:20:58 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
+
 void	ft_substr_free(char **s, unsigned int start, size_t len)
 {
 	char			*str;

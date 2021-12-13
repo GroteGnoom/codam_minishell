@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   pipex.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 10:15:46 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "Libft/libft.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
+
 static int		ft_pipex_pipe(t_pipe pipe, char **envp);
 
 static t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd);

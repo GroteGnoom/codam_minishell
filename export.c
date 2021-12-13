@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   export.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 10:16:25 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "Libft/libft.h"
 #include <termios.h>
 #include <stdio.h>
+
 static int	export_attribute(t_env *s_env, char *attr);
 
 static void	ft_free(t_env *s_env);

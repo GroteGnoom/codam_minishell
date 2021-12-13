@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   path_utils.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 10:15:58 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 10:16:00 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Libft/libft.h"
+
 void	ft_try_paths(char **paths, char **args, char **envp)
 {
 	char	*cmd;

@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   pipex_child.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 10:15:37 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "Libft/libft.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
-static void	ft_dup2(int first, int second);
 
+static void	ft_dup2(int first, int second);
 
 static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex);
 
@@ -32,7 +44,6 @@ static void	ft_dup2(int first, int second)
 	if (dup2(second, STDOUT_FILENO) < 0)
 		perror("dup2");
 }
-
 
 static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex)
 {

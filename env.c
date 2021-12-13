@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   env.c                                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 10:16:48 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 10:16:51 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Libft/libft.h"
 #include <stdio.h>
+
 //the env command should only show variables with a value,
 //the export command shows everything, and alphabetically
 //_=/usr/bin/env should be at the end? but we don't call /usr/bin/env

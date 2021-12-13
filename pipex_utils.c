@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   pipex_utils.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 10:15:13 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 10:15:15 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "Libft/libft.h"
 #include <stdlib.h>
+
 char	**ft_get_commands(char **argv, int len, t_pipe *pipex)
 {
 	char	**commands;

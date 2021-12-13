@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   cd.c                                               :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 10:17:03 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "Libft/libft.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/syslimits.h>
+
 static int	ft_absolute(char *path_str, char *home_dir);
 
 static int	ft_relative(char *path_str);

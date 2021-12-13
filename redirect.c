@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   redirect.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 10:12:35 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "Libft/libft.h"
 #include <fcntl.h>
 #include <stdio.h>
+
 int	ft_redirect_in(char **args, t_env *s_env, int argc)
 {
 	char	**new_args;
@@ -101,7 +114,6 @@ int	ft_redirect_here_doc(char **args, t_env *s_env)
 	if (child == 0)
 	{
 		new_args = here_doc(final);
-		printf("%s\n%s\n\n", new_args[0], new_args[1]);
 		ft_executable(new_args, s_env);
 		exit(0);
 	}
