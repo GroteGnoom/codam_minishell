@@ -6,8 +6,6 @@
 #include <sys/types.h>
 static int		ft_pipex_pipe(t_pipe pipe, char **envp);
 
-static t_pipe	ft_get_data(t_pipe pipex, char **envp);
-
 static t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd);
 
 static int		ft_get_size(char **argv);
@@ -73,7 +71,7 @@ static int	ft_pipex_pipe(t_pipe pipex, char **envp)
 	if (!pipefd)
 		perror("malloc: ");
 	pipex = ft_get_pipes(pipex, pipefd);
-	pipex = ft_get_data(pipex, envp);
+	pipex.paths = ft_get_paths(envp);
 	pipex.iter = 0;
 	while (pipex.iter < pipex.size)
 	{
@@ -91,31 +89,6 @@ static int	ft_pipex_pipe(t_pipe pipex, char **envp)
 	if (pipex.outfile != STDOUT_FILENO)
 		close(pipex.outfile);
 	return (WEXITSTATUS(status));
-}
-
-static t_pipe	ft_get_data(t_pipe pipex, char **envp)
-{
-	char	*path;
-	char	*line;
-	int		i;
-
-	i = 0;
-	line = NULL;
-	while (!line)
-	{
-		line = ft_strnstr(envp[i], "PATH=", 5);
-		i++;
-	}
-	path = ft_substr(line, 5, ft_strlen(line));
-	pipex.paths = ft_split(path, ':');
-	free(path);
-	i = 0;
-	while (pipex.paths[i])
-	{
-		pipex.paths[i] = ft_strjoin(pipex.paths[i], "/");
-		i++;
-	}
-	return (pipex);
 }
 
 static t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd)

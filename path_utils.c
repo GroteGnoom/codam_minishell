@@ -21,3 +21,29 @@ void	ft_try_paths(char **paths, char **args, char **envp)
 	ft_putstr_fd(": command not found\n", 2);
 	exit(127);
 }
+
+char	**ft_get_paths(char **env)
+{
+	char	**paths;
+	char	*path;
+	char	*line;
+	int		i;
+
+	i = 0;
+	line = NULL;
+	while (!line)
+	{
+		line = ft_strnstr(env[i], "PATH=", 5);
+		i++;
+	}
+	path = ft_substr(line, 5, ft_strlen(line));
+	paths = ft_split(path, ':');
+	free(path);
+	i = 0;
+	while (paths[i])
+	{
+		paths[i] = ft_strjoin(paths[i], "/");
+		i++;
+	}
+	return (paths);
+}
