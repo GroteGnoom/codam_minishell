@@ -135,3 +135,48 @@ char	**parts_to_strings(t_part *parts)
 	strs[i] = NULL;
 	return (strs);
 }
+
+
+/* we should not lose the information about wheter >'s are quoted or not
+ * ">" is not a redirection */
+char	**ft_shell_split(char *s)
+{
+	t_part	*parts;
+	char	**pipe_parts;
+	int		i;
+	int		j;
+
+	parts = quote_split(s);
+	//expand args should be here
+	i = 0;
+	j = 0;
+	while (parts[i].part)
+	{
+		if (parts[i].type == SPECIAL)
+			j++;
+		i++;
+	}
+	pipe_parts = malloc((j + 1) * sizeof(char **));
+	pipe_parts[0] = malloc(1);
+	pipe_parts[0][0] = 0;
+	i = 0;
+	j = 0;
+	while (parts[i].part)
+	{
+		if (parts[i].type == SPECIAL)
+		{
+			j++;
+			pipe_parts[j] = malloc(1);
+			pipe_parts[j][0] = 0;
+		}
+		else
+		{
+			ft_strjoin_free(&(pipe_parts[j]), parts[i].part);
+		}
+		i++;
+	}
+	return (pipe_parts);
+}
+
+
+
