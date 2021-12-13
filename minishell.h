@@ -65,4 +65,6 @@ int		ft_redirect_in(char **args, t_env *s_env, int argc);
 int		ft_redirect_out(char **args, t_env *s_env, int argc);
 int		ft_redirect_out_app(char **args, t_env *s_env, int argc);
 void	ft_try_paths(char **paths, char **args, char **envp);
+int		ft_redirect_here_doc(char **args, t_env *s_env);
+char	**here_doc(char *final);
 #endif
