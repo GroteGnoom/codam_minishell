@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:16:32 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/14 15:34:54 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	ft_replace(char **sp, int start, int len, char *rep)
 {
 	char	*new;
 
-	new = malloc(ft_strlen(*sp) + ft_strlen(rep) - len);
+	new = ft_calloc(ft_strlen(*sp) + ft_strlen(rep) - len, 1);
 	ft_memcpy(new, *sp, start);
 	ft_memcpy(new + start, rep, ft_strlen(rep));
-	ft_memcpy(new + start + ft_strlen(rep), *sp + start + len,
+	ft_memcpy(new + start + ft_strlen(rep), *sp + start + len, \
 		ft_strlen(*sp) - start);
-	free(*sp);
+	// free(*sp);
 	*sp = new;
 }
 

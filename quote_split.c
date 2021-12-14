@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/14 10:07:59 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/14 12:04:45 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,14 +107,12 @@ t_part	*quote_split(char *s)
 	t_part	*parts;
 
 	nr_parts = ft_count_parts(s);
-	parts = malloc((nr_parts + 1) * sizeof(*parts));
-	parts[nr_parts].part = NULL;
+	parts = ft_calloc((nr_parts + 1) * sizeof(*parts), 1);
 	i = 0;
 	while (i < nr_parts)
 	{
 		len = part_len_type(s, &(parts[i].type));
-		parts[i].part = malloc((len + 1) * sizeof(char));
-		parts[i].part[len] = 0;
+		parts[i].part = ft_calloc((len + 1) * sizeof(char), 1);
 		if (parts[i].type == NORMAL || parts[i].type == SPACES
 			|| parts[i].type == SPECIAL)
 			ft_memcpy(parts[i].part, s, len);
@@ -136,7 +134,7 @@ char	**parts_to_strings(t_part *parts)
 	i = 0;
 	while (parts[n].part)
 		n++;
-	strs = malloc(n * sizeof(char *));
+	strs = ft_calloc((n + 1) * sizeof(char *), 1);
 	n = 0;
 	i = 0;
 	while (parts[n].part)
@@ -148,49 +146,7 @@ char	**parts_to_strings(t_part *parts)
 		}
 		n++;
 	}
-	strs[i] = NULL;
 	return (strs);
-}
-
-/* we should not lose the information about wheter >'s are quoted or not
- * ">" is not a redirection */
-char	**ft_shell_split_bad(char *s)
-{
-	t_part	*parts;
-	char	**pipe_parts;
-	int		i;
-	int		j;
-
-	parts = quote_split(s);
-	//expand args should be here
-	i = 0;
-	j = 0;
-	while (parts[i].part)
-	{
-		if (parts[i].type == SPECIAL)
-			j++;
-		i++;
-	}
-	pipe_parts = malloc((j + 1) * sizeof(char **));
-	pipe_parts[0] = malloc(1);
-	pipe_parts[0][0] = 0;
-	i = 0;
-	j = 0;
-	while (parts[i].part)
-	{
-		if (parts[i].type == SPECIAL)
-		{
-			j++;
-			pipe_parts[j] = malloc(1);
-			pipe_parts[j][0] = 0;
-		}
-		else
-		{
-			ft_strjoin_free(&(pipe_parts[j]), parts[i].part);
-		}
-		i++;
-	}
-	return (pipe_parts);
 }
 
 t_part	*ft_shell_split(char *s)
@@ -207,45 +163,30 @@ t_part	*ft_shell_split(char *s)
 	j = 1;
 	while (parts[i].part)
 	{
-		if (parts[i].type == SPACES)
+		if (parts[i].type == SPACES && !(parts[i + 1].part && \
+		parts[i + 1].type == SPECIAL) && !(i > 0 && \
+		parts[i - 1].type == SPECIAL))
 			j++;
 		if (parts[i].type == SPECIAL)
 			j += 2;
 		i++;
 	}
-	outparts = malloc((j + 1) * sizeof(*outparts));
-	outparts[j].part = NULL;
-	outparts[0].part = malloc(1);
-	outparts[0].part[0] = 0;
+	outparts = ft_calloc((j + 1) * sizeof(*outparts), 1);
 	i = 0;
-	j = 0;
+	j = -1;
 	while (parts[i].part)
 	{
-		if (parts[i].type == SPACES)
+		if (parts[i].type == SPECIAL)
 		{
-			if (i != 0 && outparts[j - 1].type != SPECIAL)
-			{
-				j++;
-				outparts[j].part = malloc(1);
-				outparts[j].part[0] = 0;
-			}
-		}
-		else if (parts[i].type == SPECIAL)
-		{
-			if (i != 0 && outparts[j].part[0] != 0)
-			{
-				j++;
-				outparts[j].part = malloc(1);
-				outparts[j].part[0] = 0;
-			}
+			outparts[++j].part = ft_calloc(1, 1);
 			ft_strjoin_free(&(outparts[j].part), parts[i].part);
 			outparts[j].type = SPECIAL;
-			j++;
-			outparts[j].part = malloc(1);
-			outparts[j].part[0] = 0;
 		}
-		else
+		else if (parts[i].type != SPACES)
 		{
+			if (i == 0 || (parts[i - 1].type == SPACES || \
+			parts[i - 1].type == SPECIAL))
+				outparts[++j].part = ft_calloc(1, 1);
 			outparts[j].type = NORMAL;
 			ft_strjoin_free(&(outparts[j].part), parts[i].part);
 		}
@@ -253,4 +194,3 @@ t_part	*ft_shell_split(char *s)
 	}
 	return (outparts);
 }
-
