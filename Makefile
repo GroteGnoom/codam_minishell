@@ -1,7 +1,7 @@
 SRC = minishell.c signals.c echo.c pwd.c cd.c expand_args.c env.c export.c\
 	  exit.c executable.c unset.c pipex.c pipex_child.c pipex_split_commands.c\
 	  pipex_utils.c quote_split.c redirect.c here_doc.c path_utils.c wildcard.c\
-	  expand_wildcard.c utils.c
+	  expand_wildcard.c
 
 NAME = minishell
 LIBFT_DIR = Libft
