@@ -55,6 +55,7 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 void	ft_strjoin_free(char **s1, char const *s2);
 void	ft_substr_free(char **s, unsigned int start, size_t len);
 int		ft_count_strs(char **s);
+void	ft_free_strs(char **arr);
 
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);

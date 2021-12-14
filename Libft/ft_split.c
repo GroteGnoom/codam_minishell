@@ -18,8 +18,6 @@ static char	*ft_copy(char *arr, char *s, char c);
 
 static char	*ft_next_word(char *s, char c);
 
-static void	ft_free(char **arr, int i);
-
 char	**ft_split(char const *s, char c)
 {
 	char	**arr;
@@ -38,7 +36,7 @@ char	**ft_split(char const *s, char c)
 		arr[i] = ft_copy(arr[i], (char *)s, c);
 		if (!arr[i])
 		{
-			ft_free(arr, i);
+			ft_free_strs(arr);
 			return (0);
 		}
 		s = ft_next_word((char *)s, c);
@@ -46,16 +44,6 @@ char	**ft_split(char const *s, char c)
 	}
 	arr[i] = NULL;
 	return (arr);
-}
-
-static void	ft_free(char **arr, int i)
-{
-	while (i > 0)
-	{
-		free(arr[i]);
-		i--;
-	}
-	free(arr);
 }
 
 static int	ft_words(char *s, char c)
