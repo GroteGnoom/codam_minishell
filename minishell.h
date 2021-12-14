@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/14 09:37:44 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/14 10:38:49 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	copy_env(char **envp, t_env *s_env);
 int		ft_unset(char **args, t_env *s_env);
 char	*ft_wildcard(char *args);
 
-int		ft_executable(char **args, t_env *s_env);
+int		ft_executable(int nr_parts, t_part *parts, t_env *s_env);
 void	expand_args(char **sp, int last_exit_status);
 int		ft_export_print(char **envp);
 t_part	*quote_split(char *s);
@@ -76,11 +76,11 @@ void	expand_unquoted_args(t_part *parts, int last_exit_status);
 char	**parts_to_strings(t_part *parts);
 t_part	*ft_shell_split(char *s);
 
-int		ft_redirect_in(char **args, t_env *s_env, int argc);
-int		ft_redirect_out(char **args, t_env *s_env, int argc);
-int		ft_redirect_out_app(char **args, t_env *s_env, int argc);
+int		redirect_in(int nr_parts, t_part *parts, t_env *s_env);
+int		redirect_out(int nr_parts, t_part *parts, t_env *s_env);
+int		redirect_out_app(int nr_parts, t_part *parts, t_env *s_env);
 void	ft_try_paths(char **paths, char **args, char **envp);
-int		ft_redirect_here_doc(char **args, t_env *s_env);
+int		redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env);
 char	**here_doc(char *final);
 char	**ft_get_paths(char **env);
 void	ft_redir_args(char **args);

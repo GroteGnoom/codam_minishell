@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 15:12:20 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/14 10:43:22 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,88 +15,94 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int	ft_redirect_in(char **args, t_env *s_env, int argc)
+int	redirect_in(int nr_parts, t_part *parts, t_env *s_env)
 {
-	char	**new_args;
+	t_part	*new_args;
 	int		ret;
 	int		term;
 	int		fd;
 	int		i;
 
-	fd = open(args[argc - 1], O_RDONLY);
+	fd = open(parts[nr_parts - 1].part, O_RDONLY);
 	term = 1;
 	if (dup2(STDIN_FILENO, term) < 0)
 		return (1);
 	if (dup2(fd, STDIN_FILENO) < 0)
 		return (1);
-	new_args = ft_calloc((argc - 1) * sizeof(char *), 1);
+	new_args = ft_calloc((nr_parts - 1) * sizeof(*parts), 1);
 	i = 0;
-	while (ft_strcmp(args[i], "<") != 0)
+	while (ft_strcmp(parts->part, "<") != 0)
 	{
-		new_args[i] = ft_strdup(args[i]);
+		new_args->part = ft_strdup(parts->part);
+		parts++;
+		new_args++;
 		i++;
 	}
-	ret = ft_executable(new_args, s_env);
+	ret = ft_executable(i, new_args, s_env);
 	if (dup2(term, STDIN_FILENO) < 0)
 		return (1);
 	return (ret);
 }
 
-int	ft_redirect_out(char **args, t_env *s_env, int argc)
+int	redirect_out(int nr_parts, t_part *parts, t_env *s_env)
 {
-	char	**new_args;
+	t_part	*new_args;
 	int		ret;
 	int		term;
 	int		fd;
 	int		i;
 
-	fd = open(args[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+	fd = open(parts[nr_parts - 1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	term = 0;
 	if (dup2(STDOUT_FILENO, term) < 0)
 		return (1);
 	if (dup2(fd, STDOUT_FILENO) < 0)
 		return (1);
-	new_args = ft_calloc((argc - 1) * sizeof(char *), 1);
+	new_args = ft_calloc((nr_parts - 1) * sizeof(*parts), 1);
 	i = 0;
-	while (ft_strcmp(args[i], ">") != 0)
+	while (ft_strcmp(parts->part, ">") != 0)
 	{
-		new_args[i] = ft_strdup(args[i]);
+		new_args->part = ft_strdup(parts->part);
+		parts++;
+		new_args++;
 		i++;
 	}
-	ret = ft_executable(new_args, s_env);
+	ret = ft_executable(i, new_args, s_env);
 	if (dup2(term, STDOUT_FILENO) < 0)
 		return (1);
 	return (ret);
 }
 
-int	ft_redirect_out_app(char **args, t_env *s_env, int argc)
+int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env)
 {
-	char	**new_args;
+	t_part	*new_args;
 	int		ret;
 	int		term;
 	int		fd;
 	int		i;
 
-	fd = open(args[argc - 1], O_RDWR | O_CREAT | O_APPEND, 0644);
+	fd = open(parts[nr_parts - 1].part, O_RDWR | O_CREAT | O_APPEND, 0644);
 	term = 0;
 	if (dup2(STDOUT_FILENO, term) < 0)
 		return (1);
 	if (dup2(fd, STDOUT_FILENO) < 0)
 		return (1);
-	new_args = ft_calloc((argc - 1) * sizeof(char *), 1);
+	new_args = ft_calloc((nr_parts - 1) * sizeof(*parts), 1);
 	i = 0;
-	while (ft_strcmp(args[i], ">>") != 0)
+	while (ft_strcmp(parts->part, ">>") != 0)
 	{
-		new_args[i] = ft_strdup(args[i]);
+		new_args->part = ft_strdup(parts->part);
+		parts++;
+		new_args++;
 		i++;
 	}
-	ret = ft_executable(new_args, s_env);
+	ret = ft_executable(i, new_args, s_env);
 	if (dup2(term, STDOUT_FILENO) < 0)
 		return (1);
 	return (ret);
 }
 
-int	ft_redirect_here_doc(char **args, t_env *s_env)
+int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env)
 {
 	char	**new_args;
 	char	*final;
@@ -105,16 +111,18 @@ int	ft_redirect_here_doc(char **args, t_env *s_env)
 	int		i;
 
 	i = 0;
-	while (ft_strcmp(args[i], "<<") != 0)
+	while (ft_strcmp(parts[i].part, "<<") != 0)
 		i++;
-	final = ft_strdup(args[i + 1]);
+	final = ft_strdup(parts[i + 1].part);
 	child = fork();
 	if (child < 0)
 		perror("Fork: ");
 	if (child == 0)
 	{
 		new_args = here_doc(final);
-		ft_executable(new_args, s_env);
+		nr_parts = 0;
+		(void)s_env;
+		// ft_executable(nr_parts, new_args, s_env);
 		exit(0);
 	}
 	waitpid(-1, &status, 0);

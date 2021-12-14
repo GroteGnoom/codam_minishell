@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 15:17:24 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 15:37:46 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/14 10:12:59 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	expand_wild(char **part)
 	{
 		if (str[i] == '*')
 		{
-			free(*part);
 			*part = ft_wildcard(str);
 			return ;
 		}

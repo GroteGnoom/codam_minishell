@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:16:12 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/14 10:38:39 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,25 +81,25 @@ int	main(int argc, char **argv, char **envp)
 						}
 						if (!ft_strcmp(parts[i].part, "<"))
 						{
-							last_exit_status = ft_redirect_in(args, &s_env, nr_args);
+							last_exit_status = redirect_in(nr_parts, processed_parts, &s_env);
 							comm = 1;
 							break ;
 						}
 						if (!ft_strcmp(parts[i].part, ">"))
 						{
-							last_exit_status = ft_redirect_out(args, &s_env, nr_args);
+							last_exit_status = redirect_out(nr_parts, processed_parts, &s_env);
 							comm = 1;
 							break ;
 						}
 						if (!ft_strcmp(parts[i].part, ">>"))
 						{
-							last_exit_status = ft_redirect_out_app(args, &s_env, nr_args);
+							last_exit_status = redirect_out_app(nr_parts, processed_parts, &s_env);
 							comm = 1;
 							break ;
 						}
 						if (!ft_strcmp(parts[i].part, "<<"))
 						{
-							last_exit_status = ft_redirect_here_doc(args, &s_env);
+							last_exit_status = redirect_here_doc(nr_parts, processed_parts, &s_env);
 							comm = 1;
 							break ;
 						}
@@ -124,7 +124,7 @@ int	main(int argc, char **argv, char **envp)
 				else if (!ft_strcmp(args[0], "unset"))
 					last_exit_status = ft_unset(args, &s_env);
 				else
-					last_exit_status = ft_executable(args, &s_env);
+					last_exit_status = ft_executable(nr_parts, processed_parts, &s_env);
 			}
 			comm = 0;
 		}
