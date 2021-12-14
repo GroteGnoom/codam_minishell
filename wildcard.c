@@ -85,11 +85,12 @@ static char	*ft_get_wildcard(char *file, char *wildcard)
 	}
 	i = 0;
 	file2 = file;
-	while (i < split_len - 1)
+	while (i < split_len)
 	{
-		file2 = ft_strnstr(file2, wild_split[i], ft_strlen(wild_split[i]));
+		file2 = ft_strnstr(file2, wild_split[i], ft_strlen(file2));
 		if (!file2)
 			return (NULL);
+		file2 += ft_strlen(wild_split[i]);
 		i++;
 	}
 	return (file);
