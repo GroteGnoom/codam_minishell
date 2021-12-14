@@ -39,11 +39,7 @@ static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir)
 {
 	char	*new_args;
 	char	*file;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 2;
 	new_args = NULL;
 	while (dir)
 	{
@@ -52,9 +48,7 @@ static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir)
 		{
 			if (!new_args)
 			{
-				printf("args = %s\n", args);
 				new_args = ft_strdup(file);
-				printf("post args = %s\n", args);
 			}
 			else
 				ft_strjoin_free(&new_args, file);
@@ -68,32 +62,35 @@ static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir)
 
 static char	*ft_get_wildcard(char *file, char *wildcard)
 {
-	char	*copy;
+	char	**wild_split;
+	int		split_len;
 	int		i;
-	int		j;
+	char	*file2;
 
-	i = 0;
-	j = 0;
-	printf("w = %s\n", wildcard);
-	while (wildcard[i] && file[j])
+	if (file[0] == '.')
+		return (NULL);
+	wild_split = ft_split(wildcard, '*');
+	split_len = ft_count_strs(wild_split);
+	if (wildcard[0] != '*' && ft_strncmp(wild_split[0], file,
+			ft_strlen(wild_split[0])))
+		return (NULL);
+	if (wildcard[ft_strlen(wildcard) - 1] != '*')
 	{
-		if (wildcard[i] == '*')
-		{
-			i++;
-			while (file[j] && file[j] != wildcard[i])
-			{
-				j++;
-			}
-		}
-		if (wildcard[i] != file[j])
-			return (0);
-		i++;
-		j++;
+		i = ft_strlen(wild_split[split_len - 1]);
+		if ((int)ft_strlen(file) < i)
+			return (NULL);
+		if (ft_strncmp(wild_split[split_len - 1],
+				&file[ft_strlen(file) - i], i))
+			return (NULL);
 	}
-	if (wildcard[i] != file[j])
-		return (0);
-	printf("w2 = %s\n", wildcard);
-	copy = ft_strdup(file);
-	printf("file = %s\n", copy);
-	return (copy);
+	i = 0;
+	file2 = file;
+	while (i < split_len - 1)
+	{
+		file2 = ft_strnstr(file2, wild_split[i], ft_strlen(wild_split[i]));
+		if (!file2)
+			return (NULL);
+		i++;
+	}
+	return (file);
 }

@@ -85,4 +85,6 @@ char	**here_doc(char *final);
 char	**ft_get_paths(char **env);
 void	ft_redir_args(char **args);
 void	expand_wildcard(t_part *parts);
+
+int		ft_count_strs(char **s);
 #endif

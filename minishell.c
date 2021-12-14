@@ -20,16 +20,6 @@
 
 #define PROMPT "> "
 
-int	count_strs(char **s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
 int	count_parts(t_part *s)
 {
 	int	i;
@@ -71,7 +61,7 @@ int	main(int argc, char **argv, char **envp)
 		parts = quote_split(line);
 		expand_unquoted_args(parts, last_exit_status);
 		args = parts_to_strings(parts);
-		nr_args = count_strs(args);
+		nr_args = ft_count_strs(args);
 		processed_parts = ft_shell_split(line);
 		nr_parts = count_parts(processed_parts);
 		if (nr_args)
