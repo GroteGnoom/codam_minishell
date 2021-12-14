@@ -59,22 +59,6 @@ int	ft_pipex(int nr_parts, t_part *parts, char **envp)
 	return (status);
 }
 
-// static int	ft_get_size(char **argv)
-// {
-// 	int	i;
-// 	int	count;
-
-// 	i = 0;
-// 	count = 1;
-// 	while (argv[i])
-// 	{
-// 		if (!ft_strcmp(argv[i], "|"))
-// 			count++;
-// 		i++;
-// 	}
-// 	return (count);
-// }
-
 static int	ft_get_size_parts(t_part *parts)
 {
 	int	i;
@@ -118,6 +102,7 @@ static int	ft_pipex_pipe(t_pipe pipex, char **envp)
 		close(pipex.infile);
 	if (pipex.outfile != STDOUT_FILENO)
 		close(pipex.outfile);
+	ft_free_strs(pipex.paths);
 	return (WEXITSTATUS(status));
 }
 
