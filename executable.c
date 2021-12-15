@@ -26,11 +26,12 @@ int	ft_executable(int nr_parts, t_part *parts, t_env *s_env)
 	args = ft_get_args(nr_parts, parts);
 	child = fork();
 	if (child < 0)
-		return (1);
+		return (1); //is this the correct error handling?
 	if (child == 0)
 		ft_try_paths(paths, args, s_env->env);
 	waitpid(-1, &status, 0);
 	ft_free_strs(paths);
+	ft_free_strs(args);
 	return (WEXITSTATUS(status));
 }
 

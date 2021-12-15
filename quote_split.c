@@ -194,3 +194,16 @@ t_part	*ft_shell_split(char *s)
 	}
 	return (outparts);
 }
+
+void	ft_free_parts(t_part *parts)
+{
+	int	i;
+
+	i = 0;
+	while (parts[i].part)
+	{
+		free(parts[i].part);
+		i++;
+	}
+	free(parts);
+}

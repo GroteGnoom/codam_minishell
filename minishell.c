@@ -129,6 +129,8 @@ int	main(int argc, char **argv, char **envp)
 			comm = 0;
 		}
 		free(line);
+		ft_free_parts(processed_parts);
+		ft_free_strs(args);
 		if (isatty(STDIN_FILENO))
 			line = readline(PROMPT);
 		else

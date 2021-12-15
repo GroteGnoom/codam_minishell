@@ -58,7 +58,7 @@ char	**ft_get_paths(char **env)
 	i = 0;
 	while (paths[i])
 	{
-		paths[i] = ft_strjoin(paths[i], "/");
+		ft_strjoin_free(&paths[i], "/");
 		i++;
 	}
 	return (paths);

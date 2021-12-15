@@ -11,7 +11,11 @@ GNL = $(GNL_DIR)/get_next_line.a
 ifndef DEBUG
 	FLAGS = -Wall -Wextra -Werror
 else
+ifdef LEAKS
+	FLAGS = -Wall -Wextra -g
+else
 	FLAGS = -Wall -Wextra -g -fsanitize=address
+endif
 endif
 
 READLINE_DIR = ~/homebrew/Cellar/readline/8.1.1
