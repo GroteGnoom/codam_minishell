@@ -47,6 +47,7 @@ void	expand_args(char **sp, int last_exit_status)
 				env = ft_itoa(last_exit_status);
 				ft_replace(sp, i - 1, 2, env);
 				free(env);
+				s = *sp;
 				continue ;
 			}
 			envlen = 0;
