@@ -40,7 +40,6 @@ int	main(int argc, char **argv, char **envp)
 	int		comm;
 	t_env	s_env;
 	t_part	*parts;
-	t_part	*processed_parts;
 	int		nr_parts;
 
 	(void)argc;
@@ -61,9 +60,10 @@ int	main(int argc, char **argv, char **envp)
 		parts = quote_split(line);
 		expand_unquoted_args(parts, last_exit_status);
 		args = parts_to_strings(parts);
+		ft_free_parts(parts);
 		nr_args = ft_count_strs(args);
-		processed_parts = ft_shell_split(line);
-		nr_parts = count_parts(processed_parts);
+		parts = ft_shell_split(line);
+		nr_parts = count_parts(parts);
 		if (nr_args)
 		{
 			if (comm == 0)
@@ -75,31 +75,31 @@ int	main(int argc, char **argv, char **envp)
 					{
 						if (!ft_strcmp(parts[i].part, "|"))
 						{
-							last_exit_status = ft_pipex(nr_parts, processed_parts, s_env.env);
+							last_exit_status = ft_pipex(nr_parts, parts, s_env.env);
 							comm = 1;
 							break ;
 						}
 						if (!ft_strcmp(parts[i].part, "<"))
 						{
-							last_exit_status = redirect_in(nr_parts, processed_parts, &s_env);
+							last_exit_status = redirect_in(nr_parts, parts, &s_env);
 							comm = 1;
 							break ;
 						}
 						if (!ft_strcmp(parts[i].part, ">"))
 						{
-							last_exit_status = redirect_out(nr_parts, processed_parts, &s_env);
+							last_exit_status = redirect_out(nr_parts, parts, &s_env);
 							comm = 1;
 							break ;
 						}
 						if (!ft_strcmp(parts[i].part, ">>"))
 						{
-							last_exit_status = redirect_out_app(nr_parts, processed_parts, &s_env);
+							last_exit_status = redirect_out_app(nr_parts, parts, &s_env);
 							comm = 1;
 							break ;
 						}
 						if (!ft_strcmp(parts[i].part, "<<"))
 						{
-							last_exit_status = redirect_here_doc(nr_parts, processed_parts, &s_env);
+							last_exit_status = redirect_here_doc(nr_parts, parts, &s_env);
 							comm = 1;
 							break ;
 						}
@@ -124,12 +124,12 @@ int	main(int argc, char **argv, char **envp)
 				else if (!ft_strcmp(args[0], "unset"))
 					last_exit_status = ft_unset(args, &s_env);
 				else
-					last_exit_status = ft_executable(nr_parts, processed_parts, &s_env);
+					last_exit_status = ft_executable(nr_parts, parts, &s_env);
 			}
 			comm = 0;
 		}
 		free(line);
-		ft_free_parts(processed_parts);
+		ft_free_parts(parts);
 		ft_free_strs(args);
 		if (isatty(STDIN_FILENO))
 			line = readline(PROMPT);
