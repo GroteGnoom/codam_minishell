@@ -30,6 +30,7 @@ int	ft_executable(int nr_parts, t_part *parts, t_env *s_env)
 	if (child == 0)
 		ft_try_paths(paths, args, s_env->env);
 	waitpid(-1, &status, 0);
+	ft_free_strs(paths);
 	return (WEXITSTATUS(status));
 }
 
