@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 15:17:24 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/14 15:39:53 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 09:20:35 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ void	expand_wildcard(t_part *parts)
 	while (parts->part)
 	{
 		if (parts->type == NORMAL)
-			return ;
-			// expand_wild(&(parts->part));
+			expand_wild(&(parts->part));
 		parts++;
 	}
 }
