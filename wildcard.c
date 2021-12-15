@@ -47,18 +47,23 @@ static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir)
 		if (file)
 		{
 			if (!new_args)
-			{
 				new_args = ft_strdup(file);
-			}
 			else
+			{
+				ft_strjoin_free(&new_args, " ");
 				ft_strjoin_free(&new_args, file);
-			ft_strjoin_free(&new_args, " ");
+			}
 		}
 		dir = readdir(open_dir);
 	}
 	closedir(open_dir);
-	free(args);
 	return (new_args);
+}
+
+static char	*free_ret_null(char **strs)
+{
+	ft_free_strs(strs);
+	return (NULL);
 }
 
 static char	*ft_get_wildcard(char *file, char *wildcard)
@@ -74,15 +79,14 @@ static char	*ft_get_wildcard(char *file, char *wildcard)
 	split_len = ft_count_strs(wild_split);
 	if (wildcard[0] != '*' && ft_strncmp(wild_split[0], file,
 			ft_strlen(wild_split[0])))
-		return (NULL);
+		return (free_ret_null(wild_split));
 	if (wildcard[ft_strlen(wildcard) - 1] != '*')
 	{
 		i = ft_strlen(wild_split[split_len - 1]);
-		if ((int)ft_strlen(file) < i)
-			return (NULL);
-		if (ft_strncmp(wild_split[split_len - 1],
+		if ((int)ft_strlen(file) < i
+			|| ft_strncmp(wild_split[split_len - 1],
 				&file[ft_strlen(file) - i], i))
-			return (NULL);
+			return (free_ret_null(wild_split));
 	}
 	i = 0;
 	file2 = file;
@@ -90,9 +94,10 @@ static char	*ft_get_wildcard(char *file, char *wildcard)
 	{
 		file2 = ft_strnstr(file2, wild_split[i], ft_strlen(file2));
 		if (!file2)
-			return (NULL);
+			return (free_ret_null(wild_split));
 		file2 += ft_strlen(wild_split[i]);
 		i++;
 	}
+	ft_free_strs(wild_split);
 	return (file);
 }
