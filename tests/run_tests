@@ -1,0 +1,23 @@
+#!/bin/bash
+set -x
+set -e
+shopt -s extglob
+export READLINE_DIR=~/homebrew/Cellar/readline/8.1.1
+make ..
+for file in test*.c
+do
+	export BASE=${file%.*}
+	gcc -Wall -Wextra -g -fsanitize=address -L../Libft -I.. $file ../!(minishe*).c -o ${file%.*} -lft -I $READLINE_DIR/include/ -L $READLINE_DIR/lib/ -lreadline ../get_next_line/get_next_line.a
+	./${file%.*} > ${file%.*}.check
+	diff ${file%.*}.check ${file%.*}.out
+	sed -i '' '$ d' $file 
+	echo "system(\"leaks -quiet $BASE > leaks_output\");}" >> $file 
+	gcc -Wall -Wextra -g -L../Libft -I.. $file ../!(minishe*).c -o ${file%.*} -lft -I $READLINE_DIR/include/ -L $READLINE_DIR/lib/ -lreadline ../get_next_line/get_next_line.a
+	sed -i '' '$ d' $file
+	echo "}" >> $file 
+	./${file%.*} > ${file%.*}.check
+	diff ${file%.*}.check ${file%.*}.out
+	cat leaks_output
+	cat leaks_output | grep ' 0 leaks'
+done
+shopt -u extglob
