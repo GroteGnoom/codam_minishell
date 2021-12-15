@@ -149,7 +149,7 @@ char	**parts_to_strings(t_part *parts)
 	return (strs);
 }
 
-t_part	*ft_shell_split(char *s)
+t_part	*ft_shell_split(char *s, int last_exit_status)
 {
 	t_part	*parts;
 	t_part	*outparts;
@@ -157,7 +157,7 @@ t_part	*ft_shell_split(char *s)
 	int		j;
 
 	parts = quote_split(s);
-	expand_unquoted_args(parts, 0); // 0 moet last_exit_status worden
+	expand_unquoted_args(parts, last_exit_status);
 	expand_wildcard(parts);
 	i = 0;
 	j = 1;

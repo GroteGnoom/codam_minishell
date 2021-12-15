@@ -55,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (isatty(STDIN_FILENO) && ft_strlen(line))
 			add_history(line);
-		parts = ft_shell_split(line);
+		parts = ft_shell_split(line, last_exit_status);
 		nr_parts = count_parts(parts);
 		if (nr_parts)
 		{
