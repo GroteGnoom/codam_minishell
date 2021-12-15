@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/14 10:38:39 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 09:43:33 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		free(line);
 		ft_free_parts(parts);
-		ft_free_strs(args);
+		// ft_free_strs(args);
 		if (isatty(STDIN_FILENO))
 			line = readline(PROMPT);
 		else
