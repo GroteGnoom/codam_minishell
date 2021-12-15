@@ -21,7 +21,7 @@ static int	ft_absolute(char *path_str, char *home_dir);
 
 static int	ft_relative(char *path_str);
 
-int	ft_cd(char **args)
+int	ft_cd(t_part *parts)
 {
 	char	*home_dir;
 	char	*buf;
@@ -30,21 +30,21 @@ int	ft_cd(char **args)
 
 	home_dir = getenv("HOME");
 	buf = NULL;
-	if (!args[1])
+	if (!parts[1].part)
 	{
 		if (chdir(home_dir) < 0)
 			return (1);
 		return (0);
 	}
-	else if (args[1][0] == '/')
-		return (ft_absolute(args[1], home_dir));
-	else if (args[1][0] == '.' && args[1][1] == '.')
-		return (ft_relative(args[1]));
+	else if (parts[1].part[0] == '/')
+		return (ft_absolute(parts[1].part, home_dir));
+	else if (parts[1].part[0] == '.' && parts[1].part[1] == '.')
+		return (ft_relative(parts[1].part));
 	else
 	{
 		cur_dir = getcwd(buf, PATH_MAX);
 		new_dir = ft_strjoin(cur_dir, "/");
-		return (ft_absolute(args[1], new_dir));
+		return (ft_absolute(parts[1].part, new_dir));
 	}
 	return (0);
 }

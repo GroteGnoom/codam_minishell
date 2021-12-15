@@ -19,29 +19,29 @@ static int	export_attribute(t_env *s_env, char *attr);
 
 static void	ft_free(t_env *s_env);
 
-int	ft_export(char **args, t_env *s_env)
+int	ft_export(t_part *parts, t_env *s_env)
 {
 	char	*env;
 	char	*env_str;
 	int		i;
 
-	if (!args[1])
+	if (!parts[1].part)
 		return (ft_export_print(s_env->env));
 	env_str = NULL;
 	i = 0;
-	env = ft_strchr(args[1], '=');
+	env = ft_strchr(parts[1].part, '=');
 	if (env != 0)
-		env = ft_substr(args[1], 0, ft_strlen(args[1]) - ft_strlen(env));
+		env = ft_substr(parts[1].part, 0, ft_strlen(parts[1].part) - ft_strlen(env));
 	else
-		return (export_attribute(s_env, args[1]));
+		return (export_attribute(s_env, parts[1].part));
 	while (i < s_env->size && !env_str)
 	{
 		env_str = ft_strnstr(s_env->env[i], env, ft_strlen(s_env->env[i]));
 		i++;
 	}
 	if (i == s_env->size)
-		return (export_attribute(s_env, args[1]));
-	s_env->env[i - 1] = args[1];
+		return (export_attribute(s_env, parts[1].part));
+	s_env->env[i - 1] = parts[1].part;
 	return (0);
 }
 

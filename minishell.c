@@ -33,8 +33,6 @@ int	count_parts(t_part *s)
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
-	char	**args;
-	int		nr_args;
 	int		last_exit_status;
 	int		i;
 	int		comm;
@@ -57,14 +55,9 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (isatty(STDIN_FILENO) && ft_strlen(line))
 			add_history(line);
-		parts = quote_split(line);
-		expand_unquoted_args(parts, last_exit_status);
-		args = parts_to_strings(parts);
-		ft_free_parts(parts);
-		nr_args = ft_count_strs(args);
 		parts = ft_shell_split(line);
 		nr_parts = count_parts(parts);
-		if (nr_args)
+		if (nr_parts)
 		{
 			if (comm == 0)
 			{
@@ -109,20 +102,20 @@ int	main(int argc, char **argv, char **envp)
 			}
 			if (comm == 0)
 			{
-				if (!ft_strcmp(args[0], "exit"))
-					last_exit_status = ft_exit(args, nr_args);
-				else if (!ft_strcmp(args[0], "echo"))
-					last_exit_status = ft_echo(args, nr_args);
-				else if (!ft_strcmp(args[0], "cd"))
-					last_exit_status = ft_cd(args);
-				else if (!ft_strcmp(args[0], "pwd"))
+				if (!ft_strcmp(parts[0].part, "exit"))
+					last_exit_status = ft_exit(nr_parts, parts);
+				else if (!ft_strcmp(parts[0].part, "echo"))
+					last_exit_status = ft_echo(nr_parts, parts);
+				else if (!ft_strcmp(parts[0].part, "cd"))
+					last_exit_status = ft_cd(parts);
+				else if (!ft_strcmp(parts[0].part, "pwd"))
 					last_exit_status = ft_pwd();
-				else if (!ft_strcmp(args[0], "env"))
+				else if (!ft_strcmp(parts[0].part, "env"))
 					last_exit_status = ft_env(s_env.env);
-				else if (!ft_strcmp(args[0], "export"))
-					last_exit_status = ft_export(args, &s_env);
-				else if (!ft_strcmp(args[0], "unset"))
-					last_exit_status = ft_unset(args, &s_env);
+				else if (!ft_strcmp(parts[0].part, "export"))
+					last_exit_status = ft_export(parts, &s_env);
+				else if (!ft_strcmp(parts[0].part, "unset"))
+					last_exit_status = ft_unset(parts, &s_env);
 				else
 					last_exit_status = ft_executable(nr_parts, parts, &s_env);
 			}
@@ -130,7 +123,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 		free(line);
 		ft_free_parts(parts);
-		// ft_free_strs(args);
 		if (isatty(STDIN_FILENO))
 			line = readline(PROMPT);
 		else
