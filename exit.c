@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Libft/libft.h"
+#include "minishell.h"
 
 int	is_int(char *s)
 {
@@ -25,20 +26,20 @@ int	is_int(char *s)
 	return (1);
 }
 
-int	ft_exit(char **args, int nr_args)
+int	ft_exit(int nr_parts, t_part *parts)
 {
-	if (nr_args == 1)
+	if (nr_parts == 1)
 		exit(0);
-	if (!is_int(args[1]))
+	if (!is_int(parts[1].part))
 	{
 		printf("minishell: exit: numeric argument required\n");
 		exit(255);
 	}
-	if (nr_args > 2)
+	if (nr_parts > 2)
 	{
 		printf("minishell: exit: too many arguments\n");
 		return (1);
 	}
 	else
-		exit(ft_atoi(args[1]));
+		exit(ft_atoi(parts[1].part));
 }

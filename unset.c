@@ -13,14 +13,14 @@
 #include "minishell.h"
 #include "Libft/libft.h"
 
-int	ft_unset(char **args, t_env *s_env)
+int	ft_unset(t_part *parts, t_env *s_env)
 {
 	char	*env;
 	int		i;
 
 	i = 0;
 	while (i < s_env->size && \
-	!ft_strnstr(s_env->env[i], args[1], ft_strlen(args[1])))
+	!ft_strnstr(s_env->env[i], parts[1].part, ft_strlen(parts[1].part)))
 		i++;
 	if (i >= s_env->size)
 		return (1);

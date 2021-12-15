@@ -13,25 +13,25 @@
 #include "minishell.h"
 #include "Libft/libft.h"
 
-int	ft_echo(char **args, int nr_args)
+int	ft_echo(int nr_parts, t_part *parts)
 {
 	int	i;
 
 	i = 1;
-	while (!ft_strcmp(args[i], "-n"))
+	while (!ft_strcmp(parts[i].part, "-n"))
 		i++;
-	while (i < nr_args)
+	while (i < nr_parts)
 	{
-		if (write(1, args[i], ft_strlen(args[i])) < 0)
+		if (write(1, parts[i].part, ft_strlen(parts[i].part)) < 0)
 			return (1);
-		if (i < nr_args - 1)
+		if (i < nr_parts - 1)
 		{
 			if (write(1, " ", 1) < 0)
 				return (1);
 		}
 		i++;
 	}
-	if (ft_strcmp(args[1], "-n"))
+	if (ft_strcmp(parts[1].part, "-n"))
 	{
 		if (write(1, "\n", 1) < 0)
 			return (1);

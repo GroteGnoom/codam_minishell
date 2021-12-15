@@ -58,14 +58,14 @@ int		ft_pipex(int nr_parts, t_part *parts, char **envp);
 
 void	signals(void);
 
-int		ft_echo(char **args, int nr_args);
+int		ft_echo(int nr_parts, t_part *parts);
 int		ft_pwd(void);
-int		ft_cd(char **args);
+int		ft_cd(t_part *parts);
 int		ft_env(char **envp);
-int		ft_export(char **args, t_env *s_env);
-int		ft_exit(char **args, int nr_args);
+int		ft_export(t_part *parts, t_env *s_env);
+int		ft_exit(int nr_parts, t_part *parts);
 void	copy_env(char **envp, t_env *s_env);
-int		ft_unset(char **args, t_env *s_env);
+int		ft_unset(t_part *parts, t_env *s_env);
 char	*ft_wildcard(char *args);
 
 int		ft_executable(int nr_parts, t_part *parts, t_env *s_env);
