@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 13:16:20 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 16:20:44 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,8 @@ int	main(int argc, char **argv, char **envp)
 			line = readline(PROMPT);
 		else
 			line = get_next_line(STDIN_FILENO);
+	}
+	while (1)
+	{
 	}
 }

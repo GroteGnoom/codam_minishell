@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:03 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:15:05 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 16:29:22 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ int	ft_pwd(void)
 		return (1);
 	if (write(1, "\n", 1) < 0)
 		return (1);
+	free(print_str);
 	return (0);
 }

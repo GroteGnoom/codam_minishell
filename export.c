@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 13:52:00 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 16:47:21 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	ft_export(t_part *parts, t_env *s_env)
 		env_str = ft_strnstr(s_env->env[i], env, ft_strlen(s_env->env[i]));
 		i++;
 	}
+	free(env);
 	if (i == s_env->size)
 		return (export_attribute(s_env, parts[1].part));
 	s_env->env[i - 1] = parts[1].part;

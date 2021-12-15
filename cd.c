@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:17:03 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 16:40:56 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static int	ft_absolute(char *path_str, char *home_dir);
 
 static int	ft_relative(char *path_str);
 
+static int	ft_search_slash(char *cur_dir, int i);
+
 int	ft_cd(t_part *parts)
 {
 	char	*home_dir;
@@ -29,7 +31,6 @@ int	ft_cd(t_part *parts)
 	char	*new_dir;
 
 	home_dir = getenv("HOME");
-	buf = NULL;
 	if (!parts[1].part)
 	{
 		if (chdir(home_dir) < 0)
@@ -42,8 +43,10 @@ int	ft_cd(t_part *parts)
 		return (ft_relative(parts[1].part));
 	else
 	{
+		buf = NULL;
 		cur_dir = getcwd(buf, PATH_MAX);
 		new_dir = ft_strjoin(cur_dir, "/");
+		free(cur_dir);
 		return (ft_absolute(parts[1].part, new_dir));
 	}
 	return (0);
@@ -56,6 +59,8 @@ static int	ft_absolute(char *path_str, char *home_dir)
 	new_dir = ft_strjoin(home_dir, path_str);
 	if (chdir(new_dir) < 0)
 		return (1);
+	free(home_dir);
+	free(new_dir);
 	return (0);
 }
 
@@ -71,12 +76,7 @@ static int	ft_relative(char *path_str)
 	free(buf);
 	while (cur_dir[i])
 		i++;
-	while (i > 0)
-	{
-		if (cur_dir[i] == '/')
-			break ;
-		i--;
-	}
+	i = ft_search_slash(cur_dir, i);
 	ft_substr_free(&cur_dir, 0, i + 1);
 	if (ft_strlen(path_str) > 3)
 	{
@@ -85,5 +85,17 @@ static int	ft_relative(char *path_str)
 	}
 	if (chdir(cur_dir) < 0)
 		return (1);
+	free(cur_dir);
+	return (0);
+}
+
+static int	ft_search_slash(char *cur_dir, int i)
+{
+	while (i > 0)
+	{
+		if (cur_dir[i] == '/')
+			return (i);
+		i--;
+	}
 	return (0);
 }

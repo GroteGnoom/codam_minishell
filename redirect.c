@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 10:44:09 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 16:54:04 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	redirect_in(int nr_parts, t_part *parts, t_env *s_env)
 	}
 	new_args = new_args - i;
 	ret = ft_executable(i, new_args, s_env);
+	ft_free_parts(new_args);
 	if (dup2(term, STDIN_FILENO) < 0)
 		return (1);
 	return (ret);
@@ -66,6 +67,7 @@ int	redirect_out(int nr_parts, t_part *parts, t_env *s_env)
 	}
 	new_args = new_args - i;
 	ret = ft_executable(i, new_args, s_env);
+	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
 		return (1);
 	return (ret);
@@ -94,6 +96,7 @@ int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env)
 	}
 	new_args = new_args - i;
 	ret = ft_executable(i, new_args, s_env);
+	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
 		return (1);
 	return (ret);
@@ -119,10 +122,9 @@ int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env)
 	if (child < 0)
 		perror("Fork: ");
 	if (child == 0)
-	{
 		here_doc(final, i, new_args, s_env);
-		exit(0);
-	}
 	waitpid(-1, &status, 0);
+	ft_free_parts(new_args);
+	free(final);
 	return (0);
 }

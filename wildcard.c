@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 13:32:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/14 15:37:08 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 16:57:26 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ static char	*ft_get_wildcard(char *file, char *wildcard)
 		i++;
 	}
 	ft_free_strs(wild_split);
+	free(wildcard);
 	return (file);
 }
