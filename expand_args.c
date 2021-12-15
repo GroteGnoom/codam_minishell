@@ -23,6 +23,7 @@ void	ft_replace(char **sp, int start, int len, char *rep)
 	ft_memcpy(new + start, rep, ft_strlen(rep));
 	ft_memcpy(new + start + ft_strlen(rep), *sp + start + len, \
 		ft_strlen(*sp) - start);
+	free(*sp);
 	*sp = new;
 }
 
@@ -45,6 +46,7 @@ void	expand_args(char **sp, int last_exit_status)
 			{
 				env = ft_itoa(last_exit_status);
 				ft_replace(sp, i - 1, 2, env);
+				free(env);
 				continue ;
 			}
 			envlen = 0;

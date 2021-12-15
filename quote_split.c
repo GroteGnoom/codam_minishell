@@ -192,6 +192,7 @@ t_part	*ft_shell_split(char *s, int last_exit_status)
 		}
 		i++;
 	}
+	ft_free_parts(parts);
 	return (outparts);
 }
 
