@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 14:21:09 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 15:00:05 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ t_part *parts, int *pipefd)
 			ft_child_process(pipex, pipefd, s_env, parts);
 		pipex.iter++;
 	}
+	close(pipefd[2 * pipex.size - 1]);
 	ft_close_pipes(pipex, pipefd);
 	waitpid(-1, &status, 0);
 	return (status);
