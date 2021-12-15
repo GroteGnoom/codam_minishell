@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 09:30:51 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 10:44:09 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,25 +101,26 @@ int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env)
 
 int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env)
 {
-	char	**new_args;
+	t_part	*new_args;
 	char	*final;
 	pid_t	child;
 	int		status;
 	int		i;
 
 	i = 0;
+	new_args = ft_calloc((nr_parts) * sizeof(*parts), 1);
 	while (ft_strcmp(parts[i].part, "<<") != 0)
+	{
+		new_args[i].part = ft_strdup(parts[i].part);
 		i++;
+	}
 	final = ft_strdup(parts[i + 1].part);
 	child = fork();
 	if (child < 0)
 		perror("Fork: ");
 	if (child == 0)
 	{
-		new_args = here_doc(final);
-		nr_parts = 0;
-		(void)s_env;
-		// ft_executable(nr_parts, new_args, s_env);
+		here_doc(final, i, new_args, s_env);
 		exit(0);
 	}
 	waitpid(-1, &status, 0);

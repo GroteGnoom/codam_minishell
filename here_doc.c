@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/14 10:38:00 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 10:50:48 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <stdio.h>
 #include <readline/readline.h>
 
-void	ft_redir_args(char **args);
+void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env);
 
-char	**here_doc(char *final)
+void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env)
 {
 	char	**args;
 	char	*line;
@@ -25,7 +25,7 @@ char	**here_doc(char *final)
 
 	line = readline("here_doc> ");
 	size = 2;
-	args = malloc(1 * sizeof(char *));
+	args = ft_calloc(1 * sizeof(char *), 1);
 	while (line)
 	{
 		if (!ft_strcmp(line, final))
@@ -38,35 +38,34 @@ char	**here_doc(char *final)
 		line = readline("here_doc> ");
 		size++;
 	}
-	ft_redir_args(args);
-	return (0);
+	ft_redir_args(args, nr_parts, parts, s_env);
 }
 
-void	ft_redir_args(char **args)
+void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env)
 {
 	int		pipefd[2];
-	int		term;
+	int		term_out;
+	int		term_in;
 	int		i;
 
 	i = 0;
-	term = 0;
+	term_out = 0;
+	term_in = 1;
 	pipe(pipefd);
-	if (dup2(STDOUT_FILENO, term) < 0)
+	if (dup2(STDOUT_FILENO, term_out) < 0 || dup2(STDIN_FILENO, term_in) < 0)
 		return ;
 	if (dup2(pipefd[1], STDOUT_FILENO) < 0)
 		return ;
-	close(pipefd[0]);
 	i = 0;
 	while (args[i])
 	{
-		ft_putstr_fd(args[i], STDIN_FILENO);
+		ft_putstr_fd(args[i], STDOUT_FILENO);
 		i++;
 	}
-	close(STDIN_FILENO);
-	if (dup2(term, STDOUT_FILENO) < 0)
+	if (dup2(term_out, STDOUT_FILENO) < 0 || dup2(pipefd[0], STDIN_FILENO) < 0)
 		return ;
-	if (dup2(pipefd[0], STDIN_FILENO) < 0)
-		return ;
-	close(pipefd[0]);
 	close(pipefd[1]);
+	ft_executable(nr_parts, parts, s_env);
+	if (dup2(term_in, STDIN_FILENO) < 0)
+		return ;
 }
