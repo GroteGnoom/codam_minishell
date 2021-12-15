@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 14:39:38 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 14:21:09 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,40 @@
 #include "Libft/libft.h"
 #include <stdio.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <sys/types.h>
 
-static int		ft_pipex_pipe(t_pipe pipe, char **envp);
+static int		ft_pipex_pipe(t_pipe pipe, t_env *s_env, t_part *parts);
 
-static t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd);
-
-// static int		ft_get_size(char **argv);
 static int		ft_get_size_parts(t_part *parts);
 
-int	ft_pipex(int nr_parts, t_part *parts, char **envp)
+static int		ft_open_error(t_pipe pipex);
+
+static int		ft_execute_pipes(t_pipe pipex, t_env *s_env, \
+t_part *parts, int *pipefd);
+
+int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 {
 	t_pipe	pipex;
 	int		status;
 
 	pipex.begin = 0;
 	pipex.end = 0;
-	if (parts[0].type == SPECIAL && !ft_strcmp(parts[0].part, "<"))
-	{
-		pipex.infile = open(parts[0].part, O_RDONLY);
-		pipex.begin = 2;
-	}
-	else
-		pipex.infile = STDIN_FILENO;
-	if (parts[nr_parts - 2].type == SPECIAL && !ft_strcmp(parts[nr_parts - 2].part, ">"))
-	{
-		pipex.outfile = open(parts[nr_parts -1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
-		pipex.end = 2;
-	}
-	else
-		pipex.outfile = STDOUT_FILENO;
+	pipex = ft_set_io(nr_parts, parts, pipex);
 	if (pipex.infile < 0 || pipex.outfile < 0)
-	{
-		perror("bash: input");
-		if (pipex.outfile < 0)
-			return (127);
-		write(pipex.outfile, "       0\n", 9);
-		return (0);
-	}
+		return (ft_open_error(pipex));
 	pipex.commands = ft_get_commands_parts(nr_parts, parts, &pipex);
 	pipex.size = ft_get_size_parts(parts);
-	status = ft_pipex_pipe(pipex, envp);
+	status = ft_pipex_pipe(pipex, s_env, parts);
 	return (status);
+}
+
+static int	ft_open_error(t_pipe pipex)
+{
+	perror("bash: input");
+	if (pipex.outfile < 0)
+		return (127);
+	write(pipex.outfile, "       0\n", 9);
+	return (0);
 }
 
 static int	ft_get_size_parts(t_part *parts)
@@ -75,9 +66,8 @@ static int	ft_get_size_parts(t_part *parts)
 	return (count);
 }
 
-static int	ft_pipex_pipe(t_pipe pipex, char **envp)
+static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 {
-	pid_t	child;
 	int		*pipefd;
 	int		status;
 
@@ -85,19 +75,9 @@ static int	ft_pipex_pipe(t_pipe pipex, char **envp)
 	if (!pipefd)
 		perror("malloc: ");
 	pipex = ft_get_pipes(pipex, pipefd);
-	pipex.paths = ft_get_paths(envp);
+	pipex.paths = ft_get_paths(s_env->env);
 	pipex.iter = 0;
-	while (pipex.iter < pipex.size)
-	{
-		child = fork();
-		if (child < 0)
-			perror("Fork: ");
-		if (child == 0)
-			ft_child_process(pipex, pipefd, envp);
-		pipex.iter++;
-	}
-	ft_close_pipes(pipex, pipefd);
-	waitpid(-1, &status, 0);
+	status = ft_execute_pipes(pipex, s_env, parts, pipefd);
 	if (pipex.infile != STDIN_FILENO)
 		close(pipex.infile);
 	if (pipex.outfile != STDOUT_FILENO)
@@ -106,16 +86,22 @@ static int	ft_pipex_pipe(t_pipe pipex, char **envp)
 	return (WEXITSTATUS(status));
 }
 
-static t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd)
+static int	ft_execute_pipes(t_pipe pipex, t_env *s_env, \
+t_part *parts, int *pipefd)
 {
-	int	i;
+	pid_t	child;
+	int		status;
 
-	i = 0;
-	while (i < pipex.size - 1)
+	while (pipex.iter < pipex.size)
 	{
-		if (pipe(pipefd + 2 * i) < 0)
-			perror("Pipe: ");
-		i++;
+		child = fork();
+		if (child < 0)
+			perror("Fork: ");
+		if (child == 0)
+			ft_child_process(pipex, pipefd, s_env, parts);
+		pipex.iter++;
 	}
-	return (pipex);
+	ft_close_pipes(pipex, pipefd);
+	waitpid(-1, &status, 0);
+	return (status);
 }

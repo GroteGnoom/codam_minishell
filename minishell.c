@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 09:43:33 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 13:16:20 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ int	main(int argc, char **argv, char **envp)
 	if (isatty(STDIN_FILENO))
 		line = readline(PROMPT);
 	else
+	{
 		line = get_next_line(STDIN_FILENO);
+		line = ft_strtrim_free(&line, "\n");
+	}
 	last_exit_status = 0;
 	comm = 0;
 	while (line)
@@ -68,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 					{
 						if (!ft_strcmp(parts[i].part, "|"))
 						{
-							last_exit_status = ft_pipex(nr_parts, parts, s_env.env);
+							last_exit_status = ft_pipex(nr_parts, parts, &s_env);
 							comm = 1;
 							break ;
 						}
@@ -102,21 +105,8 @@ int	main(int argc, char **argv, char **envp)
 			}
 			if (comm == 0)
 			{
-				if (!ft_strcmp(parts[0].part, "exit"))
-					last_exit_status = ft_exit(nr_parts, parts);
-				else if (!ft_strcmp(parts[0].part, "echo"))
-					last_exit_status = ft_echo(nr_parts, parts);
-				else if (!ft_strcmp(parts[0].part, "cd"))
-					last_exit_status = ft_cd(parts);
-				else if (!ft_strcmp(parts[0].part, "pwd"))
-					last_exit_status = ft_pwd();
-				else if (!ft_strcmp(parts[0].part, "env"))
-					last_exit_status = ft_env(s_env.env);
-				else if (!ft_strcmp(parts[0].part, "export"))
-					last_exit_status = ft_export(parts, &s_env);
-				else if (!ft_strcmp(parts[0].part, "unset"))
-					last_exit_status = ft_unset(parts, &s_env);
-				else
+				last_exit_status = is_built_in(parts[0].part, nr_parts, parts, &s_env);
+				if (last_exit_status == 300)
 					last_exit_status = ft_executable(nr_parts, parts, &s_env);
 			}
 			comm = 0;

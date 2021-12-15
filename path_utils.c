@@ -6,29 +6,33 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:16:00 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 14:06:31 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "Libft/libft.h"
 
-void	ft_try_paths(char **paths, char **args, char **envp)
+void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
 {
 	char	*cmd;
 	int		i;
-	int		relative;
 
 	i = 0;
 	while (paths[i])
 	{
-		relative = !ft_strchr(args[0], '/');
-		if (relative)
+		if (!ft_strcmp(args[0], "export"))
+		{
+			ft_export(parts, s_env);
+			exit(0);
+		}
+		if (!ft_strchr(args[0], '/'))
 			cmd = ft_strjoin(paths[i], args[0]);
 		else
 			cmd = args[0];
 		if (!access(cmd, F_OK) && !access(cmd, X_OK))
-			execve(cmd, args, envp);
-		if (relative)
+			execve(cmd, args, s_env->env);
+		if (!ft_strchr(args[0], '/'))
 			free(cmd);
 		i++;
 	}

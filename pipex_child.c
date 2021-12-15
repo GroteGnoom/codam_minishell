@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:15:37 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 13:32:55 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	ft_dup2(int first, int second);
 
 static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex);
 
-void	ft_child_process(t_pipe pipex, int *pipefd, char **envp)
+void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 {
 	if (pipex.iter == 0)
 	{
@@ -34,7 +34,7 @@ void	ft_child_process(t_pipe pipex, int *pipefd, char **envp)
 		ft_dup2(pipefd[2 * pipex.iter - 2], pipefd[2 * pipex.iter + 1]);
 	ft_close_pipes(pipex, pipefd);
 	pipex.cmd_flag = ft_get_cmd_flag(pipex.commands, pipex.iter, pipex);
-	ft_try_paths(pipex.paths, pipex.cmd_flag, envp);
+	ft_try_paths(pipex.paths, pipex.cmd_flag, s_env, parts);
 }
 
 static void	ft_dup2(int first, int second)

@@ -49,6 +49,7 @@ FILES =	ft_atoi.c\
 		ft_realloc.c\
 		ft_count_strs.c\
 		ft_free_strs.c\
+		ft_strtrim_free.c\
 
 FILES_BONUS =	ft_lstnew_bonus.c\
 				ft_lstadd_front_bonus.c\

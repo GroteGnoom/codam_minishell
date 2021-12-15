@@ -6,13 +6,15 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:13 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:15:15 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 14:22:04 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "Libft/libft.h"
 #include <stdlib.h>
+#include <fcntl.h>
+#include <stdio.h>
 
 char	**ft_get_commands_parts(int nr_parts, t_part *parts, t_pipe *pipex)
 {
@@ -62,4 +64,39 @@ void	ft_close_pipes(t_pipe pipex, int *pipefd)
 		close(pipefd[i]);
 		i++;
 	}
+}
+
+t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex)
+{
+	if (parts[0].type == SPECIAL && !ft_strcmp(parts[0].part, "<"))
+	{
+		pipex.infile = open(parts[0].part, O_RDONLY);
+		pipex.begin = 2;
+	}
+	else
+		pipex.infile = STDIN_FILENO;
+	if (parts[nr_parts - 2].type == SPECIAL && \
+	!ft_strcmp(parts[nr_parts - 2].part, ">"))
+	{
+		pipex.outfile = open(parts[nr_parts -1].part, \
+		O_RDWR | O_CREAT | O_TRUNC, 0644);
+		pipex.end = 2;
+	}
+	else
+		pipex.outfile = STDOUT_FILENO;
+	return (pipex);
+}
+
+t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd)
+{
+	int	i;
+
+	i = 0;
+	while (i < pipex.size - 1)
+	{
+		if (pipe(pipefd + 2 * i) < 0)
+			perror("Pipe: ");
+		i++;
+	}
+	return (pipex);
 }

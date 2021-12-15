@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:40 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 10:42:36 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/15 13:34:16 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_executable(int nr_parts, t_part *parts, t_env *s_env)
 	if (child < 0)
 		return (1); //is this the correct error handling?
 	if (child == 0)
-		ft_try_paths(paths, args, s_env->env);
+		ft_try_paths(paths, args, s_env, parts);
 	waitpid(-1, &status, 0);
 	ft_free_strs(paths);
 	ft_free_strs(args);
