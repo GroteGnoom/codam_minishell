@@ -74,7 +74,7 @@ int		ft_export_print(char **envp);
 t_part	*quote_split(char *s);
 void	expand_unquoted_args(t_part *parts, int last_exit_status);
 char	**parts_to_strings(t_part *parts);
-t_part	*ft_shell_split(char *s);
+t_part	*ft_shell_split(char *s, int last_exit_status);
 void	ft_free_parts(t_part *parts);
 
 int		redirect_in(int nr_parts, t_part *parts, t_env *s_env);
