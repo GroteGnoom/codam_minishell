@@ -6,12 +6,13 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:34:40 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/15 14:35:40 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/16 11:25:20 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "../minishell.h"
+#include "../Libft/libft.h"
 #include "stdlib.h"
 
 void	print_parts2(t_part *parts)
@@ -27,28 +28,33 @@ void	print_parts2(t_part *parts)
 	printf("\n");
 }
 
-void	print_parts(char *str)
+void	print_parts(char *str, t_env s_env)
 {
 	t_part	*parts;
 
-	parts = ft_shell_split(str, 13);
+	parts = ft_shell_split(str, 13, &s_env);
 	print_parts2(parts);
 	ft_free_parts(parts);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
-	print_parts("a");
-	print_parts("a|a");
-	print_parts("a | a");
-	print_parts("a \"|\" a");
-	print_parts("a>a");
-	print_parts("a > a");
-	print_parts("a \">\" a");
-	print_parts("a>>a");
-	print_parts("a >> a");
-	print_parts("a \">>\" a");
-	print_parts("'' '' ''");
-	print_parts("''hallo hallo'' ''");
-	print_parts("$? asd'$?'fasdf dsfasdf\"bla$?\" ''");
+	t_env	s_env;
+
+	(void) argc;
+	(void) argv;
+	copy_env(env, &s_env);
+	print_parts("a", s_env);
+	print_parts("a|a", s_env);
+	print_parts("a | a", s_env);
+	print_parts("a \"|\" a", s_env);
+	print_parts("a>a", s_env);
+	print_parts("a > a", s_env);
+	print_parts("a \">\" a", s_env);
+	print_parts("a>>a", s_env);
+	print_parts("a >> a", s_env);
+	print_parts("a \">>\" a", s_env);
+	print_parts("'' '' ''", s_env);
+	print_parts("''hallo hallo'' ''", s_env);
+	print_parts("$? asd'$?'fasdf dsfasdf\"bla$?\" ''", s_env);
 }
