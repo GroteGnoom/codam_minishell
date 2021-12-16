@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 16:20:44 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 09:54:55 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (isatty(STDIN_FILENO) && ft_strlen(line))
 			add_history(line);
-		parts = ft_shell_split(line, last_exit_status);
+		parts = ft_shell_split(line, last_exit_status, &s_env);
 		nr_parts = count_parts(parts);
 		if (nr_parts)
 		{

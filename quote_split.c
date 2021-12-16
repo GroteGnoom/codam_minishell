@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/14 12:04:45 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 09:55:12 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ char	**parts_to_strings(t_part *parts)
 	return (strs);
 }
 
-t_part	*ft_shell_split(char *s, int last_exit_status)
+t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env)
 {
 	t_part	*parts;
 	t_part	*outparts;
@@ -157,7 +157,7 @@ t_part	*ft_shell_split(char *s, int last_exit_status)
 	int		j;
 
 	parts = quote_split(s);
-	expand_unquoted_args(parts, last_exit_status);
+	expand_unquoted_args(parts, last_exit_status, s_env);
 	expand_wildcard(parts);
 	i = 0;
 	j = 1;

@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 13:32:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 09:51:36 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 10:55:12 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir);
 
 static char	*ft_get_wildcard(char *file, char *wildcard);
 
-static char	*ft_get_file2(char *file, char **wild_split);
+static char	*ft_get_file2(char *file, char **wild_split, int split_len);
 
 char	*ft_wildcard(char *args)
 {
@@ -89,7 +89,7 @@ static char	*ft_get_wildcard(char *file, char *wildcard)
 		ft_strncmp(wild_split[split_len - 1], &file[ft_strlen(file) - i], i))
 			return (free_ret_null(wild_split));
 	}
-	file2 = ft_get_file2(file, wild_split);
+	file2 = ft_get_file2(file, wild_split, split_len);
 	if (!file2)
 		return (NULL);
 	ft_free_strs(wild_split);
@@ -97,7 +97,7 @@ static char	*ft_get_wildcard(char *file, char *wildcard)
 	return (file);
 }
 
-static char	*ft_get_file2(char *file, char **wild_split)
+static char	*ft_get_file2(char *file, char **wild_split, int split_len)
 {
 	char	*file2;
 	int		i;

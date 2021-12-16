@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 09:22:56 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 11:06:01 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,50 +27,74 @@ void	ft_replace(char **sp, int start, int len, char *rep)
 	*sp = new;
 }
 
-void	expand_args(char **sp, int last_exit_status)
+char	*ft_search_name(t_env *s_env, char *envname, int envlen)
 {
-	char	*s;
+	char	*values;
+	int		i;
+
+	i = 0;
+	while (s_env->env[i])
+	{
+		if (!ft_strncmp(s_env->env[i], envname, envlen) && \
+		s_env->env[i][envlen] == '=')
+		{
+			values = s_env->env[i] + envlen + 1;
+			free(envname);
+			return (values);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+int	ft_insert_exit_status(char **sp, int i, int last_exit_status)
+{
+	char	*env;
+
+	if ((*sp)[i] == '?')
+	{
+		env = ft_itoa(last_exit_status);
+		ft_replace(sp, i - 1, 2, env);
+		free(env);
+		return (1);
+	}
+	return (0);
+}
+
+void	expand_args(char **sp, int last_exit_status, t_env *s_env)
+{
 	int		i;
 	char	*envname;
 	char	*env;
 	int		envlen;
 
-	s = *sp;
 	i = 0;
-	while (s[i])
+	while ((*sp)[i])
 	{
-		if (s[i] == '$')
+		if ((*sp)[i] == '$')
 		{
 			i++;
-			if (s[i] == '?')
-			{
-				env = ft_itoa(last_exit_status);
-				ft_replace(sp, i - 1, 2, env);
-				free(env);
-				s = *sp;
+			if (ft_insert_exit_status(sp, i, last_exit_status))
 				continue ;
-			}
 			envlen = 0;
-			while (s[i + envlen] && s[i + envlen] != ' ')
+			while ((*sp)[i + envlen] && (*sp)[i + envlen] != ' ')
 				envlen++;
-			envname = ft_substr(s, i, envlen);
-			env = getenv(envname); /* shouldn't we use our own env?
-			This one doesn't get updated  */
+			envname = ft_substr(*sp, i, envlen);
+			env = ft_search_name(s_env, envname, envlen);
 			if (!env)
 				env = "";
 			ft_replace(sp, i - 1, envlen + 1, env);
-			s = *sp;
 		}
 		i++;
 	}
 }
 
-void	expand_unquoted_args(t_part *parts, int last_exit_status)
+void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env)
 {
 	while (parts->part)
 	{
 		if (parts->type == NORMAL || parts->type == DOUBLE_QUOTED)
-			expand_args(&(parts->part), last_exit_status);
+			expand_args(&(parts->part), last_exit_status, s_env);
 		parts++;
 	}
 }
