@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 13:32:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 16:57:26 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 09:51:36 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir);
 
 static char	*ft_get_wildcard(char *file, char *wildcard);
+
+static char	*ft_get_file2(char *file, char **wild_split);
 
 char	*ft_wildcard(char *args)
 {
@@ -83,11 +85,23 @@ static char	*ft_get_wildcard(char *file, char *wildcard)
 	if (wildcard[ft_strlen(wildcard) - 1] != '*')
 	{
 		i = ft_strlen(wild_split[split_len - 1]);
-		if ((int)ft_strlen(file) < i
-			|| ft_strncmp(wild_split[split_len - 1],
-				&file[ft_strlen(file) - i], i))
+		if ((int)ft_strlen(file) < i || \
+		ft_strncmp(wild_split[split_len - 1], &file[ft_strlen(file) - i], i))
 			return (free_ret_null(wild_split));
 	}
+	file2 = ft_get_file2(file, wild_split);
+	if (!file2)
+		return (NULL);
+	ft_free_strs(wild_split);
+	free(wildcard);
+	return (file);
+}
+
+static char	*ft_get_file2(char *file, char **wild_split)
+{
+	char	*file2;
+	int		i;
+
 	i = 0;
 	file2 = file;
 	while (i < split_len)
@@ -98,7 +112,5 @@ static char	*ft_get_wildcard(char *file, char *wildcard)
 		file2 += ft_strlen(wild_split[i]);
 		i++;
 	}
-	ft_free_strs(wild_split);
-	free(wildcard);
-	return (file);
+	return (file2);
 }
