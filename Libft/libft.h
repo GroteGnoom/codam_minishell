@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:11 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 11:33:08 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 11:40:33 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	ft_substr_free(char **s, unsigned int start, size_t len);
 int		ft_count_strs(char **s);
 void	ft_free_strs(char **arr);
 char	*ft_strtrim_free(char **s1, char const *set);
+int		ft_skip(char **s, char c);
+int		ft_skip_until(char **s, char c);
 
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);

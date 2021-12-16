@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 11:33:51 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/16 11:47:47 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,6 @@
 #include "minishell.h"
 
 #define SPECIAL_CHARS " \"'|<>"
-
-int	skip_until(char **s, char c)
-{
-	int	i;
-
-	i = 1;
-	while ((*s)[i] && (*s)[i] != c)
-		i++;
-	i++;
-	(*s) += i;
-	return (i);
-}
-
-int	skip(char **s, char c)
-{
-	int	i;
-
-	i = 0;
-	while ((*s)[i] == c)
-		i++;
-	(*s) += i;
-	return (i);
-}
 
 static int	ft_count_parts(char *s)
 {
@@ -51,13 +28,13 @@ static int	ft_count_parts(char *s)
 	{
 		w++;
 		if (*s == '"')
-			skip_until(&s, '"');
+			ft_skip_until(&s, '"');
 		else if (*s == '\'')
-			skip_until(&s, '\'');
+			ft_skip_until(&s, '\'');
 		else if (*s == ' ')
-			skip(&s, ' ');
+			ft_skip(&s, ' ');
 		else if (ft_strchr(specials, *s))
-			skip(&s, *s);
+			ft_skip(&s, *s);
 		else
 			while (*s && !ft_strchr(SPECIAL_CHARS, *s))
 				s++;
@@ -88,8 +65,8 @@ int	part_len_type(char *s, enum e_part_type *type)
 		return (i);
 	}
 	if (*type == SPACES || *type == SPECIAL)
-		return (skip(&s, *s));
-	return (skip_until(&s, *s));
+		return (ft_skip(&s, *s));
+	return (ft_skip_until(&s, *s));
 }
 
 t_part	*quote_split(char *s)
@@ -115,53 +92,6 @@ t_part	*quote_split(char *s)
 		i++;
 	}
 	return (parts);
-}
-
-t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env)
-{
-	t_part	*parts;
-	t_part	*outparts;
-	int		i;
-	int		j;
-
-	parts = quote_split(s);
-	expand_unquoted_args(parts, last_exit_status, s_env);
-	expand_wildcard(parts);
-	i = 0;
-	j = 1;
-	while (parts[i].part)
-	{
-		if (parts[i].type == SPACES && !(parts[i + 1].part && \
-		parts[i + 1].type == SPECIAL) && !(i > 0 && \
-		parts[i - 1].type == SPECIAL))
-			j++;
-		if (parts[i].type == SPECIAL)
-			j += 2;
-		i++;
-	}
-	outparts = ft_calloc((j + 1) * sizeof(*outparts), 1);
-	i = 0;
-	j = -1;
-	while (parts[i].part)
-	{
-		if (parts[i].type == SPECIAL)
-		{
-			outparts[++j].part = ft_calloc(1, 1);
-			ft_strjoin_free(&(outparts[j].part), parts[i].part);
-			outparts[j].type = SPECIAL;
-		}
-		else if (parts[i].type != SPACES)
-		{
-			if (i == 0 || (parts[i - 1].type == SPACES || \
-			parts[i - 1].type == SPECIAL))
-				outparts[++j].part = ft_calloc(1, 1);
-			outparts[j].type = NORMAL;
-			ft_strjoin_free(&(outparts[j].part), parts[i].part);
-		}
-		i++;
-	}
-	ft_free_parts(parts);
-	return (outparts);
 }
 
 void	ft_free_parts(t_part *parts)
