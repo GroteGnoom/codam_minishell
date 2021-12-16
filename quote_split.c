@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 09:55:12 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 11:31:13 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,31 +72,24 @@ int	part_len_type(char *s, enum e_part_type *type)
 
 	specials = "<>|";
 	i = 0;
+	*type = NORMAL;
 	if (*s == '"')
-	{
 		*type = DOUBLE_QUOTED;
-		return (skip_until(&s, '"'));
-	}
 	else if (*s == '\'')
-	{
 		*type = SINGLE_QUOTED;
-		return (skip_until(&s, '\''));
-	}
 	else if (*s == ' ')
-	{
 		*type = SPACES;
-		return (skip(&s, ' '));
-	}
 	else if (ft_strchr(specials, *s))
-	{
 		*type = SPECIAL;
-		return (skip(&s, *s));
-	}
 	else
+	{
 		while (s[i] && !ft_strchr(SPECIAL_CHARS, s[i]))
 			i++;
-	*type = NORMAL;
-	return (i);
+		return (i);
+	}
+	if (*type == SPACES || *type == SPECIAL)
+		return (skip(&s, *s));
+	return (skip_until(&s, *s));
 }
 
 t_part	*quote_split(char *s)
