@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 11:47:47 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/16 12:54:05 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 #define SPECIAL_CHARS " \"'|<>"
 
-static int	ft_count_parts(char *s)
+static int	ft_count_parts_in_str(char *s)
 {
 	int		w;
 	char	*specials;
@@ -76,7 +76,7 @@ t_part	*quote_split(char *s)
 	int		len;
 	t_part	*parts;
 
-	nr_parts = ft_count_parts(s);
+	nr_parts = ft_count_parts_in_str(s);
 	parts = ft_calloc((nr_parts + 1) * sizeof(*parts), 1);
 	i = 0;
 	while (i < nr_parts)

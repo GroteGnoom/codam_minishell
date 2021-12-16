@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:11 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 11:40:33 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/16 14:49:28 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	*ft_memmove(void *dst, void *src, size_t len);
 void	*ft_memset(void *str, int val, size_t len);
 void	*ft_memchr(const void *s, int c, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
+void	*ft_memdup(const void *s1, size_t size);
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlen(const char *str);
@@ -80,5 +81,6 @@ void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	*ft_realloc(void *p, size_t size, size_t old_size);
+void	*ft_recalloc(void *p, size_t size, size_t old_size);
 
 #endif

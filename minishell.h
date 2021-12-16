@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 11:34:25 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/16 13:34:49 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ t_part	*quote_split(char *s);
 void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env);
 t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env);
 void	ft_free_parts(t_part *parts);
+int		count_parts(t_part *s);
+void	replace_parts(t_part **parts, int i);
 
 int		redirect_in(int nr_parts, t_part *parts, t_env *s_env);
 int		redirect_out(int nr_parts, t_part *parts, t_env *s_env);
@@ -86,7 +88,7 @@ int		redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env);
 void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env);
 char	**ft_get_paths(char **env);
 void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env);
-void	expand_wildcard(t_part *parts);
+void	expand_wildcard(t_part **parts);
 
 int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env);
 #endif
