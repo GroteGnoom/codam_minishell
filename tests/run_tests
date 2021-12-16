@@ -21,3 +21,5 @@ do
 	cat leaks_output | grep ' 0 leaks'
 done
 shopt -u extglob
+
+echo FINISHED!!!!!
