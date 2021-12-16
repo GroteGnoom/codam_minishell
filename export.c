@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 16:47:21 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 12:01:22 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,22 @@ int	ft_export(t_part *parts, t_env *s_env)
 	if (!parts[1].part || parts[1].type != NORMAL)
 		return (ft_export_print(s_env->env));
 	env_str = NULL;
-	i = 0;
+	i = -1;
 	env = ft_strchr(parts[1].part, '=');
 	if (env != 0)
 		env = ft_substr(parts[1].part, 0, ft_strlen(parts[1].part) \
 		- ft_strlen(env));
 	else
 		return (export_attribute(s_env, parts[1].part));
-	while (i < s_env->size && !env_str)
-	{
-		env_str = ft_strnstr(s_env->env[i], env, ft_strlen(s_env->env[i]));
-		i++;
-	}
+	while (s_env->env[++i] && i < s_env->size && !env_str)
+		env_str = ft_strnstr(s_env->env[i], env, ft_strlen(env));
 	free(env);
 	if (i == s_env->size)
 		return (export_attribute(s_env, parts[1].part));
-	s_env->env[i - 1] = parts[1].part;
+	if (env_str && ft_strncmp(env_str, env, ft_strlen(env)))
+		i--;
+	free(s_env->env[i]);
+	s_env->env[i] = ft_strdup(parts[1].part);
 	return (0);
 }
 
