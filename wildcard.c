@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 13:32:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 10:55:12 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 15:57:36 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*ft_wildcard(char *args)
 		return (0);
 	dir = readdir(open_dir);
 	new_args = ft_get_args(dir, args, open_dir);
+	free(args);
 	if (!new_args)
 		return (0);
 	return (new_args);
@@ -93,7 +94,6 @@ static char	*ft_get_wildcard(char *file, char *wildcard)
 	if (!file2)
 		return (NULL);
 	ft_free_strs(wild_split);
-	free(wildcard);
 	return (file);
 }
 
