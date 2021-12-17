@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:13 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 14:52:03 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 14:19:16 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**ft_get_commands_parts(int nr_parts, t_part *parts, t_pipe *pipex)
 	commands = ft_calloc((nr_parts + 1) * sizeof(char *), 1);
 	while (j < nr_parts)
 	{
-		commands[j] = parts[i].part;
+		commands[j] = ft_strdup(parts[i].part);
 		i++;
 		j++;
 	}
@@ -54,7 +54,7 @@ char	**ft_get_commands(char **argv, int len, t_pipe *pipex)
 	return (commands);
 }
 
-void	ft_close_pipes(t_pipe pipex, int *pipefd)
+void	ft_close_all_pipes(t_pipe pipex, int *pipefd)
 {
 	int	i;
 
@@ -64,6 +64,7 @@ void	ft_close_pipes(t_pipe pipex, int *pipefd)
 		close(pipefd[i]);
 		i++;
 	}
+	free(pipefd);
 }
 
 t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex)

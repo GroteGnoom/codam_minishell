@@ -6,12 +6,13 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:40 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 13:34:16 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 14:53:55 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "Libft/libft.h"
+#include <stdio.h>
 
 static char	**ft_get_args(int nr_parts, t_part *parts);
 
@@ -26,7 +27,10 @@ int	ft_executable(int nr_parts, t_part *parts, t_env *s_env)
 	args = ft_get_args(nr_parts, parts);
 	child = fork();
 	if (child < 0)
-		return (1); //is this the correct error handling?
+	{
+		perror("Fork: ");
+		return (1);
+	}
 	if (child == 0)
 		ft_try_paths(paths, args, s_env, parts);
 	waitpid(-1, &status, 0);

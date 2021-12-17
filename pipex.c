@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 15:00:05 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 15:04:25 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,26 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 {
 	t_pipe	pipex;
 	int		status;
+	int		term_out;
+	int		term_in;
 
 	pipex.begin = 0;
 	pipex.end = 0;
+	term_out = 9;
+	term_in = 10;
+	if (dup2(STDOUT_FILENO, term_out) < 0 || dup2(STDIN_FILENO, term_in) < 0)
+		perror("dup2");
 	pipex = ft_set_io(nr_parts, parts, pipex);
 	if (pipex.infile < 0 || pipex.outfile < 0)
 		return (ft_open_error(pipex));
 	pipex.commands = ft_get_commands_parts(nr_parts, parts, &pipex);
 	pipex.size = ft_get_size_parts(parts);
 	status = ft_pipex_pipe(pipex, s_env, parts);
+	close(pipex.infile);
+	close(pipex.outfile);
+	if (dup2(term_out, STDOUT_FILENO) < 0 || dup2(term_in, STDIN_FILENO) < 0)
+		perror("dup2");
+	ft_free_strs(pipex.commands);
 	return (status);
 }
 
@@ -71,17 +82,13 @@ static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 	int		*pipefd;
 	int		status;
 
-	pipefd = (int *)malloc((2 * (pipex.size - 1)) * sizeof(int));
+	pipefd = (int *)malloc((2 * (pipex.size)) * sizeof(int));
 	if (!pipefd)
 		perror("malloc: ");
 	pipex = ft_get_pipes(pipex, pipefd);
 	pipex.paths = ft_get_paths(s_env->env);
 	pipex.iter = 0;
 	status = ft_execute_pipes(pipex, s_env, parts, pipefd);
-	if (pipex.infile != STDIN_FILENO)
-		close(pipex.infile);
-	if (pipex.outfile != STDOUT_FILENO)
-		close(pipex.outfile);
 	ft_free_strs(pipex.paths);
 	return (WEXITSTATUS(status));
 }
@@ -101,8 +108,7 @@ t_part *parts, int *pipefd)
 			ft_child_process(pipex, pipefd, s_env, parts);
 		pipex.iter++;
 	}
-	close(pipefd[2 * pipex.size - 1]);
-	ft_close_pipes(pipex, pipefd);
+	ft_close_all_pipes(pipex, pipefd);
 	waitpid(-1, &status, 0);
 	return (status);
 }

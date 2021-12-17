@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 11:34:25 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/16 14:08:08 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_env
 
 char	**ft_get_commands(char **argv, int len, t_pipe *pipex);
 char	**ft_get_commands_parts(int nr_parts, t_part *parts, t_pipe *pipex);
-void	ft_close_pipes(t_pipe pipex, int *pipefd);
+void	ft_close_all_pipes(t_pipe pipex, int *pipefd);
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, \
 t_part *parts);
 t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex);
@@ -75,6 +75,7 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env);
 int		ft_export_print(char **envp);
 t_part	*quote_split(char *s);
 void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env);
+char	**parts_to_strings(t_part *parts);
 t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env);
 void	ft_free_parts(t_part *parts);
 
