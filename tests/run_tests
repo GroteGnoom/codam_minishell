@@ -52,6 +52,7 @@ shopt -u extglob
 shell_test "ls | ls | ls | ls | ls | ls"
 shell_test "echo *konijn"
 shell_test "echo * *bla"
+shell_test "ls *.c | cat"
 output_test 'ls | cat > $OUTFILE'
 output_test '< test_shell_split.c grep 'a'|grep 'm' | wc -l|cat -e > $OUTFILE'
 
