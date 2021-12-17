@@ -1,12 +1,12 @@
 #!/bin/bash
-set -x
+#set -x
 set -e
 
 function shell_test()
 {
 	echo $1 | ../minishell > minishell_out
 	echo $1 | bash > bash_out
-	diff minishell_out bash_out
+	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
 }
 
 function output_test()
@@ -15,8 +15,8 @@ function output_test()
 	echo $1 | ../minishell > minishell_stdout
 	export OUTFILE=bash_outfile
 	echo $1 | bash > bash_stdout
-	diff minishell_stdout bash_stdout
-	diff minishell_outfile bash_outfile
+	diff minishell_stdout bash_stdout || { echo "stdout of output test failed for: \"$1\""; exit 1;}
+	diff minishell_outfile bash_outfile || { echo "outfile of output test failed for: \"$1\""; exit 1;}
 }
 
 shopt -s extglob
@@ -25,6 +25,7 @@ make -C ..
 for file in test*.c
 do
 	export BASE=${file%.*}
+	echo "checking $BASE"
 	gcc -Wall -Wextra -g -fsanitize=address -L../Libft -I.. $file ../!(minishe*).c -o ${file%.*} -lft -I $READLINE_DIR/include/ -L $READLINE_DIR/lib/ -lreadline ../get_next_line/get_next_line.a
 	./${file%.*} > ${file%.*}.check
 	diff ${file%.*}.check ${file%.*}.out
@@ -35,12 +36,12 @@ do
 	echo "}" >> $file 
 	./${file%.*} > ${file%.*}.check
 	diff ${file%.*}.check ${file%.*}.out
-	cat leaks_output
-	cat leaks_output | grep ' 0 leaks'
+	cat leaks_output | grep -q ' 0 leaks' || { echo "leaks found!"; exit 1; }
 done
 shopt -u extglob
 
 shell_test "ls | ls | ls | ls | ls | ls"
+shell_test "echo \"$?\"lala $?asdf"
 output_test 'ls | cat > $OUTFILE'
 
 echo FINISHED!!!!!
