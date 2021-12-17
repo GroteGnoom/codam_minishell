@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 14:51:48 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/17 16:21:10 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 
 	i = 0;
 	*exec = 1;
-	while (ft_strcmp(parts[i].part, ">") != 0)
+	while (parts[i].part && ft_strcmp(parts[i].part, ">") != 0)
 		i++;
 	fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
@@ -92,7 +92,10 @@ int	redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 		return (ft_redir_error("dup2", ""));
 	new_args = ft_calloc((nr_parts - 1) * sizeof(*parts), 1);
 	i = ft_get_args(new_args, parts, ">");
-	ret = ft_executable(i, new_args, s_env);
+	if (parts[i + 2].part && ft_strcmp(parts[i + 2].part, ">"))
+		ret = ft_executable(i, new_args, s_env);
+	else if (parts[i + 2].part)
+		ret = redirect_out(nr_parts, (parts + i + 1), s_env, exec);
 	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", ""));
