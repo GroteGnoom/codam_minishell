@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 13:49:17 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/17 14:51:48 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	ft_get_args(t_part *new_args, t_part *parts, char *c)
 	return (i);
 }
 
-int	redirect_in(int nr_parts, t_part *parts, t_env *s_env)
+int	redirect_in(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 {
 	t_part	*new_args;
 	int		ret;
@@ -54,6 +54,7 @@ int	redirect_in(int nr_parts, t_part *parts, t_env *s_env)
 	int		i;
 
 	i = 0;
+	*exec = 1;
 	while (ft_strcmp(parts[i].part, "<") != 0)
 		i++;
 	fd = open(parts[i + 1].part, O_RDONLY);
@@ -71,7 +72,7 @@ int	redirect_in(int nr_parts, t_part *parts, t_env *s_env)
 	return (ret);
 }
 
-int	redirect_out(int nr_parts, t_part *parts, t_env *s_env)
+int	redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 {
 	t_part	*new_args;
 	int		ret;
@@ -80,6 +81,7 @@ int	redirect_out(int nr_parts, t_part *parts, t_env *s_env)
 	int		i;
 
 	i = 0;
+	*exec = 1;
 	while (ft_strcmp(parts[i].part, ">") != 0)
 		i++;
 	fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -97,7 +99,7 @@ int	redirect_out(int nr_parts, t_part *parts, t_env *s_env)
 	return (ret);
 }
 
-int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env)
+int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 {
 	t_part	*new_args;
 	int		ret;
@@ -106,6 +108,7 @@ int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env)
 	int		i;
 
 	i = 0;
+	*exec = 1;
 	while (ft_strcmp(parts[i].part, ">>") != 0)
 		i++;
 	fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_APPEND, 0644);

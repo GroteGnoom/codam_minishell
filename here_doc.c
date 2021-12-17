@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 13:46:24 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/17 14:54:30 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_part *parts, t_env *s_env);
 
 static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env);
 
-int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env)
+int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 {
 	t_part	*new_args;
 	char	*final;
@@ -29,6 +29,7 @@ int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env)
 	int		i;
 
 	i = 0;
+	*exec = 1;
 	new_args = ft_calloc((nr_parts) * sizeof(*parts), 1);
 	while (ft_strcmp(parts[i].part, "<<") != 0)
 	{
