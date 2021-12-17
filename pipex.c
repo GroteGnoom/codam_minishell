@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 13:43:38 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/17 13:48:50 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 static int	ft_open_error(t_pipe pipex, int term_out, \
 t_part *parts, int nr_parts)
 {
-	write(term_out, "bash: ", 6);
+	write(term_out, "minishell: ", 11);
 	if (pipex.infile < 0)
 		write(1, parts[1].part, ft_strlen(parts[1].part));
 	else
