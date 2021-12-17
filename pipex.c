@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 15:04:25 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/17 10:17:28 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 
 	pipex.begin = 0;
 	pipex.end = 0;
-	term_out = 9;
-	term_in = 10;
+	term_out = 3;
+	term_in = 4;
 	if (dup2(STDOUT_FILENO, term_out) < 0 || dup2(STDIN_FILENO, term_in) < 0)
 		perror("dup2");
 	pipex = ft_set_io(nr_parts, parts, pipex);
@@ -48,6 +48,8 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 	close(pipex.outfile);
 	if (dup2(term_out, STDOUT_FILENO) < 0 || dup2(term_in, STDIN_FILENO) < 0)
 		perror("dup2");
+	close(term_in);
+	close(term_out);
 	ft_free_strs(pipex.commands);
 	return (status);
 }
@@ -109,6 +111,11 @@ t_part *parts, int *pipefd)
 		pipex.iter++;
 	}
 	ft_close_all_pipes(pipex, pipefd);
-	waitpid(-1, &status, 0);
+	while (pipex.iter > 0)
+	{
+		waitpid(-1, &status, 0);
+		pipex.iter--;
+	}
+	waitpid(child, &status, 0);
 	return (status);
 }

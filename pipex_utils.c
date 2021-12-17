@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:13 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 14:19:16 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/17 10:14:31 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex)
 {
 	if (parts[0].type == SPECIAL && !ft_strcmp(parts[0].part, "<"))
 	{
-		pipex.infile = open(parts[0].part, O_RDONLY);
+		pipex.infile = open(parts[1].part, O_RDONLY);
 		pipex.begin = 2;
 	}
 	else
@@ -79,7 +79,7 @@ t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex)
 	if (parts[nr_parts - 2].type == SPECIAL && \
 	!ft_strcmp(parts[nr_parts - 2].part, ">"))
 	{
-		pipex.outfile = open(parts[nr_parts -1].part, \
+		pipex.outfile = open(parts[nr_parts - 1].part, \
 		O_RDWR | O_CREAT | O_TRUNC, 0644);
 		pipex.end = 2;
 	}
