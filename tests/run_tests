@@ -1,6 +1,24 @@
 #!/bin/bash
 set -x
 set -e
+
+function shell_test()
+{
+	echo $1 | ../minishell > minishell_out
+	echo $1 | bash > bash_out
+	diff minishell_out bash_out
+}
+
+function output_test()
+{
+	export OUTFILE=minishell_outfile
+	echo $1 | ../minishell > minishell_stdout
+	export OUTFILE=bash_outfile
+	echo $1 | bash > bash_stdout
+	diff minishell_stdout bash_stdout
+	diff minishell_outfile bash_outfile
+}
+
 shopt -s extglob
 export READLINE_DIR=~/homebrew/Cellar/readline/8.1.1
 make -C ..
@@ -21,5 +39,8 @@ do
 	cat leaks_output | grep ' 0 leaks'
 done
 shopt -u extglob
+
+shell_test "ls | ls | ls | ls | ls | ls"
+output_test 'ls | cat > $OUTFILE'
 
 echo FINISHED!!!!!
