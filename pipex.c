@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 10:34:51 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/17 13:43:38 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static int		ft_pipex_pipe(t_pipe pipe, t_env *s_env, t_part *parts);
 
 static int		ft_get_size_parts(t_part *parts);
 
-static int		ft_open_error(t_pipe pipex);
+static int		ft_open_error(t_pipe pipex, int term_out, \
+t_part *parts, int nr_parts);
 
 static int		ft_execute_pipes(t_pipe pipex, t_env *s_env, \
 t_part *parts, int *pipefd);
@@ -40,7 +41,7 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 		perror("dup2");
 	pipex = ft_set_io(nr_parts, parts, pipex);
 	if (pipex.infile < 0 || pipex.outfile < 0)
-		return (ft_open_error(pipex));
+		return (ft_open_error(pipex, term_out, parts, nr_parts));
 	pipex.commands = ft_get_commands_parts(nr_parts, parts, &pipex);
 	pipex.size = ft_get_size_parts(parts);
 	status = ft_pipex_pipe(pipex, s_env, parts);
@@ -54,12 +55,17 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 	return (status);
 }
 
-static int	ft_open_error(t_pipe pipex)
+static int	ft_open_error(t_pipe pipex, int term_out, \
+t_part *parts, int nr_parts)
 {
-	perror("bash: input");
+	write(term_out, "bash: ", 6);
+	if (pipex.infile < 0)
+		write(1, parts[1].part, ft_strlen(parts[1].part));
+	else
+		write(1, parts[nr_parts - 1].part, ft_strlen(parts[1].part));
+	write(1, ": No such file or directory\n", 28);
 	if (pipex.outfile < 0)
 		return (127);
-	write(pipex.outfile, "       0\n", 9);
 	return (0);
 }
 

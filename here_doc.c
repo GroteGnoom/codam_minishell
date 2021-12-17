@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 16:52:49 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/17 13:46:24 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,39 @@
 #include <stdio.h>
 #include <readline/readline.h>
 
-void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env);
+void		ft_redir_args(char **args, int nr_parts, \
+t_part *parts, t_env *s_env);
 
-void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env)
+static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env);
+
+int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env)
+{
+	t_part	*new_args;
+	char	*final;
+	pid_t	child;
+	int		status;
+	int		i;
+
+	i = 0;
+	new_args = ft_calloc((nr_parts) * sizeof(*parts), 1);
+	while (ft_strcmp(parts[i].part, "<<") != 0)
+	{
+		new_args[i].part = ft_strdup(parts[i].part);
+		i++;
+	}
+	final = ft_strdup(parts[i + 1].part);
+	child = fork();
+	if (child < 0)
+		perror("Fork: ");
+	if (child == 0)
+		here_doc(final, i, new_args, s_env);
+	waitpid(-1, &status, 0);
+	ft_free_parts(new_args);
+	free(final);
+	return (0);
+}
+
+static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env)
 {
 	char	**args;
 	char	*line;
