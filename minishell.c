@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 16:35:12 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/17 10:58:56 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,32 +65,43 @@ int	main(int argc, char **argv, char **envp)
 							comm = 1;
 							break ;
 						}
-						if (!ft_strcmp(parts[i].part, "<"))
-						{
-							last_exit_status = redirect_in(nr_parts, parts, &s_env);
-							comm = 1;
-							break ;
-						}
-						if (!ft_strcmp(parts[i].part, ">"))
-						{
-							last_exit_status = redirect_out(nr_parts, parts, &s_env);
-							comm = 1;
-							break ;
-						}
-						if (!ft_strcmp(parts[i].part, ">>"))
-						{
-							last_exit_status = redirect_out_app(nr_parts, parts, &s_env);
-							comm = 1;
-							break ;
-						}
-						if (!ft_strcmp(parts[i].part, "<<"))
-						{
-							last_exit_status = redirect_here_doc(nr_parts, parts, &s_env);
-							comm = 1;
-							break ;
-						}
 					}
 					i++;
+				}
+				i = 0;
+				if (comm == 0)
+				{
+					while (i < nr_parts)
+					{
+						if (parts[i].type == SPECIAL)
+						{
+							if (!ft_strcmp(parts[i].part, "<"))
+							{
+								last_exit_status = redirect_in(nr_parts, parts, &s_env);
+								comm = 1;
+								break ;
+							}
+							if (!ft_strcmp(parts[i].part, ">"))
+							{
+								last_exit_status = redirect_out(nr_parts, parts, &s_env);
+								comm = 1;
+								break ;
+							}
+							if (!ft_strcmp(parts[i].part, ">>"))
+							{
+								last_exit_status = redirect_out_app(nr_parts, parts, &s_env);
+								comm = 1;
+								break ;
+							}
+							if (!ft_strcmp(parts[i].part, "<<"))
+							{
+								last_exit_status = redirect_here_doc(nr_parts, parts, &s_env);
+								comm = 1;
+								break ;
+							}
+						}
+						i++;
+					}
 				}
 			}
 			if (comm == 0)

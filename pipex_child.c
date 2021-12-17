@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 10:22:09 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/17 11:02:54 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex)
 			pipes++;
 		i++;
 	}
-	while (i < pipex.len - pipex.end && ft_strcmp(commands[i], "|"))
+	if (pipex.begin)
+		pipex.len -= pipex.end;
+	while (i < pipex.len && ft_strcmp(commands[i], "|"))
 	{
 		cmd[j] = ft_strdup(commands[i]);
 		i++;
