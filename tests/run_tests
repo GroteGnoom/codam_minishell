@@ -41,7 +41,8 @@ done
 shopt -u extglob
 
 shell_test "ls | ls | ls | ls | ls | ls"
-shell_test "echo \"$?\"lala $?asdf"
+shell_test "echo *konijn"
+shell_test "echo * *bla"
 output_test 'ls | cat > $OUTFILE'
 
 echo FINISHED!!!!!
