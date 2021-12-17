@@ -49,3 +49,7 @@
 -dsfasdfbla13- type: 3
 -- type: 3
 
+-test_replace_parts.c- type: 3
+-test_shell_split.c- type: 3
+-test_wildcard.c- type: 3
+

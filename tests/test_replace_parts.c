@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:34:40 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/16 16:32:00 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/16 15:28:17 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../Libft/libft.h"
 #include "stdlib.h"
 
-void	print_parts2(t_part *parts)
+void	print_parts(t_part *parts)
 {
 	int		i;
 
@@ -28,34 +28,25 @@ void	print_parts2(t_part *parts)
 	printf("\n");
 }
 
-void	print_parts(char *str, t_env s_env)
+int	main(void)
 {
-	t_part	*parts;
+	int				i;
+	static t_part	parts1s[] = {{"bla asf", NORMAL},
+	{"een twee drie vier vijf", NORMAL},
+	{"blie bloe", NORMAL},
+	{NULL, NORMAL}};
+	t_part			*parts1;
 
-	parts = ft_shell_split(str, 13, &s_env);
-	print_parts2(parts);
-	ft_free_parts(parts);
-}
-
-int	main(int argc, char **argv, char **env)
-{
-	t_env	s_env;
-
-	(void) argc;
-	(void) argv;
-	copy_env(env, &s_env);
-	print_parts("a", s_env);
-	print_parts("a|a", s_env);
-	print_parts("a | a", s_env);
-	print_parts("a \"|\" a", s_env);
-	print_parts("a>a", s_env);
-	print_parts("a > a", s_env);
-	print_parts("a \">\" a", s_env);
-	print_parts("a>>a", s_env);
-	print_parts("a >> a", s_env);
-	print_parts("a \">>\" a", s_env);
-	print_parts("'' '' ''", s_env);
-	print_parts("''hallo hallo'' ''", s_env);
-	print_parts("$? asd'$?'fasdf dsfasdf\"bla$?\" ''", s_env);
-	print_parts("test_*.c", s_env);
+	setbuf(stdout, NULL); //TODO remove
+	parts1 = ft_memdup(parts1s, sizeof(parts1s));
+	i = 0;
+	while (parts1[i].part)
+	{
+		parts1[i].part = ft_strdup(parts1[i].part);
+		i++;
+	}
+	replace_parts(&parts1, 1);
+	print_parts(parts1);
+	replace_parts(&parts1, 6);
+	print_parts(parts1);
 }

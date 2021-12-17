@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 09:54:55 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/16 16:35:12 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,6 @@
 #include "get_next_line/get_next_line.h"
 
 #define PROMPT "> "
-
-int	count_parts(t_part *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i].part)
-		i++;
-	return (i);
-}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -117,8 +107,5 @@ int	main(int argc, char **argv, char **envp)
 			line = readline(PROMPT);
 		else
 			line = get_next_line(STDIN_FILENO);
-	}
-	while (1)
-	{
 	}
 }
