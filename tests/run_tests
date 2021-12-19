@@ -55,5 +55,8 @@ shell_test "echo * *bla"
 shell_test "ls *.c | cat"
 output_test 'ls | cat > $OUTFILE'
 output_test '< test_shell_split.c grep 'a'|grep 'm' | wc -l|cat -e > $OUTFILE'
+shell_test "echo *\"bla\"" #should be the same as *bla
+shell_test "echo '*'" #should not be expanded
+shell_test "echo \"$?\"lala $?asdf $PATH '$PATH' \"$PATH\" * *bla *\"bla\""
 
 echo FINISHED!!!!!

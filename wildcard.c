@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 13:32:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 11:17:32 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/17 15:40:25 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*ft_get_wildcard(char *file, char *wildcard);
 
 static char	*ft_get_file2(char *file, char **wild_split, int split_len);
 
-char	*ft_wildcard(char *args)
+char	*ft_wildcard(char *args, int *wild_quoted)
 {
 	struct dirent	*dir;
 	DIR				*open_dir;
@@ -38,7 +38,7 @@ char	*ft_wildcard(char *args)
 	return (new_args);
 }
 
-static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir)
+static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir, int *wild_quoted)
 {
 	char	*new_args;
 	char	*file;
@@ -46,7 +46,7 @@ static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir)
 	new_args = NULL;
 	while (dir)
 	{
-		file = ft_get_wildcard(dir->d_name, args);
+		file = ft_get_wildcard(dir->d_name, args, wild_quoted);
 		if (file)
 		{
 			if (!new_args)
@@ -69,7 +69,7 @@ static char	*free_ret_null(char **strs)
 	return (NULL);
 }
 
-static char	*ft_get_wildcard(char *file, char *wildcard)
+static char	*ft_get_wildcard(char *file, char *wildcard, int *wild_quoted)
 {
 	char	**wild_split;
 	int		split_len;
@@ -78,9 +78,9 @@ static char	*ft_get_wildcard(char *file, char *wildcard)
 
 	if (file[0] == '.')
 		return (NULL);
-	wild_split = ft_split(wildcard, '*');
+	wild_split = ft_split_unquoted(wildcard, '*', wild_quoted);
 	split_len = ft_count_strs(wild_split);
-	if (wildcard[0] != '*' && ft_strncmp(wild_split[0], file,
+	if (wildcard[0] != '*' && ft_strncmp(wild_split[0], file, // dit moet ook nog anders, moet op de quotes letten
 			ft_strlen(wild_split[0])))
 		return (free_ret_null(wild_split));
 	if (wildcard[ft_strlen(wildcard) - 1] != '*')
