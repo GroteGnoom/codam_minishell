@@ -16,12 +16,10 @@ void	ft_substr_free(char **s, unsigned int start, size_t len)
 {
 	char			*str;
 	unsigned int	l;
-	unsigned int	i;
 
 	if (!s)
 		return ;
 	l = ft_strlen(*s);
-	i = 0;
 	if (l <= start)
 	{
 		str = ft_strdup("\0");
