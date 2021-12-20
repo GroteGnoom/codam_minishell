@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 
 static int		ft_pipex_pipe(t_pipe pipe, t_env *s_env, t_part *parts);
 

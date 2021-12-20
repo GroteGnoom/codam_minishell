@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 #include "Libft/libft.h"
-#include <sys/syslimits.h>
+/*#include <sys/syslimits.h>*/
+#include <linux/limits.h>
 
 int	ft_pwd(void)
 {

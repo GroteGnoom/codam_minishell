@@ -15,7 +15,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/syslimits.h>
+/*#include <sys/syslimits.h>*/
+#include <linux/limits.h>
+
 
 static int	ft_absolute(char *path_str, char *home_dir);
 

@@ -13,6 +13,8 @@
 #include "minishell.h"
 #include "Libft/libft.h"
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 static char	**ft_get_args(int nr_parts, t_part *parts);
 
