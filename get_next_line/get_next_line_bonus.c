@@ -16,7 +16,6 @@
 
 int	add_to_line(char *src, size_t len, t_line *line)
 {
-	size_t	i;
 	size_t	new_line_cap;
 
 	if (!line->data)
@@ -33,7 +32,6 @@ int	add_to_line(char *src, size_t len, t_line *line)
 	}
 	if (!line->data)
 		return (ERROR);
-	i = 0;
 	ft_memcpy(line->data + line->len, src, len);
 	line->len += len;
 	return (SUCCESS);

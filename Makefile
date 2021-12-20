@@ -29,7 +29,7 @@ libft:
 	$(MAKE) bonus -C $(LIBFT_DIR)
 
 gnl:
-	$(MAKE) bonus -C $(GNL_DIR)
+	$(MAKE) -C $(GNL_DIR)
 
 clean:
 	$(MAKE) clean -C $(LIBFT_DIR)
