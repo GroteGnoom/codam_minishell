@@ -42,8 +42,4 @@ char	*new_line(t_line *line);
 char	*found_line(t_buffer *gnl, size_t length, t_line *line);
 void	*ft_realloc(void *p, size_t size, size_t old_size);
 
-<<<<<<< HEAD
 #endif
-=======
-#endif
->>>>>>> parent of 6f0bfb9... Moved everything over to Linux
