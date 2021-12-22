@@ -1,0 +1,39 @@
+#!/bin/bash
+set -x
+set -e
+
+function shell_test()
+{
+	echo $1 | ../minishell > minishell_out
+	echo $1 | bash > bash_out
+	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
+}
+
+function output_test()
+{
+	export OUTFILE=minishell_outfile
+	echo $1 | ../minishell > minishell_stdout
+	export OUTFILE=bash_outfile
+	echo $1 | bash > bash_stdout
+	diff minishell_stdout bash_stdout || { echo "stdout of output test failed for: \"$1\""; exit 1;}
+	diff minishell_outfile bash_outfile || { echo "outfile of output test failed for: \"$1\""; exit 1;}
+}
+
+make -C ..
+
+shell_test "ls | ls | ls | ls | ls | ls"
+shell_test "echo *konijn"
+shell_test "echo * *bla"
+shell_test "ls *.c | cat"
+shell_test "ls || cat"
+shell_test "ls ||| cat"
+output_test 'ls | cat > $OUTFILE'
+shell_test 'ls > $outfile || cat'
+shell_test 'ls > $outfile ||| cat'
+output_test 'ls > $outfile || cat'
+output_test 'ls > $outfile ||| cat'
+output_test '< test_shell_split.c grep 'a'|grep 'm' | wc -l|cat -e > $OUTFILE'
+shell_test "echo *\"bla\"" #should be the same as *bla
+shell_test "echo '*'" #should not be expanded
+shell_test "echo \"$?\"lala $?asdf $PATH '$PATH' \"$PATH\" * *bla *\"bla\""
+
