@@ -12,8 +12,11 @@
 
 #include "minishell.h"
 #include "Libft/libft.h"
-/*#include <sys/syslimits.h>*/
+#ifdef __APPLE__
+#include <sys/syslimits.h>
+#else
 #include <linux/limits.h>
+#endif
 
 int	ft_pwd(void)
 {

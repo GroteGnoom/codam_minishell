@@ -15,9 +15,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-/*#include <sys/syslimits.h>*/
+#ifdef __APPLE__
+#include <sys/syslimits.h>
+#else
 #include <linux/limits.h>
-
+#endif
 
 static int	ft_absolute(char *path_str, char *home_dir);
 
