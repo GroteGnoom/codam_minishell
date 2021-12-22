@@ -88,7 +88,7 @@ int	ft_check_parts(int *last_exit_status, char *line, t_env *s_env)
 			nr_parts);
 		if (!executed)
 			executed = is_built_in(parts[0].part, nr_parts, parts, s_env);
-		if (*last_exit_status == 300)
+		if (executed == 300)
 			*last_exit_status = ft_executable(nr_parts, parts, s_env);
 	}
 	free(line);

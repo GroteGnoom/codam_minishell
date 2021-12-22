@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <errno.h>
 
 static void	ft_dup2(int first, int second);
 
@@ -36,9 +37,15 @@ void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 static void	ft_dup2(int first, int second)
 {
 	if (dup2(first, STDIN_FILENO) < 0)
+	{
 		perror("dup2");
+		exit(errno);
+	}
 	if (dup2(second, STDOUT_FILENO) < 0)
+	{
 		perror("dup2");
+		exit(errno);
+	}
 }
 
 static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex)
