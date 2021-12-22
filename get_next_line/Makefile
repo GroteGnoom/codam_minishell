@@ -1,13 +1,6 @@
-SRC_MANDATORY = get_next_line.c get_next_line_utils.c
-SRC_BONUS = get_next_line_bonus.c get_next_line_utils_bonus.c
-ifdef DO_BONUS
-	SRC = $(SRC_BONUS) #don't include mandatory
-else
-	SRC = $(SRC_MANDATORY)
-endif
+SRC = get_next_line.c get_next_line_utils.c
 
 OBJ = $(SRC:.c=.o)
-OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 NAME = get_next_line.a
 
@@ -26,14 +19,11 @@ $(NAME): $(OBJ)
 	gcc $(FLAGS) -c $^ -o $@ -DBUFFER_SIZE=10000
 
 clean:
-	rm -f $(OBJ) $(OBJ_BONUS)
+	rm -f $(OBJ) 
 
 fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
 
-bonus:
-	$(MAKE) DO_BONUS=1
-
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
