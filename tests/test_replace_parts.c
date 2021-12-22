@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:34:40 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/16 15:28:17 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/22 15:09:33 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ int	main(void)
 	print_parts(parts1);
 	replace_parts(&parts1, 6);
 	print_parts(parts1);
+	ft_free_parts(parts1);
 }
