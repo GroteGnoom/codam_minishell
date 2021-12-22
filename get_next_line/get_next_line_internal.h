@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_next_line_internal.h                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 11:50:29 by sde-rijk      #+#    #+#                 */
+/*   Updated: 2021/12/13 11:50:49 by sde-rijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GET_NEXT_LINE_INTERNAL_H
 # define GET_NEXT_LINE_INTERNAL_H
 
@@ -30,4 +42,8 @@ char	*new_line(t_line *line);
 char	*found_line(t_buffer *gnl, size_t length, t_line *line);
 void	*ft_realloc(void *p, size_t size, size_t old_size);
 
+<<<<<<< HEAD
 #endif
+=======
+#endif
+>>>>>>> parent of 6f0bfb9... Moved everything over to Linux

@@ -19,7 +19,7 @@ $(NAME): $(OBJ)
 	gcc $(FLAGS) -c $^ -o $@ -DBUFFER_SIZE=10000
 
 clean:
-	rm -f $(OBJ) 
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)
