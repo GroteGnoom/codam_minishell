@@ -31,6 +31,7 @@ shell_test "echo *konijn"
 shell_test "echo * *bla"
 shell_test "ls *.c | cat"
 shell_test "ls ||| cat"
+shell_test "echo $PATH*"
 # output_test 'ls | cat > $OUTFILE'
 # shell_test 'ls > $outfile || cat'
 # shell_test 'ls > $outfile ||| cat'
