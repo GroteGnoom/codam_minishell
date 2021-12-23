@@ -13,6 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#define SHELL_NAME "bash"
+
 enum e_part_type {
 	SPACES,
 	SINGLE_QUOTED,
@@ -92,4 +94,5 @@ void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env);
 void	expand_wildcard(t_part **parts, int **wild_quoted);
 
 int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env);
+int		ft_syntax_error(t_part *parts, int i);
 #endif

@@ -59,7 +59,7 @@ int	redirect_in(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 		i++;
 	fd = open(parts[i + 1].part, O_RDONLY);
 	if (fd < 0)
-		return (ft_redir_error("minishell", parts[i + 1].part));
+		return (ft_redir_error(SHELL_NAME, parts[i + 1].part));
 	term = 1;
 	if (dup2(STDIN_FILENO, term) < 0 || dup2(fd, STDIN_FILENO) < 0)
 		return (ft_redir_error("dup2", ""));
@@ -86,16 +86,13 @@ int	redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 		i++;
 	fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
-		return (ft_redir_error("minishell", parts[i + 1].part));
+		return (ft_redir_error(SHELL_NAME, parts[i + 1].part));
 	term = 0;
 	if (dup2(STDOUT_FILENO, term) < 0 || dup2(fd, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", ""));
 	new_args = ft_calloc((nr_parts - 1) * sizeof(*parts), 1);
 	i = ft_get_args(new_args, parts, ">");
-	if (parts[i + 2].part && ft_strcmp(parts[i + 2].part, ">"))
-		ret = ft_executable(i, new_args, s_env);
-	else if (parts[i + 2].part)
-		ret = redirect_out(nr_parts, (parts + i + 1), s_env, exec);
+	ret = ft_executable(i, new_args, s_env);
 	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", ""));
@@ -112,11 +109,11 @@ int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 
 	i = 0;
 	*exec = 1;
-	while (ft_strcmp(parts[i].part, ">>") != 0)
+	while (parts[i].part && ft_strcmp(parts[i].part, ">>") != 0)
 		i++;
 	fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
-		return (ft_redir_error("minishell", parts[i + 1].part));
+		return (ft_redir_error(SHELL_NAME, parts[i + 1].part));
 	term = 0;
 	if (dup2(STDOUT_FILENO, term) < 0 || dup2(fd, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", ""));

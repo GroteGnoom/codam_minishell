@@ -32,12 +32,12 @@ int	ft_exit(int nr_parts, t_part *parts)
 		exit(0);
 	if (!is_int(parts[1].part))
 	{
-		printf("minishell: exit: numeric argument required\n");
+		printf("%s: exit: numeric argument required\n", SHELL_NAME);
 		exit(255);
 	}
 	if (nr_parts > 2)
 	{
-		printf("minishell: exit: too many arguments\n");
+		printf("%s: exit: too many arguments\n", SHELL_NAME);
 		return (1);
 	}
 	else

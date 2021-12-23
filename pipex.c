@@ -59,7 +59,8 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 static int	ft_open_error(t_pipe pipex, int term_out, \
 t_part *parts, int nr_parts)
 {
-	write(term_out, "minishell: ", 11);
+	ft_putstr_fd(SHELL_NAME, term_out);
+	write(term_out, ": ", 2);
 	if (pipex.infile < 0)
 		write(1, parts[1].part, ft_strlen(parts[1].part));
 	else

@@ -65,8 +65,7 @@ t_env *s_env, int nr_parts)
 				if (!ft_strcmp(parts[i].part, "|"))
 					*last_exit_status = ft_pipex(nr_parts, parts, s_env);
 				else
-					printf("minishell: syntax error near unexpected token `%c'\n", \
-					parts[i].part[1]);
+					return (ft_syntax_error(parts, i));
 				return (1);
 			}
 		}
