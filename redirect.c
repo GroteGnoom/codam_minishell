@@ -79,20 +79,30 @@ int	redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 	int		term;
 	int		fd;
 	int		i;
+	int		args;
 
-	i = 0;
 	*exec = 1;
-	while (parts[i].part && ft_strcmp(parts[i].part, ">") != 0)
-		i++;
-	fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-		return (ft_redir_error(SHELL_NAME, parts[i + 1].part));
-	term = 0;
-	if (dup2(STDOUT_FILENO, term) < 0 || dup2(fd, STDOUT_FILENO) < 0)
-		return (ft_redir_error("dup2", ""));
 	new_args = ft_calloc((nr_parts - 1) * sizeof(*parts), 1);
-	i = ft_get_args(new_args, parts, ">");
-	ret = ft_executable(i, new_args, s_env);
+	args = ft_get_args(new_args, parts, ">");
+	term = 0;
+	if (dup2(STDOUT_FILENO, term) < 0)
+		return (ft_redir_error("dup2", ""));
+	i = 1;
+	while (parts[i].part && ft_strcmp(parts[i].part, ">") != 0)
+			i++;
+	fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	while (parts[i + 1].part && parts[i + 2].part && !ft_strcmp(parts[i + 2].part, ">"))
+	{
+		i++;
+		while (parts[i].part && ft_strcmp(parts[i].part, ">") != 0)
+			i++;
+		fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		if (fd < 0)
+			return (ft_redir_error(SHELL_NAME, parts[i + 1].part));
+		if (dup2(fd, STDOUT_FILENO) < 0)
+			return (ft_redir_error("dup2", ""));
+	}
+	ret = ft_executable(args, new_args, s_env);
 	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", ""));
