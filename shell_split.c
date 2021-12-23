@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/16 11:47:17 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/23 14:41:55 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 14:58:53 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,21 @@ void	add_special_outpart(t_part part, t_part *outparts, int *j, int **wild_quote
 	outparts[(*j)].type = SPECIAL;
 }
 
+void	set_quotes(t_part part, int j, int length, int **wild_quoted) 
+{
+	int k;
+
+	k = 0;
+	while (k < (int)ft_strlen(part.part))
+		*(wild_quoted[j] + length + k++) = (part.type == SINGLE_QUOTED
+				|| part.type == DOUBLE_QUOTED);
+}
+
 void	combine_parts(t_part *parts, t_part *outparts, int **wild_quoted)
 {
 	int	length;
 	int	i;
 	int	j;
-	int	k;
 
 	i = 0;
 	j = -1;
@@ -75,20 +84,17 @@ void	combine_parts(t_part *parts, t_part *outparts, int **wild_quoted)
 			wild_quoted[j] = ft_realloc(wild_quoted[j], (length + \
 				ft_strlen(parts[i].part)) * sizeof(int), length * sizeof(int));
 			ft_strjoin_free(&(outparts[j].part), parts[i].part);
-			k = 0;
-			while (k < (int)ft_strlen(parts[i].part))
-				*(wild_quoted[j] + length + k++) = (parts[i].type == SINGLE_QUOTED
-					|| parts[i].type == DOUBLE_QUOTED);
+			set_quotes(parts[i], j, length, wild_quoted);
 		}
 		i++;
 	}
 }
 
 t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env)
-{
-	t_part	*parts;
-	t_part	*outparts;
-	int		**wild_quoted;
+	{
+		t_part	*parts;
+		t_part	*outparts;
+		int		**wild_quoted;
 
 	parts = quote_split(s);
 	expand_unquoted_args(parts, last_exit_status, s_env);
