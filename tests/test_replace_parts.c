@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:34:40 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/22 15:09:33 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 13:45:22 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	main(void)
 	{NULL, NORMAL}};
 	t_part			*parts1;
 
-	setbuf(stdout, NULL); //TODO remove
 	parts1 = ft_memdup(parts1s, sizeof(parts1s));
 	i = 0;
 	while (parts1[i].part)
