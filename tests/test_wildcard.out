@@ -8,3 +8,5 @@ test_wildcard.c
 
 test_wildcard.c
 
+*wild**.c
+

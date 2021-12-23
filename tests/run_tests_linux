@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 set -e
 
 shopt -s extglob
@@ -11,7 +11,7 @@ gcc -Wall -Wextra -c -g -I.. ../../!(minishe*).c -I $READLINE_DIR/include/
 cd ..
 
 make -C ..
-for file in test_replace_parts.c test_shell_split.c test_wildcard.c
+for file in test_split_unquoted.c test_replace_parts.c test_wildcard.c test_shell_split.c
 do
 	export BASE=${file%.*}
 	echo "checking $BASE"

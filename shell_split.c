@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/16 11:47:17 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/16 16:28:16 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/23 10:34:55 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,43 @@ int	count_combined_parts(t_part *parts)
 	return (j);
 }
 
-int	combine_parts(t_part *parts, t_part *outparts, int i, int j)
+void	combine_parts(t_part *parts, t_part *outparts, int i, int *j, int **wild_quoted)
 {
+	int	length;
+	int	quote;
+	int	k;
+
 	if (parts[i].type == SPECIAL)
 	{
-		outparts[++j].part = ft_calloc(1, 1);
-		ft_strjoin_free(&(outparts[j].part), parts[i].part);
-		outparts[j].type = SPECIAL;
+		outparts[++(*j)].part = ft_calloc(1, 1);
+		wild_quoted[(*j)] = ft_calloc(ft_strlen(parts[i].part), sizeof(int));
+		ft_strjoin_free(&(outparts[(*j)].part), parts[i].part);
+		outparts[(*j)].type = SPECIAL;
 	}
 	else if (parts[i].type != SPACES)
 	{
 		if (i == 0 || (parts[i - 1].type == SPACES || \
 				(parts[i - 1].type == NORMAL && parts[i].type == NORMAL) || \
 				parts[i - 1].type == SPECIAL))
-			outparts[++j].part = ft_calloc(1, 1);
-		outparts[j].type = NORMAL;
-		ft_strjoin_free(&(outparts[j].part), parts[i].part);
+		{
+			outparts[++(*j)].part = ft_calloc(1, 1);
+			wild_quoted[(*j)] = ft_calloc(1, sizeof(int));
+		}
+		outparts[(*j)].type = NORMAL;
+		length = ft_strlen(outparts[(*j)].part);
+		wild_quoted[(*j)] = ft_realloc(wild_quoted[(*j)], (length + ft_strlen(parts[i].part)) * sizeof(int), length * sizeof(int));
+		ft_strjoin_free(&(outparts[(*j)].part), parts[i].part);
+		if (parts[i].type == SINGLE_QUOTED || parts[i].type == DOUBLE_QUOTED)
+			quote = 1;
+		else
+			quote = 0;
+		k = 0;
+		while (k < (int)ft_strlen(parts[i].part))
+		{
+			*(wild_quoted[(*j)] + length + k) = quote;
+			k++;
+		}
 	}
-	return (j);
 }
 
 t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env)
@@ -61,19 +80,23 @@ t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env)
 	t_part	*outparts;
 	int		i;
 	int		j;
+	int		**wild_quoted;
 
 	parts = quote_split(s);
 	expand_unquoted_args(parts, last_exit_status, s_env);
-	expand_wildcard(&parts);
 	outparts = ft_calloc((count_combined_parts(parts) + 1)
 			* sizeof(*outparts), 1);
+	wild_quoted = ft_calloc((count_combined_parts(parts) + 1)
+			* sizeof(*wild_quoted), 1);
 	i = 0;
 	j = -1;
 	while (parts[i].part)
 	{
-		j = combine_parts(parts, outparts, i, j);
+		combine_parts(parts, outparts, i, &j, wild_quoted);
 		i++;
 	}
+	expand_wildcard(&outparts, wild_quoted);
 	ft_free_parts(parts);
+	ft_free_strs((char**)wild_quoted);
 	return (outparts);
 }
