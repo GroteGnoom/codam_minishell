@@ -60,9 +60,13 @@ t_env *s_env, int nr_parts)
 	{
 		if (parts[i].type == SPECIAL)
 		{
-			if (!ft_strcmp(parts[i].part, "|"))
+			if (ft_strchr(parts[i].part, '|'))
 			{
-				*last_exit_status = ft_pipex(nr_parts, parts, s_env);
+				if (!ft_strcmp(parts[i].part, "|"))
+					*last_exit_status = ft_pipex(nr_parts, parts, s_env);
+				else
+					printf("minishell: syntax error near unexpected token `%c'\n", \
+					parts[i].part[1]);
 				return (1);
 			}
 		}
