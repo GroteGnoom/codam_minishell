@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 11:06:01 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/22 15:42:55 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_replace(char **sp, int start, int len, char *rep)
 	ft_memcpy(new, *sp, start);
 	ft_memcpy(new + start, rep, ft_strlen(rep));
 	ft_memcpy(new + start + ft_strlen(rep), *sp + start + len, \
-		ft_strlen(*sp) - start);
+		ft_strlen(*sp) - start - 1); //TODO why -1? it seems to fix a problem, but I don't know why
 	free(*sp);
 	*sp = new;
 }
