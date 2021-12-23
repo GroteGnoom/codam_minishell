@@ -14,6 +14,8 @@
 #include "Libft/libft.h"
 #include <stdio.h>
 
+static void	ft_write_error_msg(char *str);
+
 void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
 {
 	char	*cmd;
@@ -37,10 +39,7 @@ void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
 			free(cmd);
 		i++;
 	}
-	ft_putstr_fd(SHELL_NAME, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(args[0], 2);
-	ft_putstr_fd(": command not found\n", 2);
+	ft_write_error_msg(args[0]);
 	exit(127);
 }
 
@@ -68,4 +67,12 @@ char	**ft_get_paths(char **env)
 		i++;
 	}
 	return (paths);
+}
+
+static void	ft_write_error_msg(char *str)
+{
+	ft_putstr_fd(SHELL_NAME, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": command not found\n", 2);
 }
