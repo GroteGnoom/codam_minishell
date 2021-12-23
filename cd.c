@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 16:40:56 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/23 14:05:58 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #ifdef __APPLE__
-#include <sys/syslimits.h>
+# include <sys/syslimits.h>
 #else
-#include <linux/limits.h>
+# include <linux/limits.h>
 #endif
 
 static int	ft_absolute(char *path_str, char *home_dir);

@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 15:17:24 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/20 15:38:35 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 14:05:40 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	replace_parts(t_part **parts, int i)
 	*parts = ft_recalloc(*parts,
 			(nr_old_parts + nr_new_parts + 1) * sizeof(**parts),
 			(nr_old_parts + 1) * sizeof(**parts));
-	ft_memmove((*parts) + i + nr_new_parts - 1, (*parts) + i, 
-			(nr_old_parts - i) * sizeof(**parts));
+	ft_memmove((*parts) + i + nr_new_parts - 1, (*parts) + i,
+		(nr_old_parts - i) * sizeof(**parts));
 	j = 0;
 	while (j < nr_new_parts)
 	{
