@@ -21,7 +21,7 @@ function output_test()
 	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for for: \"$1\""; cat leaks_output; exit 1; }
 }
 
-make -C ..
+make DEBUG=1 LEAKS=1 -C ..
 
 shell_test "ls | ls | ls | ls | ls | ls"
 shell_test "echo *konijn"

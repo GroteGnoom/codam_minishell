@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/20 15:34:57 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 11:52:12 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env);
 void	ft_free_parts(t_part *parts);
 int		count_parts(t_part *s);
 void	replace_parts(t_part **parts, int i);
+void	ft_replace(char **sp, int start, int len, char *rep);
 
 int		redirect_in(int nr_parts, t_part *parts, t_env *s_env, int *exec);
 int		redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec);
