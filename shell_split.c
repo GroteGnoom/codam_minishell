@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/16 11:47:17 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/23 14:04:53 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 14:41:55 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,24 @@ int	count_combined_parts(t_part *parts)
 	return (j);
 }
 
+int	new_part_required(int i, t_part *parts)
+{
+	return (i == 0 || (parts[i - 1].type == SPACES || \
+		(parts[i - 1].type == NORMAL && parts[i].type == NORMAL) || \
+		parts[i - 1].type == SPECIAL));
+}
+
+void	add_special_outpart(t_part part, t_part *outparts, int *j, int **wild_quoted)
+{
+	outparts[++(*j)].part = ft_calloc(1, 1);
+	wild_quoted[(*j)] = ft_calloc(ft_strlen(part.part), sizeof(int));
+	ft_strjoin_free(&(outparts[(*j)].part), part.part);
+	outparts[(*j)].type = SPECIAL;
+}
+
 void	combine_parts(t_part *parts, t_part *outparts, int **wild_quoted)
 {
 	int	length;
-	int	quote;
 	int	i;
 	int	j;
 	int	k;
@@ -48,17 +62,10 @@ void	combine_parts(t_part *parts, t_part *outparts, int **wild_quoted)
 	while (parts[i].part)
 	{
 		if (parts[i].type == SPECIAL)
-		{
-			outparts[++j].part = ft_calloc(1, 1);
-			wild_quoted[j] = ft_calloc(ft_strlen(parts[i].part), sizeof(int));
-			ft_strjoin_free(&(outparts[j].part), parts[i].part);
-			outparts[j].type = SPECIAL;
-		}
+			add_special_outpart(parts[i], outparts, &j, wild_quoted);
 		else if (parts[i].type != SPACES)
 		{
-			if (i == 0 || (parts[i - 1].type == SPACES || \
-				(parts[i - 1].type == NORMAL && parts[i].type == NORMAL) || \
-				parts[i - 1].type == SPECIAL))
+			if (new_part_required(i, parts))
 			{
 				outparts[++j].part = ft_calloc(1, 1);
 				wild_quoted[j] = ft_calloc(1, sizeof(int));
@@ -68,17 +75,10 @@ void	combine_parts(t_part *parts, t_part *outparts, int **wild_quoted)
 			wild_quoted[j] = ft_realloc(wild_quoted[j], (length + \
 				ft_strlen(parts[i].part)) * sizeof(int), length * sizeof(int));
 			ft_strjoin_free(&(outparts[j].part), parts[i].part);
-			if (parts[i].type == SINGLE_QUOTED
-				|| parts[i].type == DOUBLE_QUOTED)
-				quote = 1;
-			else
-				quote = 0;
 			k = 0;
 			while (k < (int)ft_strlen(parts[i].part))
-			{
-				*(wild_quoted[j] + length + k) = quote;
-				k++;
-			}
+				*(wild_quoted[j] + length + k++) = (parts[i].type == SINGLE_QUOTED
+					|| parts[i].type == DOUBLE_QUOTED);
 		}
 		i++;
 	}
