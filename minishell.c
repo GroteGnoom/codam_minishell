@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 14:55:24 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/23 11:12:59 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	last_exit_status = 0;
 	last_exit_status = loop_through_lines(line, last_exit_status, &s_env);
+	ft_free_strs(s_env.env);
 	return (last_exit_status);
 }
