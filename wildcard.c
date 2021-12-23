@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 13:32:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/20 15:31:10 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 13:50:09 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdio.h>
 
 static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir,
-		int *wild_quoted);
+				int *wild_quoted);
 
 static char	*ft_get_wildcard(char *file, char *wildcard, int *wild_quoted);
 
@@ -39,7 +39,8 @@ char	*ft_wildcard(char *args, int *wild_quoted)
 	return (new_args);
 }
 
-static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir, int *wild_quoted)
+static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir,
+		int *wild_quoted)
 {
 	char	*new_args;
 	char	*file;
@@ -81,8 +82,8 @@ static char	*ft_get_wildcard(char *file, char *wildcard, int *wild_quoted)
 		return (NULL);
 	wild_split = ft_split_unquoted(wildcard, '*', wild_quoted);
 	split_len = ft_count_strs(wild_split);
-	if (wildcard[0] != '*' && ft_strncmp(wild_split[0], file, // dit moet ook nog anders, moet op de quotes letten
-			ft_strlen(wild_split[0])))
+	if ((wildcard[0] != '*' || wild_quoted[0])
+		&& ft_strncmp(wild_split[0], file, ft_strlen(wild_split[0])))
 		return (free_ret_null(wild_split));
 	if (wildcard[ft_strlen(wildcard) - 1] != '*')
 	{
