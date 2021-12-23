@@ -6,14 +6,14 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/23 11:52:12 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 13:51:12 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#define SHELL_NAME "bash"
+# define SHELL_NAME "bash"
 
 enum e_part_type {
 	SPACES,

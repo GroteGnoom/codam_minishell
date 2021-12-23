@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:34:40 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/23 09:57:21 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 13:43:31 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include "../Libft/libft.h"
 #include "stdlib.h"
 
-
-void print_free(char **result)
+void	print_free(char **result)
 {
 	int	i;
 
@@ -33,8 +32,8 @@ void print_free(char **result)
 int	main(void)
 {
 	char		*string;
-	static int	wq1[] = {0,0,0,0,0};
-	static int	wq2[] = {0,0,0,1,0};
+	static int	wq1[] = {0, 0, 0, 0, 0};
+	static int	wq2[] = {0, 0, 0, 1, 0};
 
 	string = "hallo";
 	print_free(ft_split_unquoted(string, 'a', wq1));

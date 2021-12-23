@@ -6,16 +6,16 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:03 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 16:29:22 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/23 13:46:43 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "Libft/libft.h"
 #ifdef __APPLE__
-#include <sys/syslimits.h>
+# include <sys/syslimits.h>
 #else
-#include <linux/limits.h>
+# include <linux/limits.h>
 #endif
 
 int	ft_pwd(void)

@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:35:14 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/23 10:08:22 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 13:43:52 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 int	main(void)
 {
 	char		*result;
-	static int	quoted1[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-	static int	quoted2[] = {1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0};
+	static int	quoted1[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	static int	quoted2[] = {1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 	result = ft_wildcard(ft_strdup("test_wi*c"), quoted1);
 	printf("%s\n\n", result);
