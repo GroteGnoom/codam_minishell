@@ -15,20 +15,6 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-static int	ft_redir_error(char *str, char *str2)
-{
-	if (!str2)
-		perror(str);
-	else
-	{
-		write(1, str, ft_strlen(str));
-		write(1, ": ", 2);
-		write(1, str2, ft_strlen(str2));
-		write(1, ": No such file or directory\n", 28);
-	}
-	return (1);
-}
-
 static int	ft_get_args(t_part *new_args, t_part *parts, char *c)
 {
 	int	i;

@@ -96,4 +96,5 @@ void	expand_wildcard(t_part **parts, int **wild_quoted);
 
 int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env);
 int		ft_syntax_error(t_part *parts, int i);
+int		ft_redir_error(char *str, char *str2);
 #endif

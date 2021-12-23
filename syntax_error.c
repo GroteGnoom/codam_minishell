@@ -34,3 +34,17 @@ int	ft_syntax_error(t_part *parts, int i)
 	}
 	return (1);
 }
+
+int	ft_redir_error(char *str, char *str2)
+{
+	if (!str2)
+		perror(str);
+	else
+	{
+		write(1, str, ft_strlen(str));
+		write(1, ": ", 2);
+		write(1, str2, ft_strlen(str2));
+		write(1, ": No such file or directory\n", 28);
+	}
+	return (1);
+}
