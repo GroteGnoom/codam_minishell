@@ -11,7 +11,7 @@ gcc -Wall -Wextra -c -g -I.. ../../!(minishe*).c -I $READLINE_DIR/include/
 cd ..
 
 make -C ..
-for file in test*.c
+for file in test_replace_parts.c test_shell_split.c test_wildcard.c
 do
 	export BASE=${file%.*}
 	echo "checking $BASE"
