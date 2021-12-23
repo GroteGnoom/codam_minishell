@@ -18,7 +18,7 @@ char	*ft_strdup(const char *s1)
 	int		l;
 
 	l = ft_strlen((char *)s1) + 1;
-	ptr = malloc(sizeof(char) * l);
+	ptr = ft_calloc(sizeof(char) * l, 1);
 	if (!ptr)
 		return (0);
 	ft_memmove(ptr, (char *)s1, l);
