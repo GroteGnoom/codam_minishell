@@ -4,7 +4,7 @@ set -e
 
 function shell_test()
 {
-	echo $1 | ../minishell > minishell_out
+	echo $1 | valgrind ../minishell > minishell_out #Added valgrind temporarily
 	echo $1 | bash > bash_out
 	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
 }
@@ -35,4 +35,3 @@ output_test '< test_shell_split.c grep 'a'|grep 'm' | wc -l|cat -e > $OUTFILE'
 # shell_test "echo *\"bla\"" #should be the same as *bla
 # shell_test "echo '*'" #should not be expanded
 # shell_test "echo \"$?\"lala $?asdf $PATH '$PATH' \"$PATH\" * *bla *\"bla\""
-

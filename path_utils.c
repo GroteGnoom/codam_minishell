@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 #include "Libft/libft.h"
+#include <stdio.h>
 
 void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
 {
@@ -56,7 +57,7 @@ char	**ft_get_paths(char **env)
 		line = ft_strnstr(env[i], "PATH=", 5);
 		i++;
 	}
-	path = ft_substr(line, 5, ft_strlen(line));
+	path = ft_substr(line, 5, ft_strlen(line) - 5);
 	paths = ft_split(path, ':');
 	free(path);
 	i = 0;
