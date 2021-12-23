@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 15:17:24 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 15:40:31 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/20 15:38:35 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "Libft/libft.h"
 #include "stdio.h"
 
-static int	expand_wild(char **part);
+static int	expand_wild(char **part, int *wild_quoted);
 
 int	count_parts(t_part *s)
 {
@@ -63,7 +63,7 @@ void	expand_wildcard(t_part **parts, int **wild_quoted)
 	{
 		if ((*parts)[i].type == NORMAL)
 		{
-			if (expand_wild(&((*parts)[i].part, wild_quoted[i])))
+			if (expand_wild(&(*parts)[i].part, wild_quoted[i]))
 				replace_parts(parts, i);
 		}
 		i++;

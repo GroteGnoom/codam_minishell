@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/16 11:47:17 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/17 15:39:47 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/20 15:45:49 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,6 @@ t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env)
 	}
 	expand_wildcard(&parts, wild_quoted);
 	ft_free_parts(parts);
-	ft_free_wq(wild_quoted);
+	//ft_free_strs((char**)wild_quoted);
 	return (outparts);
 }

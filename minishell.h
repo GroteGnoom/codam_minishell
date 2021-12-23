@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 14:54:13 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/20 15:34:57 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int		ft_export(t_part *parts, t_env *s_env);
 int		ft_exit(int nr_parts, t_part *parts);
 void	copy_env(char **envp, t_env *s_env);
 int		ft_unset(t_part *parts, t_env *s_env);
-char	*ft_wildcard(char *args);
+char	*ft_wildcard(char *args, int *wild_quoted);
+char	**ft_split_unquoted(char const *s, char c, const int *quoted);
 
 int		ft_executable(int nr_parts, t_part *parts, t_env *s_env);
 void	expand_args(char **sp, int last_exit_status, t_env *s_env);
@@ -88,7 +89,7 @@ void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts);
 int		redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec);
 char	**ft_get_paths(char **env);
 void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env);
-void	expand_wildcard(t_part **parts);
+void	expand_wildcard(t_part **parts, int **wild_quoted);
 
 int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env);
 #endif

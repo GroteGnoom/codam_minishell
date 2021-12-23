@@ -6,17 +6,18 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:23:06 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 15:39:28 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/20 15:40:04 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
+#include "Libft/libft.h"
 
-static int	ft_words(char *s, char c);
+static int	ft_words(char *s, char c, const int *quoted);
 
-static char	*ft_copy(char *arr, char *s, char c);
+static char	*ft_copy(char *arr, char *s, char c, const int *quoted);
 
-static char	*ft_next_word(char *s, char c);
+static char	*ft_next_word(char *s, char c, const int *quoted);
 
 char	**ft_split_unquoted(char const *s, char c, const int *quoted)
 {
@@ -46,7 +47,7 @@ char	**ft_split_unquoted(char const *s, char c, const int *quoted)
 	return (arr);
 }
 
-static int	ft_words(char *s, char c, int *quoted)
+static int	ft_words(char *s, char c, const int *quoted)
 {
 	int	w;
 
@@ -58,23 +59,28 @@ static int	ft_words(char *s, char c, int *quoted)
 			s++;
 			quoted++;
 		}
-		//ik was hier met editen
 		if (*s)
 			w++;
-		while (*s != c && *s)
+		while (!(*s == c && !*quoted) && *s)
+		{
+			quoted++;
 			s++;
+		}
 	}
 	return (w);
 }
 
-static char	*ft_copy(char *arr, char *s, char c)
+static char	*ft_copy(char *arr, char *s, char c, const int *quoted)
 {
 	int	len;
 
-	while (*s == c)
+	while (*s == c && !*quoted)
+	{
+		quoted++;
 		s++;
+	}
 	len = 0;
-	while (s[len] && s[len] != c)
+	while (s[len] && !(s[len] == c && !quoted[len]))
 		len++;
 	arr = malloc((len + 1) * sizeof(char));
 	if (!arr)
@@ -83,11 +89,17 @@ static char	*ft_copy(char *arr, char *s, char c)
 	return (arr);
 }
 
-static char	*ft_next_word(char *s, char c)
+static char	*ft_next_word(char *s, char c, const int *quoted)
 {
-	while (*s == c)
+	while (*s == c && !*quoted)
+	{
 		s++;
-	while (*s != c && *s)
+		quoted++;
+	}
+	while (!(*s == c && !*quoted) && *s)
+	{
 		s++;
+		quoted++;
+	}
 	return (s);
 }

@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 13:32:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 15:40:25 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/20 15:31:10 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 #include <dirent.h>
 #include <stdio.h>
 
-static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir);
+static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir,
+		int *wild_quoted);
 
-static char	*ft_get_wildcard(char *file, char *wildcard);
+static char	*ft_get_wildcard(char *file, char *wildcard, int *wild_quoted);
 
 static char	*ft_get_file2(char *file, char **wild_split, int split_len);
 
@@ -31,7 +32,7 @@ char	*ft_wildcard(char *args, int *wild_quoted)
 	if (!open_dir)
 		return (0);
 	dir = readdir(open_dir);
-	new_args = ft_get_args(dir, args, open_dir);
+	new_args = ft_get_args(dir, args, open_dir, wild_quoted);
 	if (!new_args)
 		return (args);
 	free(args);
