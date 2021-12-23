@@ -115,8 +115,9 @@ static int	ft_multiple_redir(t_part *parts, char *str, int append)
 	else
 		fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (dup2(fd, STDOUT_FILENO) < 0)
-			return (ft_redir_error("dup2", ""));
-	while (parts[i + 1].part && parts[i + 2].part && !ft_strcmp(parts[i + 2].part, str))
+		return (ft_redir_error("dup2", ""));
+	while (parts[i + 1].part && parts[i + 2].part && \
+	!ft_strcmp(parts[i + 2].part, str))
 	{
 		i++;
 		while (parts[i].part && ft_strcmp(parts[i].part, str) != 0)
