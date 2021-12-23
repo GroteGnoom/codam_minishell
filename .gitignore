@@ -1,0 +1,10 @@
+*.o
+*.a
+*.swp
+minishell
+a.out
+*.check
+tests/bin
+tests/bash_out
+tests/leaks_output
+tests/minishell_out
