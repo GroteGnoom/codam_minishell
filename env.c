@@ -13,8 +13,6 @@
 #include "Libft/libft.h"
 #include <stdio.h>
 
-//_=/usr/bin/env should be at the end? but we don't call /usr/bin/env
-//we could, and the only export needs to be handled
 int	ft_env(char **envp)
 {
 	while (*envp)
