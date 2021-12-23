@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/22 15:42:55 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 13:28:37 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,16 @@
 void	ft_replace(char **sp, int start, int len, char *rep)
 {
 	char	*new;
+	int		new_length;
+	char	*last_part;
 
-	new = ft_calloc(ft_strlen(*sp) + ft_strlen(rep) - len + 1, 1);
+	new_length = ft_strlen(*sp) + ft_strlen(rep) - len + 1;
+	last_part = *sp + start + len;
+	new = ft_calloc(new_length, 1);
 	ft_memcpy(new, *sp, start);
 	ft_memcpy(new + start, rep, ft_strlen(rep));
-	ft_memcpy(new + start + ft_strlen(rep), *sp + start + len, \
-		ft_strlen(*sp) - start - 1); //TODO why -1? it seems to fix a problem, but I don't know why
+	ft_memcpy(new + start + ft_strlen(rep), last_part, \
+		ft_strlen(last_part));
 	free(*sp);
 	*sp = new;
 }
