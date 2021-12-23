@@ -6,18 +6,19 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:23:06 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/20 15:40:04 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/23 09:56:57 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "Libft/libft.h"
+#include <stdio.h> //TODO remove
 
 static int	ft_words(char *s, char c, const int *quoted);
 
 static char	*ft_copy(char *arr, char *s, char c, const int *quoted);
 
-static char	*ft_next_word(char *s, char c, const int *quoted);
+static void	ft_next_word(char **s, char c, int **quoted);
 
 char	**ft_split_unquoted(char const *s, char c, const int *quoted)
 {
@@ -40,7 +41,7 @@ char	**ft_split_unquoted(char const *s, char c, const int *quoted)
 			ft_free_strs(arr);
 			return (0);
 		}
-		s = ft_next_word((char *)s, c, quoted);
+		ft_next_word((char **)&s, c, (int **)&quoted);
 		i++;
 	}
 	arr[i] = NULL;
@@ -89,17 +90,16 @@ static char	*ft_copy(char *arr, char *s, char c, const int *quoted)
 	return (arr);
 }
 
-static char	*ft_next_word(char *s, char c, const int *quoted)
+void	ft_next_word(char **s, char c, int **quoted)
 {
-	while (*s == c && !*quoted)
+	while (**s == c && !**quoted)
 	{
-		s++;
-		quoted++;
+		(*s)++;
+		(*quoted)++;
 	}
-	while (!(*s == c && !*quoted) && *s)
+	while (!(**s == c && !**quoted) && **s)
 	{
-		s++;
-		quoted++;
+		(*s)++;
+		(*quoted)++;
 	}
-	return (s);
 }
