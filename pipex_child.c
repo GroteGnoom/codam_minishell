@@ -58,7 +58,7 @@ static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex)
 	pipes = 0;
 	i = pipex.begin;
 	j = 0;
-	cmd = ft_calloc((pipex.size + 1) * sizeof(char *), 1);
+	cmd = ft_calloc((pipex.len + 1) * sizeof(char *), 1);
 	while (pipes < iter)
 	{
 		if (!ft_strcmp(commands[i], "|"))
@@ -67,7 +67,7 @@ static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex)
 	}
 	if (pipex.begin)
 		pipex.len -= pipex.end;
-	while (i < pipex.len && ft_strcmp(commands[i], "|"))
+	while (commands[i] && i < pipex.len && ft_strcmp(commands[i], "|"))
 		cmd[j++] = ft_strdup(commands[i++]);
 	if (i == pipex.len + pipex.end)
 		free(commands[i]);

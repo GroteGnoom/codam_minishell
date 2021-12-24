@@ -36,10 +36,10 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 
 	pipex.begin = 0;
 	pipex.end = 0;
-	term_out = 3;
-	term_in = 4;
-	if (dup2(STDOUT_FILENO, term_out) < 0 || dup2(STDIN_FILENO, term_in) < 0)
-		perror("dup2");
+	term_out = dup(STDOUT_FILENO);
+	term_in = dup(STDIN_FILENO);
+	if (term_out < 0 || term_in < 0)
+		perror("dup");
 	pipex = ft_set_io(nr_parts, parts, pipex);
 	if (pipex.infile < 0 || pipex.outfile < 0)
 		return (ft_open_error(pipex, term_out, parts, nr_parts));
