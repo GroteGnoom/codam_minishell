@@ -13,12 +13,6 @@
 #include "minishell.h"
 #include "Libft/libft.h"
 
-int	ft_print_error(void)
-{
-	ft_putstr_fd("unset: not enough arguments\n", STDOUT_FILENO);
-	return (1);
-}
-
 int	ft_unset(t_part *parts, t_env *s_env)
 {
 	char	*env;
@@ -26,7 +20,7 @@ int	ft_unset(t_part *parts, t_env *s_env)
 
 	i = 0;
 	if (!parts[1].part)
-		return (ft_print_error());
+		return (0);
 	while (i < s_env->size && \
 	!ft_strnstr(s_env->env[i], parts[1].part, ft_strlen(parts[1].part)))
 		i++;

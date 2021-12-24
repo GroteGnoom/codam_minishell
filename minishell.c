@@ -65,7 +65,10 @@ t_env *s_env, int nr_parts)
 				if (!ft_strcmp(parts[i].part, "|"))
 					*last_exit_status = ft_pipex(nr_parts, parts, s_env);
 				else
+				{
+					*last_exit_status = 2;
 					return (ft_syntax_error(parts, i));
+				}
 				return (1);
 			}
 		}
