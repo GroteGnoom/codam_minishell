@@ -21,6 +21,8 @@ void	ft_replace(char **sp, int start, int len, char *rep)
 	char	*last_part;
 
 	new_length = ft_strlen(*sp) + ft_strlen(rep) - len + 1;
+	if (!rep || !rep[0])
+		new_length += 2;
 	last_part = *sp + start + len;
 	new = ft_calloc(new_length, 1);
 	ft_memcpy(new, *sp, start);
@@ -28,7 +30,7 @@ void	ft_replace(char **sp, int start, int len, char *rep)
 	ft_memcpy(new + start + ft_strlen(rep), last_part, \
 		ft_strlen(last_part));
 	free(*sp);
-	*sp = new;
+	*sp = ft_strdup(new);
 }
 
 char	*ft_search_name(t_env *s_env, char *envname, int envlen)
