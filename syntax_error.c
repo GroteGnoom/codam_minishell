@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/23 13:52:00 by daniel        #+#    #+#                 */
-/*   Updated: 2021/12/23 13:52:53 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/24 13:29:05 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,29 @@
 int	ft_syntax_error(t_part *parts, int i)
 {
 	if (isatty(STDIN_FILENO))
-		printf("%s: syntax error near unexpected token `%c'\n", \
-		SHELL_NAME, parts[i].part[1]);
+	{
+		ft_putstr_fd(SHELL_NAME, 2);
+		ft_putstr_fd(": syntax error near unexpected token `", 2);
+		ft_putchar_fd(parts[i].part[1], 2);
+		ft_putstr_fd("'\n", 2);
+	}
 	else
 	{
-		printf("%s: line 1: syntax error near unexpected token \
-			`%c'\n%s: line 1: `", \
-		SHELL_NAME, parts[i].part[1], SHELL_NAME);
+		ft_putstr_fd(SHELL_NAME, 2);
+		ft_putstr_fd(": line 1: syntax error near unexpected token `", 2);
+		ft_putchar_fd(parts[i].part[1], 2);
+		ft_putstr_fd("'\n", 2);
+		ft_putstr_fd(SHELL_NAME, 2);
+		ft_putstr_fd(": line 1: `", 2);
 		i = 0;
 		while (parts[i + 1].part)
 		{
-			printf("%s ", parts[i].part);
+			ft_putstr_fd(parts[i].part, 2);
+			ft_putchar_fd(' ', 2);
 			i++;
 		}
-		printf("%s'\n", parts[i].part);
+		ft_putstr_fd(parts[i].part, 2);
+		ft_putstr_fd("'\n", 2);
 	}
 	return (1);
 }
