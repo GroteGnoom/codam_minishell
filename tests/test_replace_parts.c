@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:34:40 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/23 13:45:22 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/24 10:35:23 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,6 @@
 #include "../minishell.h"
 #include "../Libft/libft.h"
 #include "stdlib.h"
-
-void	print_parts(t_part *parts)
-{
-	int		i;
-
-	i = 0;
-	while (parts[i].part)
-	{
-		printf("-%s- type: %d\n", parts[i].part, parts[i].type);
-		i++;
-	}
-	printf("\n");
-}
 
 int	main(void)
 {

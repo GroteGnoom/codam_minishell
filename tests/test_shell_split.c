@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:34:40 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/22 15:44:10 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/24 10:35:06 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	print_parts2(t_part *parts)
 	printf("\n");
 }
 
-void	print_parts(char *str, t_env s_env)
+void	print_parts1(char *str, t_env s_env)
 {
 	t_part	*parts;
 
@@ -44,19 +44,19 @@ int	main(int argc, char **argv, char **env)
 	(void) argc;
 	(void) argv;
 	copy_env(env, &s_env);
-	print_parts("a", s_env);
-	print_parts("a|a", s_env);
-	print_parts("a | a", s_env);
-	print_parts("a \"|\" a", s_env);
-	print_parts("a>a", s_env);
-	print_parts("a > a", s_env);
-	print_parts("a \">\" a", s_env);
-	print_parts("a>>a", s_env);
-	print_parts("a >> a", s_env);
-	print_parts("a \">>\" a", s_env);
-	print_parts("'' '' ''", s_env);
-	print_parts("''hallo hallo'' ''", s_env);
-	print_parts("$? asd'$?'fasdf dsfasdf\"bla$?\" ''", s_env);
-	print_parts("test_shel*.c", s_env);
+	print_parts1("a", s_env);
+	print_parts1("a|a", s_env);
+	print_parts1("a | a", s_env);
+	print_parts1("a \"|\" a", s_env);
+	print_parts1("a>a", s_env);
+	print_parts1("a > a", s_env);
+	print_parts1("a \">\" a", s_env);
+	print_parts1("a>>a", s_env);
+	print_parts1("a >> a", s_env);
+	print_parts1("a \">>\" a", s_env);
+	print_parts1("'' '' ''", s_env);
+	print_parts1("''hallo hallo'' ''", s_env);
+	print_parts1("$? asd'$?'fasdf dsfasdf\"bla$?\" ''", s_env);
+	print_parts1("test_shel*.c", s_env);
 	ft_free_strs(s_env.env);
 }
