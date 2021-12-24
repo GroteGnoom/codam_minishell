@@ -58,16 +58,19 @@ int	replace_parts(t_part **parts, int i)
 void	expand_wildcard(t_part **parts, int **wild_quoted)
 {
 	int		i;
+	int		j;
 
 	i = 0;
+	j = 0;
 	while ((*parts)[i].part)
 	{
 		if ((*parts)[i].type == NORMAL)
 		{
-			if (expand_wild(&(*parts)[i].part, wild_quoted[i]))
+			if (expand_wild(&(*parts)[i].part, wild_quoted[j]))
 				i += replace_parts(parts, i);
 		}
 		i++;
+		j++;
 	}
 }
 
