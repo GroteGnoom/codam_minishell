@@ -12,7 +12,7 @@ gcc -Wall -Wextra -c -g -I.. ../../!(minishe*).c -I $READLINE_DIR/include/
 cd ..
 
 make DEBUG=1 LEAKS=1 -C ..
-for file in test_replace.c test_split_unquoted.c test_replace_parts.c test_wildcard.c test_shell_split.c
+for file in test_expand_unquoted_args.c test_replace.c test_split_unquoted.c test_replace_parts.c test_wildcard.c test_shell_split.c
 do
 	export BASE=${file%.*}
 	echo "checking $BASE"
