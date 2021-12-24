@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 15:17:24 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/23 14:05:40 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/24 11:27:51 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	count_parts(t_part *s)
 	return (i);
 }
 
-void	replace_parts(t_part **parts, int i)
+int	replace_parts(t_part **parts, int i)
 {
 	char	**split;
 	int		nr_old_parts;
@@ -52,6 +52,7 @@ void	replace_parts(t_part **parts, int i)
 	}
 	free(split);
 	free(old);
+	return (nr_new_parts);
 }
 
 void	expand_wildcard(t_part **parts, int **wild_quoted)
@@ -64,7 +65,7 @@ void	expand_wildcard(t_part **parts, int **wild_quoted)
 		if ((*parts)[i].type == NORMAL)
 		{
 			if (expand_wild(&(*parts)[i].part, wild_quoted[i]))
-				replace_parts(parts, i);
+				i += replace_parts(parts, i);
 		}
 		i++;
 	}

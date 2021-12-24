@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/16 11:47:17 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/23 15:09:28 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/24 11:28:00 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env)
 	t_part	*parts;
 	t_part	*outparts;
 	int		**wild_quoted;
+	int		count;
 
 	parts = quote_split(s);
 	expand_unquoted_args(parts, last_exit_status, s_env);
-	outparts = ft_calloc((count_combined_parts(parts) + 1)
-			* sizeof(*outparts), 1);
-	wild_quoted = ft_calloc((count_combined_parts(parts) + 1)
-			* sizeof(*wild_quoted), 1);
+	count = count_combined_parts(parts);
+	outparts = ft_calloc(count + 1, sizeof(*outparts));
+	wild_quoted = ft_calloc(count + 1, sizeof(*wild_quoted));
 	combine_parts(parts, outparts, wild_quoted);
 	expand_wildcard(&outparts, wild_quoted);
 	ft_free_parts(parts);
