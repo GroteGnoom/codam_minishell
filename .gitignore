@@ -6,5 +6,7 @@ a.out
 *.check
 tests/bin
 tests/bash_out
+tests/bash_err
 tests/leaks_output
 tests/minishell_out
+tests/minishell_err

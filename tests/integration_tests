@@ -2,10 +2,22 @@
 #set -x
 set -e
 
+function shell_test_error()
+{
+	set +e
+	echo $1 | ../minishell >/dev/null 2>minishell_err
+	echo $1 | valgrind --leak-check=full ../minishell > minishell_out 2>leaks_output
+	echo $1 | bash > bash_out 2> bash_err
+	set -e
+	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
+	diff minishell_err bash_err || { echo "error output test failed for: \"$1\""; exit 1; }
+	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for for: \"$1\""; cat leaks_output; exit 1; }
+}
+
 function shell_test()
 {
 	echo $1 | valgrind --leak-check=full ../minishell > minishell_out 2>leaks_output
-	echo $1 | bash > bash_out
+	echo $1 | bash > bash_out 2> bash_err
 	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
 	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for for: \"$1\""; cat leaks_output; exit 1; }
 }
@@ -34,6 +46,6 @@ shell_test 'echo *$PATH'
 shell_test 'echo $PATH*'
 shell_test 'echo "*"$PATH'
 shell_test 'echo $PATH"*"'
-# shell_test 'ls ||| cat' --- Works but not in tester
+shell_test_error 'ls ||| cat'
 output_test 'ls | cat > $OUTFILE'
 output_test '< test_shell_split.c grep 'a'|grep 'm' | wc -l|cat -e > $OUTFILE'
