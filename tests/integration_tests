@@ -23,15 +23,16 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
-shell_test "echo '*'"
-shell_test "echo *\"bla\""
-shell_test "echo \"$?\"lala $?asdf $PATH '$PATH' \"$PATH\" * *bla *\"bla\""
-shell_test "ls | ls | ls | ls | ls | ls"
-shell_test "echo *konijn"
-shell_test "echo * *bla"
-shell_test "ls *.c | cat"
-shell_test "ls ||| cat"
-shell_test "echo $PATH*"
+shell_test 'echo '*''
+shell_test 'echo *bla'
+shell_test 'echo "$?"lala $?asdf $PATH '$PATH' "$PATH" * *bla *"bla"'
+shell_test 'ls | ls | ls | ls | ls | ls'
+shell_test 'echo *konijn'
+shell_test 'echo * *bla'
+shell_test 'ls *.c | cat'
+shell_test 'echo *$PATH'
+shell_test 'echo $PATH*'
+shell_test 'ls ||| cat'
 # output_test 'ls | cat > $OUTFILE'
 # shell_test 'ls > $outfile || cat'
 # shell_test 'ls > $outfile ||| cat'
