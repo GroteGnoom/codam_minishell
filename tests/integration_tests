@@ -35,6 +35,8 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
+shell_test 'echo ls
+ls'
 shell_test 'echo '*''
 shell_test 'echo *bla'
 shell_test 'echo "$?"lala $?asdf $PATH '$PATH' "$PATH" * *bla *"bla"'
