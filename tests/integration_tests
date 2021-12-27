@@ -35,16 +35,10 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
-#shell_test 'ls
-#ls'
-#shell_test 'export A$B=10
-#echo $A$B'
-#shell_test 'export A$B=10
-#echo $A$B
-#export $B=3
-#echo $A$B'
+shell_test 'ls\nls'
 shell_test 'export A$B=10\necho $A$B'
-exit
+shell_test 'export B=3\necho $A$B'
+shell_test 'export A$B=10\necho $A$B\nexport B=3\necho $A$B'
 shell_test 'echo "*"'
 shell_test 'echo *bla'
 shell_test 'echo "$?"lala $?asdf $PATH '$PATH' "$PATH" * *bla *"bla"'
