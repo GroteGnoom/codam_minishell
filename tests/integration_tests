@@ -60,6 +60,6 @@ shell_test 'echo -nABC'
 shell_test 'echo "$     a"'
 shell_test 'pwd'
 shell_test 'pwd lalala'
-# shell_test 'ls ||| cat' --- Works but not in tester
+shell_test_error 'ls ||| cat'
 output_test 'ls | cat > $OUTFILE'
 output_test '< test_shell_split.c grep 'a'|grep 'm' | wc -l|cat -e > $OUTFILE'
