@@ -48,6 +48,7 @@ function output_test()
 make DEBUG=1 LEAKS=1 -C ..
 
 shell_test 'export A=bla\necho $A'
+shell_test 'export A=bla\nexport A=bloe\necho $A'
 shell_test 'export A=bla\nexport A=$A-bloe\necho $A'
 shell_test 'export PATH=$PATH:/banaan/konijn\necho $PATH'
 shell_test 'echo $9'
