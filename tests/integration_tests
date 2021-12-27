@@ -5,9 +5,9 @@ set -e
 function shell_test_error()
 {
 	set +e
-	echo $1 | ../minishell >/dev/null 2>minishell_err
-	echo $1 | valgrind --leak-check=full ../minishell > minishell_out 2>leaks_output
-	echo $1 | bash > bash_out 2> bash_err
+	echo -e $1 | ../minishell >/dev/null 2>minishell_err
+	echo -e $1 | valgrind --leak-check=full ../minishell > minishell_out 2>leaks_output
+	echo -e $1 | bash > bash_out 2> bash_err
 	set -e
 	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
 	diff minishell_err bash_err || { echo "error output test failed for: \"$1\""; exit 1; }
@@ -16,8 +16,8 @@ function shell_test_error()
 
 function shell_test()
 {
-	echo $1 | valgrind --leak-check=full ../minishell > minishell_out 2>leaks_output
-	echo $1 | bash > bash_out 2> bash_err
+	echo -e $1 | valgrind --leak-check=full ../minishell > minishell_out 2>leaks_output
+	echo -e $1 | bash > bash_out 2> bash_err
 	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
 	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for for: \"$1\""; cat leaks_output; exit 1; }
 }
@@ -25,9 +25,9 @@ function shell_test()
 function output_test()
 {
 	export OUTFILE=minishell_outfile
-	echo $1 | valgrind --leak-check=full ../minishell > minishell_stdout 2>leaks_output
+	echo -e $1 | valgrind --leak-check=full ../minishell > minishell_stdout 2>leaks_output
 	export OUTFILE=bash_outfile
-	echo $1 | bash > bash_stdout
+	echo -e $1 | bash > bash_stdout
 	diff minishell_stdout bash_stdout || { echo "stdout of output test failed for: \"$1\""; exit 1;}
 	diff minishell_outfile bash_outfile || { echo "outfile of output test failed for: \"$1\""; exit 1;}
 	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for for: \"$1\""; cat leaks_output; exit 1; }
@@ -43,6 +43,8 @@ make DEBUG=1 LEAKS=1 -C ..
 #echo $A$B
 #export $B=3
 #echo $A$B'
+shell_test 'export A$B=10\necho $A$B'
+exit
 shell_test 'echo "*"'
 shell_test 'echo *bla'
 shell_test 'echo "$?"lala $?asdf $PATH '$PATH' "$PATH" * *bla *"bla"'
