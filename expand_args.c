@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/24 09:57:36 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/27 10:19:29 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*ft_search_name(t_env *s_env, char *envname, int envlen)
 		s_env->env[i][envlen] == '=')
 		{
 			values = s_env->env[i] + envlen + 1;
-			free(envname);
 			return (values);
 		}
 		i++;
@@ -78,6 +77,8 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env)
 		if ((*sp)[i] == '$')
 		{
 			i++;
+			if ((*sp)[i] == ' ')
+				continue;
 			if (ft_insert_exit_status(sp, i, last_exit_status))
 				continue ;
 			envlen = 0;
@@ -86,9 +87,11 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env)
 				envlen++;
 			envname = ft_substr(*sp, i, envlen);
 			env = ft_search_name(s_env, envname, envlen);
+			free(envname);
 			if (!env)
 				env = "";
 			ft_replace(sp, i - 1, envlen + 1, env);
+			i-=2;
 		}
 		i++;
 	}
