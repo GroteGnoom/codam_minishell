@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/27 13:40:56 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/27 14:02:56 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,8 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env)
 	char		*envname;
 	char		*env;
 	int			envlen;
-	static char	*stop;
 
 	i = 0;
-	stop = ft_strdup("$ *="); //TODO maybe more characters need to be added?
 	while ((*sp)[i])
 	{
 		if ((*sp)[i] == '$')
@@ -84,8 +82,12 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env)
 			if (ft_insert_exit_status(sp, i, last_exit_status))
 				continue ;
 			envlen = 0;
-			while ((*sp)[i + envlen] && !ft_strchr(stop, (*sp)[i + envlen]))
-				envlen++;
+			if (ft_isdigit((*sp)[i]))
+				envlen = 1;
+			else
+				while ((*sp)[i + envlen] && (ft_isalnum((*sp)[i + envlen])
+					|| (*sp)[i + envlen] == '_' ))
+					envlen++;
 			envname = ft_substr(*sp, i, envlen);
 			env = ft_search_name(s_env, envname, envlen);
 			free(envname);
@@ -96,7 +98,6 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env)
 		}
 		i++;
 	}
-	free(stop);
 }
 
 void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env)
