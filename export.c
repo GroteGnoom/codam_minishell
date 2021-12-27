@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/27 14:30:53 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/27 14:50:58 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,13 @@ static int	check_argument(char *str)
 	int		i;
 
 	i = 0;
-	invalid = ft_strdup("<>|$");
+	invalid = "<>|$";
 	while (str[i])
 	{
 		if (ft_strchr(invalid, str[i]))
 			return (1);
 		i++;
 	}
-	free(invalid);
 	return (0);
 }
 
