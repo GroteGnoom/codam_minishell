@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/16 12:54:05 by dnoom         ########   odam.nl         */
+/*   Updated: 2021/12/27 10:33:42 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include "minishell.h"
 
-#define SPECIAL_CHARS " \"'|<>"
+#define SPECIAL_CHARS " \"'|<>\n"
 
 static int	ft_count_parts_in_str(char *s)
 {
@@ -33,6 +33,8 @@ static int	ft_count_parts_in_str(char *s)
 			ft_skip_until(&s, '\'');
 		else if (*s == ' ')
 			ft_skip(&s, ' ');
+		else if (*s == '\n')
+			ft_skip(&s, '\n');
 		else if (ft_strchr(specials, *s))
 			ft_skip(&s, *s);
 		else
@@ -54,7 +56,7 @@ int	part_len_type(char *s, enum e_part_type *type)
 		*type = DOUBLE_QUOTED;
 	else if (*s == '\'')
 		*type = SINGLE_QUOTED;
-	else if (*s == ' ')
+	else if (*s == ' ' || *s == '\n')
 		*type = SPACES;
 	else if (ft_strchr(specials, *s))
 		*type = SPECIAL;
