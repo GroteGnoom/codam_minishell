@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/27 15:08:39 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/27 15:39:18 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_insert_exit_status(char **sp, int i, int last_exit_status)
 	return (0);
 }
 
-void	expand_args(char **sp, int last_exit_status, t_env *s_env)
+void	expand_args(char **sp, int last_exit_status, t_env *s_env, int niq)
 {
 	int			i;
 	char		*env;
@@ -73,8 +73,8 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env)
 	i = 0;
 	while ((*sp)[i])
 	{
-		if ((*sp)[i] == '$' && !((*sp)[i + 1] == ' ' || \
-				ft_insert_exit_status(sp, i + 1, last_exit_status)))
+		if ((*sp)[i] == '$' && !((!(*sp)[i + 1] && !niq) || (*sp)[i + 1] == ' '\
+				|| ft_insert_exit_status(sp, i + 1, last_exit_status)))
 		{
 			envlen = 0;
 			if (ft_isdigit((*sp)[i + 1]))
@@ -94,10 +94,17 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env)
 
 void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env)
 {
+	int	next_is_quoted;
+
+	next_is_quoted = 0;
 	while (parts->part)
 	{
+		if (parts[1].part && (parts[1].type == SINGLE_QUOTED
+				|| parts[1].type == DOUBLE_QUOTED))
+			next_is_quoted = 1;
 		if (parts->type == NORMAL || parts->type == DOUBLE_QUOTED)
-			expand_args(&(parts->part), last_exit_status, s_env);
+			expand_args(&(parts->part), last_exit_status, s_env,
+				next_is_quoted);
 		parts++;
 	}
 }

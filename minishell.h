@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/24 11:24:26 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/27 15:35:51 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_wildcard(char *args, int *wild_quoted);
 char	**ft_split_unquoted(char const *s, char c, const int *quoted);
 
 int		ft_executable(int nr_parts, t_part *parts, t_env *s_env);
-void	expand_args(char **sp, int last_exit_status, t_env *s_env);
+void	expand_args(char **sp, int last_exit_status, t_env *s_env, int niq);
 int		ft_export_print(char **envp);
 t_part	*quote_split(char *s);
 void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env);
