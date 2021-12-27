@@ -27,6 +27,13 @@ function shell_test()
 	check_valgrind_output $1
 }
 
+function shell_test_no_valgrind()
+{
+	echo -e $1 | ../minishell > minishell_out
+	echo -e $1 | bash > bash_out
+	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
+}
+
 function output_test()
 {
 	export OUTFILE=minishell_outfile
@@ -71,3 +78,5 @@ output_test 'ls | cat > $OUTFILE'
 output_test '< test_shell_split.c grep "a"|grep "m" | wc -l|cat -e > $OUTFILE'
 shell_test_error 'export "|"=10'
 shell_test_error 'export ">"=10'
+#shell_test_no_valgrind 'export'
+#shell_test_no_valgrind 'env'
