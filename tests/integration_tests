@@ -35,15 +35,15 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
-shell_test 'echo ls
-ls'
-shell_test 'export A$B=10
-echo $A$B'
-shell_test 'export A$B=10
-echo $A$B
-export $B=3
-echo $A$B'
-shell_test 'echo '*''
+#shell_test 'ls
+#ls'
+#shell_test 'export A$B=10
+#echo $A$B'
+#shell_test 'export A$B=10
+#echo $A$B
+#export $B=3
+#echo $A$B'
+shell_test 'echo "*"'
 shell_test 'echo *bla'
 shell_test 'echo "$?"lala $?asdf $PATH '$PATH' "$PATH" * *bla *"bla"'
 shell_test 'ls | ls | ls | ls | ls | ls'
@@ -56,18 +56,15 @@ shell_test 'echo "*"$PATH'
 shell_test 'echo $PATH"*"'
 shell_test '/bin/ls'
 shell_test 'echo a"bc"d'
-shell_test 'echo a'bcd'e'
+shell_test 'echo a"bcd"e'
 shell_test 'echo $HOME'
-shell_test 'echo '$HOME''
 shell_test 'echo "$HOME"'
 shell_test 'echo $HO"ME"'
 shell_test 'echo $"HOME"'
-shell_test 'echo "'$HOME'"'
-shell_test 'echo '"$HOME"''
 shell_test 'echo -nABC'
 shell_test 'echo "$     a"'
 shell_test 'pwd'
 shell_test 'pwd lalala'
 shell_test_error 'ls ||| cat'
 output_test 'ls | cat > $OUTFILE'
-output_test '< test_shell_split.c grep 'a'|grep 'm' | wc -l|cat -e > $OUTFILE'
+output_test '< test_shell_split.c grep "a"|grep "m" | wc -l|cat -e > $OUTFILE'
