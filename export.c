@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/27 14:24:41 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/27 14:30:53 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static char	*get_env_str(t_env *s_env, char *env, int *i)
 		env_str = ft_strnstr(s_env->env[*i], env, ft_strlen(env));
 		*i += 1;
 	}
+	if (*i == s_env->size)
+		free(env);
 	return (env_str);
 }
 
