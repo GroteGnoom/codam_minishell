@@ -19,6 +19,10 @@ static int	export_attribute(t_env *s_env, char *attr);
 
 static void	ft_free(t_env *s_env);
 
+static int	check_argument(char *str);
+
+static char	*get_env_str(t_env *s_env, char *env, int *i);
+
 int	ft_export(t_part *parts, t_env *s_env)
 {
 	char	*env;
@@ -27,17 +31,16 @@ int	ft_export(t_part *parts, t_env *s_env)
 
 	if (!parts[1].part || parts[1].type != NORMAL)
 		return (ft_export_print(s_env->env));
-	env_str = NULL;
-	i = -1;
+	if (check_argument(parts[1].part))
+		return (ft_invalid_identifier(parts, 0));
+	i = 0;
 	env = ft_strchr(parts[1].part, '=');
 	if (env != 0)
 		env = ft_substr(parts[1].part, 0, ft_strlen(parts[1].part) \
 		- ft_strlen(env));
 	else
 		return (export_attribute(s_env, parts[1].part));
-	while (s_env->env[++i] && i < s_env->size && !env_str)
-		env_str = ft_strnstr(s_env->env[i], env, ft_strlen(env));
-	free(env);
+	env_str = get_env_str(s_env, env, &i);
 	if (i == s_env->size)
 		return (export_attribute(s_env, parts[1].part));
 	if (env_str && ft_strncmp(env_str, env, ft_strlen(env)))
@@ -47,21 +50,35 @@ int	ft_export(t_part *parts, t_env *s_env)
 	return (0);
 }
 
-void	copy_env(char **envp, t_env *s_env)
+static char	*get_env_str(t_env *s_env, char *env, int *i)
 {
+	char	*env_str;
+
+	env_str = NULL;
+	while (s_env->env[*i] && *i < s_env->size && !env_str)
+	{
+		env_str = ft_strnstr(s_env->env[*i], env, ft_strlen(env));
+		*i += 1;
+	}
+	free(env);
+	return (env_str);
+}
+
+static int	check_argument(char *str)
+{
+	char	*invalid;
 	int		i;
 
 	i = 0;
-	while (envp[i])
-		i++;
-	s_env->env = ft_calloc((i + 1) * sizeof(char *), 1);
-	s_env->size = i;
-	i = 0;
-	while (envp[i])
+	invalid = ft_strdup("<>|$");
+	while (str[i])
 	{
-		s_env->env[i] = ft_strdup(envp[i]);
+		if (ft_strchr(invalid, str[i]))
+			return (1);
 		i++;
 	}
+	free(invalid);
+	return (0);
 }
 
 static int	export_attribute(t_env *s_env, char *attr)

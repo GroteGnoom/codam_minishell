@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/27 11:41:54 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/27 13:40:56 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,21 @@ int	ft_insert_exit_status(char **sp, int i, int last_exit_status)
 
 void	expand_args(char **sp, int last_exit_status, t_env *s_env)
 {
-	int		i;
-	char	*envname;
-	char	*env;
-	int		envlen;
-	static char	*stop = "$ *="; //TODO maybe more characters need to be added?
+	int			i;
+	char		*envname;
+	char		*env;
+	int			envlen;
+	static char	*stop;
 
 	i = 0;
+	stop = ft_strdup("$ *="); //TODO maybe more characters need to be added?
 	while ((*sp)[i])
 	{
 		if ((*sp)[i] == '$')
 		{
 			i++;
 			if ((*sp)[i] == ' ')
-				continue;
+				continue ;
 			if (ft_insert_exit_status(sp, i, last_exit_status))
 				continue ;
 			envlen = 0;
@@ -91,10 +92,11 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env)
 			if (!env)
 				env = "";
 			ft_replace(sp, i - 1, envlen + 1, env);
-			i-=2;
+			i -= 2;
 		}
 		i++;
 	}
+	free(stop);
 }
 
 void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env)
