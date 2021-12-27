@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/27 14:02:56 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/27 15:08:39 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,34 +67,26 @@ int	ft_insert_exit_status(char **sp, int i, int last_exit_status)
 void	expand_args(char **sp, int last_exit_status, t_env *s_env)
 {
 	int			i;
-	char		*envname;
 	char		*env;
 	int			envlen;
 
 	i = 0;
 	while ((*sp)[i])
 	{
-		if ((*sp)[i] == '$')
+		if ((*sp)[i] == '$' && !((*sp)[i + 1] == ' ' || \
+				ft_insert_exit_status(sp, i + 1, last_exit_status)))
 		{
-			i++;
-			if ((*sp)[i] == ' ')
-				continue ;
-			if (ft_insert_exit_status(sp, i, last_exit_status))
-				continue ;
 			envlen = 0;
-			if (ft_isdigit((*sp)[i]))
+			if (ft_isdigit((*sp)[i + 1]))
 				envlen = 1;
 			else
-				while ((*sp)[i + envlen] && (ft_isalnum((*sp)[i + envlen])
-					|| (*sp)[i + envlen] == '_' ))
+				while ((*sp)[i + 1 + envlen] && (ft_isalnum((*sp)[i + 1 + \
+					envlen]) || (*sp)[i + 1 + envlen] == '_' ))
 					envlen++;
-			envname = ft_substr(*sp, i, envlen);
-			env = ft_search_name(s_env, envname, envlen);
-			free(envname);
+			env = ft_search_name(s_env, *sp + 1 + i, envlen);
 			if (!env)
 				env = "";
-			ft_replace(sp, i - 1, envlen + 1, env);
-			i -= 2;
+			ft_replace(sp, i--, envlen + 1, env);
 		}
 		i++;
 	}
