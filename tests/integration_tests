@@ -2,6 +2,11 @@
 #set -x
 set -e
 
+function check_valgrind_output()
+{
+	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for for: \"$1\""; cat leaks_output; exit 1; }
+}
+
 function shell_test_error()
 {
 	set +e
@@ -11,7 +16,7 @@ function shell_test_error()
 	set -e
 	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
 	diff minishell_err bash_err || { echo "error output test failed for: \"$1\""; exit 1; }
-	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for for: \"$1\""; cat leaks_output; exit 1; }
+	check_valgrind_output $1
 }
 
 function shell_test()
@@ -19,7 +24,14 @@ function shell_test()
 	echo -e $1 | valgrind --leak-check=full ../minishell > minishell_out 2>leaks_output
 	echo -e $1 | bash > bash_out 2> bash_err
 	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
-	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for for: \"$1\""; cat leaks_output; exit 1; }
+	check_valgrind_output $1
+}
+
+function shell_test_no_valgrind()
+{
+	echo -e $1 | ../minishell > minishell_out
+	echo -e $1 | bash > bash_out
+	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
 }
 
 function output_test()
@@ -30,21 +42,15 @@ function output_test()
 	echo -e $1 | bash > bash_stdout
 	diff minishell_stdout bash_stdout || { echo "stdout of output test failed for: \"$1\""; exit 1;}
 	diff minishell_outfile bash_outfile || { echo "outfile of output test failed for: \"$1\""; exit 1;}
-	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for for: \"$1\""; cat leaks_output; exit 1; }
+	check_valgrind_output $1
 }
 
 make DEBUG=1 LEAKS=1 -C ..
 
-#shell_test 'ls
-#ls'
-#shell_test 'export A$B=10
-#echo $A$B'
-#shell_test 'export A$B=10
-#echo $A$B
-#export $B=3
-#echo $A$B'
+shell_test 'ls\nls'
 shell_test 'export A$B=10\necho $A$B'
-exit
+shell_test 'export B=3\necho $A$B'
+shell_test 'export A$B=10\necho $A$B\nexport B=3\necho $A$B'
 shell_test 'echo "*"'
 shell_test 'echo *bla'
 shell_test 'echo "$?"lala $?asdf $PATH '$PATH' "$PATH" * *bla *"bla"'
@@ -72,3 +78,5 @@ output_test 'ls | cat > $OUTFILE'
 output_test '< test_shell_split.c grep "a"|grep "m" | wc -l|cat -e > $OUTFILE'
 shell_test_error 'export "|"=10'
 shell_test_error 'export ">"=10'
+#shell_test_no_valgrind 'export'
+#shell_test_no_valgrind 'env'
