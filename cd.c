@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 13:32:32 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 14:08:47 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@
 # include <linux/limits.h>
 #endif
 
-static int	ft_absolute(char *path_str, char *home_dir, t_part *parts);
+static int	ft_absolute(char *path_str, char *home_dir, t_part *parts, int line_nr);
 
-static int	ft_relative(char *path_str, t_part *parts);
+static int	ft_relative(char *path_str, t_part *parts, int line_nr);
 
 static int	ft_search_slash(char *cur_dir, int i);
 
-int	ft_cd(t_part *parts)
+int	ft_cd(t_part *parts, int line_nr)
 {
 	char	*home_dir;
 	char	*buf;
@@ -42,21 +42,21 @@ int	ft_cd(t_part *parts)
 		return (0);
 	}
 	else if (parts[1].part[0] == '/')
-		return (ft_absolute(parts[1].part, home_dir, parts));
+		return (ft_absolute(parts[1].part, home_dir, parts, line_nr));
 	else if (parts[1].part[0] == '.' && parts[1].part[1] == '.')
-		return (ft_relative(parts[1].part, parts));
+		return (ft_relative(parts[1].part, parts, line_nr));
 	else
 	{
 		buf = NULL;
 		cur_dir = getcwd(buf, PATH_MAX);
 		new_dir = ft_strjoin(cur_dir, "/");
 		free(cur_dir);
-		return (ft_absolute(parts[1].part, new_dir, parts));
+		return (ft_absolute(parts[1].part, new_dir, parts, line_nr));
 	}
 	return (0);
 }
 
-static int	ft_absolute(char *path_str, char *home_dir, t_part *parts)
+static int	ft_absolute(char *path_str, char *home_dir, t_part *parts, int line_nr)
 {
 	char	*new_dir;
 
@@ -65,13 +65,13 @@ static int	ft_absolute(char *path_str, char *home_dir, t_part *parts)
 	if (chdir(new_dir) < 0)
 	{
 		free(new_dir);
-		return (ft_redir_error("cd", parts[1].part));
+		return (ft_redir_error("cd", parts[1].part, line_nr));
 	}
 	free(new_dir);
 	return (0);
 }
 
-static int	ft_relative(char *path_str, t_part *parts)
+static int	ft_relative(char *path_str, t_part *parts, int line_nr)
 {
 	char	*cur_dir;
 	char	*buf;
@@ -91,7 +91,7 @@ static int	ft_relative(char *path_str, t_part *parts)
 	if (ft_strlen(path_str) > 3 || !ft_strcmp(path_str, ".."))
 		ft_strjoin_free(&cur_dir, path_str);
 	if (chdir(cur_dir) < 0)
-		return (ft_redir_error("cd", parts[1].part));
+		return (ft_redir_error("cd", parts[1].part, line_nr));
 	free(cur_dir);
 	return (0);
 }

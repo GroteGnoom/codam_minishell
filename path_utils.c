@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 14:06:31 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 14:12:29 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static void	ft_write_error_msg(char *str);
 
-void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
+void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts, int line_nr)
 {
 	char	*cmd;
 	int		i;
@@ -26,7 +26,7 @@ void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
 	{
 		if (!ft_strcmp(args[0], "export"))
 		{
-			ft_export(parts, s_env);
+			ft_export(parts, s_env, line_nr);
 			exit(0);
 		}
 		if (!ft_strchr(args[0], '/'))
