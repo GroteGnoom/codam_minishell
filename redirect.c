@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:22:59 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 14:34:57 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	redirect_in(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_n
 		return (ft_redir_error("dup2", "", line_nr));
 	new_args = ft_calloc((nr_parts - 1) * sizeof(*parts), 1);
 	i = ft_get_args(new_args, parts, "<");
-	ret = ft_executable(i, new_args, s_env);
+	ret = ft_executable(i, new_args, s_env, line_nr);
 	ft_free_parts(new_args);
 	if (dup2(term, STDIN_FILENO) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
@@ -74,7 +74,7 @@ int	redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_
 	if (dup2(STDOUT_FILENO, term) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
 	ret = ft_multiple_redir(parts, ">", 0, line_nr);
-	ret = ft_executable(args, new_args, s_env);
+	ret = ft_executable(args, new_args, s_env, line_nr);
 	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
@@ -95,7 +95,7 @@ int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env, int *exec, int l
 	if (dup2(STDOUT_FILENO, term) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
 	ret = ft_multiple_redir(parts, ">>", 1, line_nr);
-	ret = ft_executable(args, new_args, s_env);
+	ret = ft_executable(args, new_args, s_env, line_nr);
 	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
