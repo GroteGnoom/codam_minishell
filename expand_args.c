@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 10:50:07 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 10:53:20 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env, int niq)
 	i = 0;
 	while ((*sp)[i])
 	{
-		if ((*sp)[i] == '$' && !((*sp)[i + 1] == ' '\
-				|| ft_insert_exit_status(sp, i + 1, last_exit_status)))
+		if ((*sp)[i] == '$' && !ft_insert_exit_status(sp, i + 1, last_exit_status))
 		{
 			envlen = get_env_name_length((*sp) + i + 1);
 			if (envlen == 0 && !niq)
