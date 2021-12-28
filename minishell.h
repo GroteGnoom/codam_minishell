@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:14:42 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 14:17:32 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	**ft_get_paths(char **env);
 void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env);
 void	expand_wildcard(t_part **parts, int **wild_quoted);
 
-int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env);
+int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env, int line_nr);
 
 int		ft_syntax_error(t_part *parts, int i, int line_nr);
 int		ft_redir_error(char *str, char *str2, int line_nr);
