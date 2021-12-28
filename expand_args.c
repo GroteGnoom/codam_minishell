@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 10:53:20 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 11:04:01 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ int	ft_insert_exit_status(char **sp, int i, int last_exit_status)
 	return (0);
 }
 
-void	expand_args(char **sp, int last_exit_status, t_env *s_env, int niq)
+void	expand_args(char **sp, int last_exit_status, t_env *s_env,
+		int next_is_quoted)
 {
 	int			i;
 	char		*env;
@@ -73,20 +74,19 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env, int niq)
 	i = 0;
 	while ((*sp)[i])
 	{
-		if ((*sp)[i] == '$' && !ft_insert_exit_status(sp, i + 1, last_exit_status))
+		i++;
+		if ((*sp)[i - 1] == '$')
 		{
-			envlen = get_env_name_length((*sp) + i + 1);
-			if (envlen == 0 && !niq)
-			{
-				i++;
+			if (ft_insert_exit_status(sp, i, last_exit_status))
 				continue ;
-			}
-			env = ft_search_name(s_env, *sp + 1 + i, envlen);
+			envlen = get_env_name_length((*sp) + i);
+			if (envlen == 0 && !next_is_quoted)
+				continue ;
+			env = ft_search_name(s_env, *sp + i, envlen);
 			if (!env)
 				env = "";
-			ft_replace(sp, i--, envlen + 1, env);
+			ft_replace(sp, --i, envlen + 1, env);
 		}
-		i++;
 	}
 }
 
