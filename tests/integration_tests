@@ -60,6 +60,7 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
+shell_test_error '\n\n\nls ||| cat'
 shell_test "exit"
 shell_test "exit 0"
 shell_test_error "exit 1"
