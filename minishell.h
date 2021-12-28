@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:23:39 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 14:31:32 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ int		redirect_in(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_
 int		redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_nr);
 int		redirect_out_app(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_nr);
 void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts, int line_nr);
-int		redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec);
+int		redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_nr);
 char	**ft_get_paths(char **env);
-void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env);
+void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env, int line_nr);
 void	expand_wildcard(t_part **parts, int **wild_quoted);
 
 int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env, int line_nr);
