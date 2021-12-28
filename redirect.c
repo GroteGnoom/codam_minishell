@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:09:35 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 14:22:59 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-static int	ft_multiple_redir(t_part *parts, char *str, int append);
+static int	ft_multiple_redir(t_part *parts, char *str, int append, int line_nr);
 
 static int	ft_get_args(t_part *new_args, t_part *parts, char *c)
 {
@@ -73,7 +73,7 @@ int	redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_
 	term = 0;
 	if (dup2(STDOUT_FILENO, term) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
-	ret = ft_multiple_redir(parts, ">", 0);
+	ret = ft_multiple_redir(parts, ">", 0, line_nr);
 	ret = ft_executable(args, new_args, s_env);
 	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
@@ -94,7 +94,7 @@ int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env, int *exec, int l
 	term = 0;
 	if (dup2(STDOUT_FILENO, term) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
-	ret = ft_multiple_redir(parts, ">>", 1);
+	ret = ft_multiple_redir(parts, ">>", 1, line_nr);
 	ret = ft_executable(args, new_args, s_env);
 	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
