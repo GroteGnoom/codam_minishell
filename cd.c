@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:08:47 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 14:48:49 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <linux/limits.h>
 #endif
 
-static int	ft_absolute(char *path_str, char *home_dir, t_part *parts, int line_nr);
+static int	ft_absolute(char *path_str, char *home_dir, \
+t_part *parts, int line_nr);
 
 static int	ft_relative(char *path_str, t_part *parts, int line_nr);
 
@@ -56,7 +57,8 @@ int	ft_cd(t_part *parts, int line_nr)
 	return (0);
 }
 
-static int	ft_absolute(char *path_str, char *home_dir, t_part *parts, int line_nr)
+static int	ft_absolute(char *path_str, char *home_dir, \
+t_part *parts, int line_nr)
 {
 	char	*new_dir;
 

@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/23 13:52:00 by daniel        #+#    #+#                 */
-/*   Updated: 2021/12/28 14:44:14 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 15:01:33 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,19 @@
 #include "minishell.h"
 #include <stdio.h>
 
-void ft_print_line_nr(int line_nr)
+int	print_parts_error(t_part *parts)
 {
-		ft_putstr_fd(": line ", 2);
-		ft_putnbr_fd(line_nr, 2);
-}
+	int	i;
 
+	i = 0;
+	while (parts[i + 1].part)
+	{
+		ft_putstr_fd(parts[i].part, 2);
+		ft_putchar_fd(' ', 2);
+		i++;
+	}
+	return (i);
+}
 
 int	ft_syntax_error(t_part *parts, int i, int line_nr)
 {
@@ -35,18 +42,13 @@ int	ft_syntax_error(t_part *parts, int i, int line_nr)
 	{
 		ft_putstr_fd(SHELL_NAME, 2);
 		ft_print_line_nr(line_nr);
-		ft_putstr_fd(": syntax error near unexpected token `", 2);
+		ft_putstr_fd("syntax error near unexpected token `", 2);
 		ft_putchar_fd(parts[i].part[1], 2);
 		ft_putstr_fd("'\n", 2);
 		ft_putstr_fd(SHELL_NAME, 2);
 		ft_print_line_nr(line_nr);
-		ft_putstr_fd(": `", 2);
-		i = -1;
-		while (parts[++i + 1].part)
-		{
-			ft_putstr_fd(parts[i].part, 2);
-			ft_putchar_fd(' ', 2);
-		}
+		ft_putstr_fd("`", 2);
+		i = print_parts_error(parts);
 		ft_putstr_fd(parts[i].part, 2);
 		ft_putstr_fd("'\n", 2);
 	}
@@ -64,7 +66,7 @@ int	ft_redir_error(char *str, char *str2, int line_nr)
 		if (isatty(STDIN_FILENO))
 			ft_putstr_fd(": ", 2);
 		else
-			ft_putstr_fd(": line 1: ", 2);
+			ft_print_line_nr(line_nr);
 		if (ft_strcmp(SHELL_NAME, str))
 		{
 			ft_putstr_fd(str, 2);
@@ -83,7 +85,7 @@ int	ft_invalid_identifier(t_part *parts, int i, int line_nr)
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd(": ", 2);
 	else
-		ft_putstr_fd(": line 1: ", 2);
+		ft_print_line_nr(line_nr);
 	ft_putstr_fd(parts[i].part, 2);
 	ft_putstr_fd(": `", 2);
 	ft_putstr_fd(parts[i + 1].part, 2);
@@ -98,11 +100,12 @@ int	ft_exit_error(int too_many, char *arg, int line_nr)
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd(": ", 2);
 	else
-		ft_putstr_fd(": line 1: ", 2);
+		ft_print_line_nr(line_nr);
 	ft_putstr_fd("exit: ", 2);
 	if (too_many)
 		ft_putstr_fd("too many arguments\n", 2);
-	else {
+	else
+	{
 		ft_putstr_fd(arg, 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 	}

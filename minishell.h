@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:36:08 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 14:55:48 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int		ft_redir_error(char *str, char *str2, int line_nr);
 int		ft_invalid_identifier(t_part *parts, int i, int line_nr);
 int		check_identifier(char *str, int unset);
 int		ft_exit_error(int too_many, char *arg, int line_nr);
+void	ft_print_line_nr(int line_nr);
 
 void	print_parts(t_part *parts);
 void	print_strs(char **strs);
