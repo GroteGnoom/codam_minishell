@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/23 13:52:00 by daniel        #+#    #+#                 */
-/*   Updated: 2021/12/28 13:29:22 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 14:06:12 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include "minishell.h"
 #include <stdio.h>
 
-int	ft_syntax_error(t_part *parts, int i)
+int	ft_syntax_error(t_part *parts, int i, int line_nr)
 {
+	(void) line_nr;
 	if (isatty(STDIN_FILENO))
 	{
 		ft_putstr_fd(SHELL_NAME, 2);
@@ -43,8 +44,9 @@ int	ft_syntax_error(t_part *parts, int i)
 	return (1);
 }
 
-int	ft_redir_error(char *str, char *str2)
+int	ft_redir_error(char *str, char *str2, int line_nr)
 {
+	(void) line_nr;
 	if (!str2)
 		perror(str);
 	else
@@ -65,8 +67,9 @@ int	ft_redir_error(char *str, char *str2)
 	return (1);
 }
 
-int	ft_invalid_identifier(t_part *parts, int i)
+int	ft_invalid_identifier(t_part *parts, int i, int line_nr)
 {
+	(void) line_nr;
 	ft_putstr_fd(SHELL_NAME, 2);
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd(": ", 2);
@@ -79,8 +82,9 @@ int	ft_invalid_identifier(t_part *parts, int i)
 	return (1);
 }
 
-int	ft_exit_error(int too_many, char *arg)
+int	ft_exit_error(int too_many, char *arg, int line_nr)
 {
+	(void) line_nr;
 	ft_putstr_fd(SHELL_NAME, 2);
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd(": ", 2);

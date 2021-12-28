@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 16:21:10 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 14:09:35 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	ft_get_args(t_part *new_args, t_part *parts, char *c)
 	return (i);
 }
 
-int	redirect_in(int nr_parts, t_part *parts, t_env *s_env, int *exec)
+int	redirect_in(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_nr)
 {
 	t_part	*new_args;
 	int		ret;
@@ -47,20 +47,20 @@ int	redirect_in(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 		i++;
 	fd = open(parts[i + 1].part, O_RDONLY);
 	if (fd < 0)
-		return (ft_redir_error(SHELL_NAME, parts[i + 1].part));
+		return (ft_redir_error(SHELL_NAME, parts[i + 1].part, line_nr));
 	term = 1;
 	if (dup2(STDIN_FILENO, term) < 0 || dup2(fd, STDIN_FILENO) < 0)
-		return (ft_redir_error("dup2", ""));
+		return (ft_redir_error("dup2", "", line_nr));
 	new_args = ft_calloc((nr_parts - 1) * sizeof(*parts), 1);
 	i = ft_get_args(new_args, parts, "<");
 	ret = ft_executable(i, new_args, s_env);
 	ft_free_parts(new_args);
 	if (dup2(term, STDIN_FILENO) < 0)
-		return (ft_redir_error("dup2", ""));
+		return (ft_redir_error("dup2", "", line_nr));
 	return (ret);
 }
 
-int	redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec)
+int	redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_nr)
 {
 	t_part	*new_args;
 	int		ret;
@@ -72,16 +72,16 @@ int	redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 	args = ft_get_args(new_args, parts, ">");
 	term = 0;
 	if (dup2(STDOUT_FILENO, term) < 0)
-		return (ft_redir_error("dup2", ""));
+		return (ft_redir_error("dup2", "", line_nr));
 	ret = ft_multiple_redir(parts, ">", 0);
 	ret = ft_executable(args, new_args, s_env);
 	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
-		return (ft_redir_error("dup2", ""));
+		return (ft_redir_error("dup2", "", line_nr));
 	return (ret);
 }
 
-int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env, int *exec)
+int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_nr)
 {
 	t_part	*new_args;
 	int		ret;
@@ -93,16 +93,16 @@ int	redirect_out_app(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 	args = ft_get_args(new_args, parts, ">>");
 	term = 0;
 	if (dup2(STDOUT_FILENO, term) < 0)
-		return (ft_redir_error("dup2", ""));
+		return (ft_redir_error("dup2", "", line_nr));
 	ret = ft_multiple_redir(parts, ">>", 1);
 	ret = ft_executable(args, new_args, s_env);
 	ft_free_parts(new_args);
 	if (dup2(term, STDOUT_FILENO) < 0)
-		return (ft_redir_error("dup2", ""));
+		return (ft_redir_error("dup2", "", line_nr));
 	return (ret);
 }
 
-static int	ft_multiple_redir(t_part *parts, char *str, int append)
+static int	ft_multiple_redir(t_part *parts, char *str, int append, int line_nr)
 {
 	int	i;
 	int	fd;
@@ -115,7 +115,7 @@ static int	ft_multiple_redir(t_part *parts, char *str, int append)
 	else
 		fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (dup2(fd, STDOUT_FILENO) < 0)
-		return (ft_redir_error("dup2", ""));
+		return (ft_redir_error("dup2", "", line_nr));
 	while (parts[i + 1].part && parts[i + 2].part && \
 	!ft_strcmp(parts[i + 2].part, str))
 	{
@@ -124,9 +124,9 @@ static int	ft_multiple_redir(t_part *parts, char *str, int append)
 			i++;
 		fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
-			return (ft_redir_error(SHELL_NAME, parts[i + 1].part));
+			return (ft_redir_error(SHELL_NAME, parts[i + 1].part, line_nr));
 		if (dup2(fd, STDOUT_FILENO) < 0)
-			return (ft_redir_error("dup2", ""));
+			return (ft_redir_error("dup2", "", line_nr));
 	}
 	return (0);
 }
