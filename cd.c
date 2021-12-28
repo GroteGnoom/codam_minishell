@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 11:15:22 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 13:32:32 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 # include <linux/limits.h>
 #endif
 
-static int	ft_absolute(char *path_str, char *home_dir);
+static int	ft_absolute(char *path_str, char *home_dir, t_part *parts);
 
-static int	ft_relative(char *path_str);
+static int	ft_relative(char *path_str, t_part *parts);
 
 static int	ft_search_slash(char *cur_dir, int i);
 
@@ -42,33 +42,36 @@ int	ft_cd(t_part *parts)
 		return (0);
 	}
 	else if (parts[1].part[0] == '/')
-		return (ft_absolute(parts[1].part, home_dir));
+		return (ft_absolute(parts[1].part, home_dir, parts));
 	else if (parts[1].part[0] == '.' && parts[1].part[1] == '.')
-		return (ft_relative(parts[1].part));
+		return (ft_relative(parts[1].part, parts));
 	else
 	{
 		buf = NULL;
 		cur_dir = getcwd(buf, PATH_MAX);
 		new_dir = ft_strjoin(cur_dir, "/");
 		free(cur_dir);
-		return (ft_absolute(parts[1].part, new_dir));
+		return (ft_absolute(parts[1].part, new_dir, parts));
 	}
 	return (0);
 }
 
-static int	ft_absolute(char *path_str, char *home_dir)
+static int	ft_absolute(char *path_str, char *home_dir, t_part *parts)
 {
 	char	*new_dir;
 
 	new_dir = ft_strjoin(home_dir, path_str);
-	if (chdir(new_dir) < 0)
-		return (1);
 	free(home_dir);
+	if (chdir(new_dir) < 0)
+	{
+		free(new_dir);
+		return (ft_redir_error("cd", parts[1].part));
+	}
 	free(new_dir);
 	return (0);
 }
 
-static int	ft_relative(char *path_str)
+static int	ft_relative(char *path_str, t_part *parts)
 {
 	char	*cur_dir;
 	char	*buf;
@@ -88,7 +91,7 @@ static int	ft_relative(char *path_str)
 	if (ft_strlen(path_str) > 3 || !ft_strcmp(path_str, ".."))
 		ft_strjoin_free(&cur_dir, path_str);
 	if (chdir(cur_dir) < 0)
-		return (1);
+		return (ft_redir_error("cd", parts[1].part));
 	free(cur_dir);
 	return (0);
 }

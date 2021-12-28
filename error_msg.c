@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/23 13:52:00 by daniel        #+#    #+#                 */
-/*   Updated: 2021/12/28 11:47:49 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 13:29:22 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,18 @@ int	ft_redir_error(char *str, char *str2)
 		perror(str);
 	else
 	{
-		write(1, str, ft_strlen(str));
-		write(1, ": ", 2);
-		write(1, str2, ft_strlen(str2));
-		write(1, ": No such file or directory\n", 28);
+		ft_putstr_fd(SHELL_NAME, 2);
+		if (isatty(STDIN_FILENO))
+			ft_putstr_fd(": ", 2);
+		else
+			ft_putstr_fd(": line 1: ", 2);
+		if (ft_strcmp(SHELL_NAME, str))
+		{
+			ft_putstr_fd(str, 2);
+			ft_putstr_fd(": ", 2);
+		}
+		ft_putstr_fd(str2, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 	}
 	return (1);
 }
