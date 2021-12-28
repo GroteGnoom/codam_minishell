@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 11:08:08 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 11:15:22 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,11 @@ static int	ft_relative(char *path_str)
 	while (cur_dir[i])
 		i++;
 	i = ft_search_slash(cur_dir, i);
-	ft_substr_free(&cur_dir, 0, i + 1);
-	if (ft_strlen(path_str) > 3)
+	if (!ft_strnstr(path_str, "..", 2))
+		ft_substr_free(&cur_dir, 0, i + 1);
+	else
+		ft_strjoin_free(&cur_dir, "/");
+	if (ft_strlen(path_str) > 3 || !ft_strcmp(path_str, ".."))
 		ft_strjoin_free(&cur_dir, path_str);
 	if (chdir(cur_dir) < 0)
 		return (1);
