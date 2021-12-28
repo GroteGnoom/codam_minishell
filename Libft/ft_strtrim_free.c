@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 11:30:25 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 11:36:38 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 15:08:57 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ char	*ft_strtrim_free(char **s1, char const *set)
 		i++;
 	j = ft_strlen(*s1);
 	if (!j || i == j)
+	{
+		free(*s1);
 		return (ft_strdup("\0"));
+	}
 	while ((ft_contains(*s1 + j - 1, (char *)set, 1)))
 		j--;
 	len = j - i;

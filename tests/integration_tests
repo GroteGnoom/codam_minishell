@@ -60,6 +60,7 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
+shell_test '\n\n\n\n'
 shell_test_error 'ls\n\n\nls ||| cat'
 shell_test_error 'ls\n\n\nexit banaan'
 shell_test_error 'ls\n\n\nexport "$"=10'
