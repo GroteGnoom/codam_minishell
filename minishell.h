@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 10:14:14 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 10:29:40 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int		count_parts(t_part *s);
 int		replace_parts(t_part **parts, int i);
 void	ft_replace(char **sp, int start, int len, char *rep);
 char	*ft_search_name(t_env *s_env, char *envname, int envlen);
+int		get_env_name_length(char *env);
 
 int		redirect_in(int nr_parts, t_part *parts, t_env *s_env, int *exec);
 int		redirect_out(int nr_parts, t_part *parts, t_env *s_env, int *exec);
