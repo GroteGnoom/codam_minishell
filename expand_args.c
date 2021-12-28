@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/27 15:39:18 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 10:14:49 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ void	expand_args(char **sp, int last_exit_status, t_env *s_env, int niq)
 				while ((*sp)[i + 1 + envlen] && (ft_isalnum((*sp)[i + 1 + \
 					envlen]) || (*sp)[i + 1 + envlen] == '_' ))
 					envlen++;
+			if (envlen == 0 && !niq)
+			{
+				i++;
+				continue ;
+			}
 			env = ft_search_name(s_env, *sp + 1 + i, envlen);
 			if (!env)
 				env = "";
@@ -96,9 +101,9 @@ void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env)
 {
 	int	next_is_quoted;
 
-	next_is_quoted = 0;
 	while (parts->part)
 	{
+		next_is_quoted = 0;
 		if (parts[1].part && (parts[1].type == SINGLE_QUOTED
 				|| parts[1].type == DOUBLE_QUOTED))
 			next_is_quoted = 1;
