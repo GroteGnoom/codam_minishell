@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:16:36 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 11:47:20 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int	ft_exit(int nr_parts, t_part *parts)
 		exit(0);
 	if (!is_int(parts[1].part))
 	{
-		printf("%s: exit: numeric argument required\n", SHELL_NAME);
+		ft_exit_error(0, parts[1].part);
 		exit(255);
 	}
 	if (nr_parts > 2)
 	{
-		printf("%s: exit: too many arguments\n", SHELL_NAME);
+		ft_exit_error(1, "");
 		return (1);
 	}
 	else

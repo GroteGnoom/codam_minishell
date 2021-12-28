@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/23 13:52:00 by daniel        #+#    #+#                 */
-/*   Updated: 2021/12/28 10:09:27 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 11:47:49 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,22 @@ int	ft_invalid_identifier(t_part *parts, int i)
 	ft_putstr_fd(": `", 2);
 	ft_putstr_fd(parts[i + 1].part, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
+	return (1);
+}
+
+int	ft_exit_error(int too_many, char *arg)
+{
+	ft_putstr_fd(SHELL_NAME, 2);
+	if (isatty(STDIN_FILENO))
+		ft_putstr_fd(": ", 2);
+	else
+		ft_putstr_fd(": line 1: ", 2);
+	ft_putstr_fd("exit: ", 2);
+	if (too_many)
+		ft_putstr_fd("too many arguments\n", 2);
+	else {
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+	}
 	return (1);
 }

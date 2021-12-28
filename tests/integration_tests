@@ -4,19 +4,32 @@ set -e
 
 function check_valgrind_output()
 {
-	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for for: \"$1\""; cat leaks_output; exit 1; }
+	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for: \"$1\""; cat leaks_output; exit 1; }
+}
+
+function check_status()
+{
+	if [ $2 -ne $3 ]; then
+		echo "found exit status difference for: \"$1\"";
+		echo "bash exit status:" $3;
+		echo "minishell exit status:" $2;
+		exit 1;
+	fi
 }
 
 function shell_test_error()
 {
 	set +e
 	echo -e $1 | ../minishell >/dev/null 2>minishell_err
+	export minishell_status=$?
 	echo -e $1 | valgrind --leak-check=full ../minishell > minishell_out 2>leaks_output
 	echo -e $1 | bash > bash_out 2> bash_err
+	export bash_status=$?
 	set -e
 	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
 	diff minishell_err bash_err || { echo "error output test failed for: \"$1\""; exit 1; }
 	check_valgrind_output $1
+	check_status $1 $minishell_status $bash_status
 }
 
 function shell_test()
@@ -47,6 +60,12 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
+shell_test "exit"
+shell_test "exit 0"
+shell_test_error "exit 1"
+shell_test_error "exit 42"
+shell_test_error "exit 1 1"
+shell_test_error "exit banaan"
 shell_test 'export A=bla\necho $A'
 shell_test 'export A=bla\nexport A=bloe\necho $A'
 shell_test 'export A=bla\nexport A=$A-bloe\necho $A'
