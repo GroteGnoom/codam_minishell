@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/27 15:56:51 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 10:13:59 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static int	export_attribute(t_env *s_env, char *attr);
 
 static void	ft_free(t_env *s_env);
 
-static int	check_argument(char *str);
-
 static char	*get_env_str(t_env *s_env, char *env, int *i);
 
 int	ft_export(t_part *parts, t_env *s_env)
@@ -31,7 +29,7 @@ int	ft_export(t_part *parts, t_env *s_env)
 
 	if (!parts[1].part || parts[1].type != NORMAL)
 		return (ft_export_print(s_env->env));
-	if (check_argument(parts[1].part))
+	if (check_identifier(parts[1].part, 0))
 		return (ft_invalid_identifier(parts, 0));
 	i = 0;
 	env = ft_strchr(parts[1].part, '=');
@@ -66,13 +64,17 @@ static char	*get_env_str(t_env *s_env, char *env, int *i)
 	return (env_str);
 }
 
-static int	check_argument(char *str)
+int	check_identifier(char *str, int unset)
 {
 	char	*invalid;
 	int		i;
 
 	i = 0;
 	invalid = "<>|$";
+	if (unset)
+		invalid = "<>|$=";
+	if (ft_isdigit(str[i]))
+		return (1);
 	while (str[i])
 	{
 		if (ft_strchr(invalid, str[i]))
