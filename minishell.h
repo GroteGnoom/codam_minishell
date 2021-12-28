@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:17:32 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 14:19:31 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env, int line_
 int		ft_syntax_error(t_part *parts, int i, int line_nr);
 int		ft_redir_error(char *str, char *str2, int line_nr);
 int		ft_invalid_identifier(t_part *parts, int i, int line_nr);
-int		check_identifier(char *str, int unset, int line_nr);
+int		check_identifier(char *str, int unset);
 int		ft_exit_error(int too_many, char *arg, int line_nr);
 
 void	print_parts(t_part *parts);
