@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:29:30 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 14:35:51 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_env *s_env, int nr_parts, int line_nr)
 			if (ft_strchr(parts[i].part, '|'))
 			{
 				if (!ft_strcmp(parts[i].part, "|"))
-					*last_exit_status = ft_pipex(nr_parts, parts, s_env);
+					*last_exit_status = ft_pipex(nr_parts, parts, s_env, line_nr);
 				else
 				{
 					*last_exit_status = 2;
