@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:40 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/17 09:51:16 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/28 14:20:45 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 static char	**ft_get_args(int nr_parts, t_part *parts);
 
-int	ft_executable(int nr_parts, t_part *parts, t_env *s_env)
+int	ft_executable(int nr_parts, t_part *parts, t_env *s_env, int line_nr)
 {
 	pid_t	child;
 	char	**args;
@@ -34,7 +34,7 @@ int	ft_executable(int nr_parts, t_part *parts, t_env *s_env)
 		return (1);
 	}
 	if (child == 0)
-		ft_try_paths(paths, args, s_env, parts);
+		ft_try_paths(paths, args, s_env, parts, line_nr);
 	waitpid(-1, &status, 0);
 	ft_free_strs(paths);
 	ft_free_strs(args);

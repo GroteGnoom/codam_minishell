@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:21:29 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 14:23:39 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	**ft_get_commands(char **argv, int len, t_pipe *pipex);
 char	**ft_get_commands_parts(int nr_parts, t_part *parts, t_pipe *pipex);
 void	ft_close_all_pipes(t_pipe pipex, int *pipefd);
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, \
-t_part *parts);
+t_part *parts, int line_nr);
 t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex);
 int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);
 t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd);
@@ -73,7 +73,7 @@ int		ft_unset(t_part *parts, t_env *s_env, int line_nr);
 char	*ft_wildcard(char *args, int *wild_quoted);
 char	**ft_split_unquoted(char const *s, char c, const int *quoted);
 
-int		ft_executable(int nr_parts, t_part *parts, t_env *s_env);
+int		ft_executable(int nr_parts, t_part *parts, t_env *s_env, int line_nr);
 void	expand_args(char **sp, int last_exit_status, t_env *s_env, \
 			int next_is_quoted);
 int		ft_export_print(char **envp);
