@@ -6,13 +6,20 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/23 13:52:00 by daniel        #+#    #+#                 */
-/*   Updated: 2021/12/28 14:06:12 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/28 14:44:14 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Libft/libft.h"
 #include "minishell.h"
 #include <stdio.h>
+
+void ft_print_line_nr(int line_nr)
+{
+		ft_putstr_fd(": line ", 2);
+		ft_putnbr_fd(line_nr, 2);
+}
+
 
 int	ft_syntax_error(t_part *parts, int i, int line_nr)
 {
@@ -27,11 +34,13 @@ int	ft_syntax_error(t_part *parts, int i, int line_nr)
 	else
 	{
 		ft_putstr_fd(SHELL_NAME, 2);
-		ft_putstr_fd(": line 1: syntax error near unexpected token `", 2);
+		ft_print_line_nr(line_nr);
+		ft_putstr_fd(": syntax error near unexpected token `", 2);
 		ft_putchar_fd(parts[i].part[1], 2);
 		ft_putstr_fd("'\n", 2);
 		ft_putstr_fd(SHELL_NAME, 2);
-		ft_putstr_fd(": line 1: `", 2);
+		ft_print_line_nr(line_nr);
+		ft_putstr_fd(": `", 2);
 		i = -1;
 		while (parts[++i + 1].part)
 		{
