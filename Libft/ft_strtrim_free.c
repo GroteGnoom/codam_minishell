@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 11:30:25 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 15:08:57 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/29 08:39:16 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	*ft_strtrim_free(char **s1, char const *set)
 	char	*str;
 	int		i;
 	int		j;
-	int		len;
 
 	if (!s1 || !set)
 		return (0);
@@ -29,18 +28,16 @@ char	*ft_strtrim_free(char **s1, char const *set)
 		i++;
 	j = ft_strlen(*s1);
 	if (!j || i == j)
+		str = ft_strdup("\0");
+	else
 	{
-		free(*s1);
-		return (ft_strdup("\0"));
+		while ((ft_contains(*s1 + j - 1, (char *)set, 1)))
+			j--;
+		str = ft_calloc(j - i + 1, sizeof(char));
+		if (!str)
+			return (0);
+		ft_memcpy(str, *s1 + i, j - i);
 	}
-	while ((ft_contains(*s1 + j - 1, (char *)set, 1)))
-		j--;
-	len = j - i;
-	str = malloc(len + 1);
-	if (!str)
-		return (0);
-	ft_memcpy(str, *s1 + i, len);
-	str[len] = '\0';
 	free(*s1);
 	return (str);
 }
