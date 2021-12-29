@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:31:48 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/29 09:07:23 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env, int line_nr);
+static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env);
 
-int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec, int line_nr)
+int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 {
 	t_part	*new_args;
 	char	*final;
@@ -40,14 +40,14 @@ int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec, int 
 	if (child < 0)
 		perror("Fork: ");
 	if (child == 0)
-		here_doc(final, i, new_args, s_env, line_nr);
+		here_doc(final, i, new_args, s_env);
 	waitpid(-1, &status, 0);
 	ft_free_parts(new_args);
 	free(final);
 	return (0);
 }
 
-static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env, int line_nr)
+static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env)
 {
 	char	**args;
 	char	*line;
@@ -68,11 +68,11 @@ static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env, int
 		line = readline("here_doc> ");
 		size++;
 	}
-	ft_redir_args(args, nr_parts, parts, s_env, line_nr);
+	ft_redir_args(args, nr_parts, parts, s_env);
 	exit(0);
 }
 
-void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env, int line_nr)
+void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env)
 {
 	int		pipefd[2];
 	int		term_out;
@@ -96,7 +96,7 @@ void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env, int l
 	if (dup2(term_out, STDOUT_FILENO) < 0 || dup2(pipefd[0], STDIN_FILENO) < 0)
 		return ;
 	close(pipefd[1]);
-	ft_executable(nr_parts, parts, s_env, line_nr);
+	ft_executable(nr_parts, parts, s_env);
 	if (dup2(term_in, STDIN_FILENO) < 0)
 		return ;
 }

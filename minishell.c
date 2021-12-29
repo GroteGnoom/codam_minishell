@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:39:47 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/29 09:10:03 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #define PROMPT "> "
 
 int	check_for_redirections(int *last_exit_status, t_part *parts, \
-t_env *s_env, int nr_parts, int line_nr)
+t_env *s_env, int nr_parts)
 {
 	int	exec;
 	int	i;
@@ -33,15 +33,15 @@ t_env *s_env, int nr_parts, int line_nr)
 		if (parts[i].type == SPECIAL)
 		{
 			if (!ft_strcmp(parts[i].part, "<"))
-				*last_exit_status = redirect_in(nr_parts, parts, s_env, &exec, line_nr);
+				*last_exit_status = redirect_in(nr_parts, parts, s_env, &exec);
 			if (!ft_strcmp(parts[i].part, ">"))
-				*last_exit_status = redirect_out(nr_parts, parts, s_env, &exec, line_nr);
+				*last_exit_status = redirect_out(nr_parts, parts, s_env, &exec);
 			if (!ft_strcmp(parts[i].part, ">>"))
 				*last_exit_status = redirect_out_app(nr_parts, parts, \
-				s_env, &exec, line_nr);
+				s_env, &exec);
 			if (!ft_strcmp(parts[i].part, "<<"))
 				*last_exit_status = redirect_here_doc(nr_parts, parts, \
-				s_env, &exec, line_nr);
+				s_env, &exec);
 		}
 		i++;
 	}
@@ -51,7 +51,7 @@ t_env *s_env, int nr_parts, int line_nr)
 }
 
 int	check_for_pipes(int *last_exit_status, t_part *parts, \
-t_env *s_env, int nr_parts, int line_nr)
+t_env *s_env, int nr_parts)
 {
 	int	i;
 
@@ -63,11 +63,11 @@ t_env *s_env, int nr_parts, int line_nr)
 			if (ft_strchr(parts[i].part, '|'))
 			{
 				if (!ft_strcmp(parts[i].part, "|"))
-					*last_exit_status = ft_pipex(nr_parts, parts, s_env, line_nr);
+					*last_exit_status = ft_pipex(nr_parts, parts, s_env);
 				else
 				{
 					*last_exit_status = 2;
-					return (ft_syntax_error(parts, i, line_nr));
+					return (ft_syntax_error(parts, i, s_env->line_nr));
 				}
 				return (1);
 			}
@@ -77,7 +77,7 @@ t_env *s_env, int nr_parts, int line_nr)
 	return (0);
 }
 
-int	ft_check_parts(int *last_exit_status, char *line, t_env *s_env, int line_nr)
+int	ft_check_parts(int *last_exit_status, char *line, t_env *s_env)
 {
 	t_part	*parts;
 	int		nr_parts;
@@ -88,32 +88,32 @@ int	ft_check_parts(int *last_exit_status, char *line, t_env *s_env, int line_nr)
 	if (nr_parts)
 	{
 		executed = check_for_pipes(last_exit_status, parts, \
-		s_env, nr_parts, line_nr);
+		s_env, nr_parts);
 		if (!executed)
 			executed = check_for_redirections(last_exit_status, parts, s_env, \
-			nr_parts, line_nr);
+			nr_parts);
 		if (!executed)
-			executed = is_built_in(parts[0].part, nr_parts, parts, s_env, line_nr);
+			executed = is_built_in(parts[0].part, nr_parts, parts, s_env);
 		if (executed == 300)
-			*last_exit_status = ft_executable(nr_parts, parts, s_env, line_nr);
+			*last_exit_status = ft_executable(nr_parts, parts, s_env);
 	}
 	free(line);
 	ft_free_parts(parts);
 	return (*last_exit_status);
 }
 
-int	loop_through_lines(char *line, int last_exit_status, t_env *s_env, int line_nr)
+int	loop_through_lines(char *line, int last_exit_status, t_env *s_env)
 {
 	while (line)
 	{
 		if (isatty(STDIN_FILENO) && ft_strlen(line))
 			add_history(line);
-		last_exit_status = ft_check_parts(&last_exit_status, line, s_env, line_nr);
+		last_exit_status = ft_check_parts(&last_exit_status, line, s_env);
 		if (isatty(STDIN_FILENO))
 			line = readline(PROMPT);
 		else
 			line = get_next_line(STDIN_FILENO);
-		line_nr++;
+		s_env->line_nr++;
 	}
 	return (last_exit_status);
 }
@@ -122,12 +122,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	int		last_exit_status;
-	int		line_nr;
 	t_env	s_env;
 
 	(void)argc;
 	(void)argv;
-	line_nr = 1;
+	s_env.line_nr = 1;
 	setbuf(stdout, NULL);
 	signals();
 	copy_env(envp, &s_env);
@@ -139,7 +138,7 @@ int	main(int argc, char **argv, char **envp)
 		line = ft_strtrim_free(&line, "\n");
 	}
 	last_exit_status = 0;
-	last_exit_status = loop_through_lines(line, last_exit_status, &s_env, line_nr);
+	last_exit_status = loop_through_lines(line, last_exit_status, &s_env);
 	ft_free_strs(s_env.env);
 	return (last_exit_status);
 }

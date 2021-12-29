@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:34:40 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/24 10:33:47 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/29 09:12:35 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(void)
 {
 	char				*string;
 	static const char	*envstrs[] = {"BLA=hoi", NULL};
-	static t_env		s_env = {(char **)envstrs, 1};
+	static t_env		s_env = {(char **)envstrs, 1, 1};
 	t_part				*parts;
 
 	string = "*$BLA";

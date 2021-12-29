@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:35:37 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/29 09:04:30 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static int		ft_pipex_pipe(t_pipe pipe, t_env *s_env, t_part *parts, int line_nr);
+static int		ft_pipex_pipe(t_pipe pipe, t_env *s_env, t_part *parts);
 
 static int		ft_get_size_parts(t_part *parts);
 
@@ -25,9 +25,9 @@ static int		ft_open_error(t_pipe pipex, int term_out, \
 t_part *parts, int nr_parts);
 
 static int		ft_execute_pipes(t_pipe pipex, t_env *s_env, \
-t_part *parts, int *pipefd, int line_nr);
+t_part *parts, int *pipefd);
 
-int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env, int line_nr)
+int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 {
 	t_pipe	pipex;
 	int		status;
@@ -45,7 +45,7 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env, int line_nr)
 		return (ft_open_error(pipex, term_out, parts, nr_parts));
 	pipex.commands = ft_get_commands_parts(nr_parts, parts, &pipex);
 	pipex.size = ft_get_size_parts(parts);
-	status = ft_pipex_pipe(pipex, s_env, parts, line_nr);
+	status = ft_pipex_pipe(pipex, s_env, parts);
 	close(pipex.infile);
 	close(pipex.outfile);
 	if (dup2(term_out, STDOUT_FILENO) < 0 || dup2(term_in, STDIN_FILENO) < 0)
@@ -87,7 +87,7 @@ static int	ft_get_size_parts(t_part *parts)
 	return (count);
 }
 
-static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts, int line_nr)
+static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 {
 	int		*pipefd;
 	int		status;
@@ -98,13 +98,13 @@ static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts, int line_nr)
 	pipex = ft_get_pipes(pipex, pipefd);
 	pipex.paths = ft_get_paths(s_env->env);
 	pipex.iter = 0;
-	status = ft_execute_pipes(pipex, s_env, parts, pipefd, line_nr);
+	status = ft_execute_pipes(pipex, s_env, parts, pipefd);
 	ft_free_strs(pipex.paths);
 	return (WEXITSTATUS(status));
 }
 
 static int	ft_execute_pipes(t_pipe pipex, t_env *s_env, \
-t_part *parts, int *pipefd, int line_nr)
+t_part *parts, int *pipefd)
 {
 	pid_t	child;
 	int		status;
@@ -115,7 +115,7 @@ t_part *parts, int *pipefd, int line_nr)
 		if (child < 0)
 			perror("Fork: ");
 		if (child == 0)
-			ft_child_process(pipex, pipefd, s_env, parts, line_nr);
+			ft_child_process(pipex, pipefd, s_env, parts);
 		pipex.iter++;
 	}
 	ft_close_all_pipes(pipex, pipefd);
