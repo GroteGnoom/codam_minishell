@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/29 09:10:36 by daniel        ########   odam.nl         */
+/*   Updated: 2021/12/29 10:30:05 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	check_identifier(char *str, int unset)
 	if (unset)
 		invalid = "<>|$=";
 	if (ft_isdigit(str[i]))
+		return (1);
+	if (str[i] == '=')
 		return (1);
 	while (str[i])
 	{

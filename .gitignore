@@ -10,3 +10,4 @@ tests/bash_err
 tests/leaks_output
 tests/minishell_out
 tests/minishell_err
+minishell-tester
