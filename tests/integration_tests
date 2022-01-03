@@ -61,9 +61,10 @@ function output_test()
 make DEBUG=1 LEAKS=1 -C ..
 
 shell_test_error '| ls'
+shell_test_error 'ls |'
 shell_test_error 'ls | | ls'
-shell_test_error 'ls | < banaan | ls'
-shell_test_error 'ls | > tmp_file | ls\nrm tmp_file'
+#shell_test_error 'ls | < banaan | ls'
+#shell_test_error 'ls | > tmp_file | ls\nrm tmp_file'
 shell_test_error 'export ='
 shell_test_error 'export =10'
 shell_test 'echo bla | export $BLA=bla\necho $BLA'
