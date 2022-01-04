@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/04 10:23:42 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/04 11:49:28 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	ft_get_size_parts(t_part *parts)
 
 static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 {
-	int		pipefd[2];
+	int		pipefd[4];
 	int		status;
 
 	pipex.paths = ft_get_paths(s_env->env);
@@ -115,9 +115,20 @@ t_part *parts, int *pipefd)
 			perror("Fork: ");
 		if (child == 0)
 			ft_child_process(pipex, pipefd, s_env, parts);
+		if (dup2(pipefd[0], pipefd[2]) < 0 || dup2(pipefd[1], pipefd[3]) < 0)
+			perror("dup2");
+		// if (pipex.iter + 1 != pipex.size)
+		// {
+		// 	if (pipex.iter > 0)
+		// 		// close(pipefd[0]);
+		// 	close(pipefd[1]);
+		// }
 		pipex.iter++;
-		close(pipefd[1]);
 	}
+	close(pipefd[0]);
+	close(pipefd[1]);
+	close(pipefd[2]);
+	close(pipefd[3]);
 	while (pipex.iter > 0)
 	{
 		waitpid(-1, &status, 0);
