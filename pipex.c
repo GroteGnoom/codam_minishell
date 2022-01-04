@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/29 09:04:30 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/04 10:23:42 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,9 @@ static int	ft_get_size_parts(t_part *parts)
 
 static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 {
-	int		*pipefd;
+	int		pipefd[2];
 	int		status;
 
-	pipefd = (int *)malloc((2 * (pipex.size)) * sizeof(int));
-	if (!pipefd)
-		perror("malloc: ");
-	pipex = ft_get_pipes(pipex, pipefd);
 	pipex.paths = ft_get_paths(s_env->env);
 	pipex.iter = 0;
 	status = ft_execute_pipes(pipex, s_env, parts, pipefd);
@@ -111,14 +107,17 @@ t_part *parts, int *pipefd)
 
 	while (pipex.iter < pipex.size)
 	{
+		if (pipex.iter + 1 != pipex.size)
+			if (pipe(pipefd))
+				perror("Pipe: ");
 		child = fork();
 		if (child < 0)
 			perror("Fork: ");
 		if (child == 0)
 			ft_child_process(pipex, pipefd, s_env, parts);
 		pipex.iter++;
+		close(pipefd[1]);
 	}
-	ft_close_all_pipes(pipex, pipefd);
 	while (pipex.iter > 0)
 	{
 		waitpid(-1, &status, 0);

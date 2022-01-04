@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/03 09:35:52 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/04 10:24:19 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,10 @@ typedef struct s_env
 
 char	**ft_get_commands(char **argv, int len, t_pipe *pipex);
 char	**ft_get_commands_parts(int nr_parts, t_part *parts, t_pipe *pipex);
-void	ft_close_all_pipes(t_pipe pipex, int *pipefd);
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, \
 t_part *parts);
 t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex);
 int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);
-t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd);
 
 void	signals(void);
 
