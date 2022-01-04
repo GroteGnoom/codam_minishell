@@ -12,5 +12,7 @@ tests/minishell_out
 tests/minishell_err
 tests/minishell_outfile
 tests/minishell_stdout
+tests/bash_outfile
+tests/bash_stdout
 minishell-tester
 tags
