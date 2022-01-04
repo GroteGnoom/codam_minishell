@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/04 12:00:18 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/04 13:36:40 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,13 @@ static int	ft_get_size_parts(t_part *parts)
 
 static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 {
-	int		pipefd[4];
+	int		*pipefd;
 	int		status;
 
+	pipefd = (int *)malloc((2 * (pipex.size)) * sizeof(int));
+	if (!pipefd)
+		perror("malloc: ");
+	pipex = ft_get_pipes(pipex, pipefd);
 	pipex.paths = ft_get_paths(s_env->env);
 	pipex.iter = 0;
 	status = ft_execute_pipes(pipex, s_env, parts, pipefd);
@@ -107,28 +111,14 @@ t_part *parts, int *pipefd)
 
 	while (pipex.iter < pipex.size)
 	{
-		if (pipex.iter + 1 != pipex.size)
-			if (pipe(pipefd))
-				perror("Pipe: ");
 		child = fork();
 		if (child < 0)
 			perror("Fork: ");
 		if (child == 0)
 			ft_child_process(pipex, pipefd, s_env, parts);
-		if (dup2(pipefd[0], pipefd[2]) < 0 || dup2(pipefd[1], pipefd[3]) < 0)
-			perror("dup2");
-		// if (pipex.iter + 1 != pipex.size)
-		// {
-		// 	if (pipex.iter > 0)
-		// 		// close(pipefd[0]);
-		// 	close(pipefd[1]);
-		// }
 		pipex.iter++;
 	}
-	close(pipefd[0]);
-	close(pipefd[1]);
-	close(pipefd[2]);
-	close(pipefd[3]);
+	ft_close_all_pipes(pipex, pipefd);
 	while (pipex.iter > 0)
 	{
 		waitpid(-1, &status, 0);

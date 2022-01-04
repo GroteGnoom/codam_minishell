@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:13 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/04 10:24:03 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2021/12/17 11:00:18 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,19 @@ char	**ft_get_commands(char **argv, int len, t_pipe *pipex)
 	return (commands);
 }
 
+void	ft_close_all_pipes(t_pipe pipex, int *pipefd)
+{
+	int	i;
+
+	i = 0;
+	while (i < (2 * (pipex.size - 1)))
+	{
+		close(pipefd[i]);
+		i++;
+	}
+	free(pipefd);
+}
+
 t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex)
 {
 	if (parts[0].type == SPECIAL && !ft_strcmp(parts[0].part, "<"))
@@ -72,5 +85,19 @@ t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex)
 	}
 	else
 		pipex.outfile = STDOUT_FILENO;
+	return (pipex);
+}
+
+t_pipe	ft_get_pipes(t_pipe pipex, int *pipefd)
+{
+	int	i;
+
+	i = 0;
+	while (i < pipex.size - 1)
+	{
+		if (pipe(pipefd + 2 * i) < 0)
+			perror("Pipe: ");
+		i++;
+	}
 	return (pipex);
 }
