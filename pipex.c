@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/04 14:09:48 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/04 14:33:57 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,7 @@ t_part *parts, int *pipefd)
 		if (child < 0)
 			perror("Fork: ");
 		if (child == 0)
-			ft_child_process(pipex, pipefd + 2, s_env, parts);
-		pipex.iter++;
+			ft_child_process(pipex, pipefd, s_env, parts);
 		if (pipex.iter > 0)
 		{
 			close(pipefd[0]);
@@ -126,6 +125,7 @@ t_part *parts, int *pipefd)
 		}
 		pipefd[0] = pipefd[2];
 		pipefd[1] = pipefd[3];
+		pipex.iter++;
 	}
 	close(pipefd[0]);
 	close(pipefd[1]);
