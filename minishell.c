@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/04 09:52:49 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/04 14:08:11 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,16 @@ t_env *s_env, int nr_parts)
 	i = 0;
 	while (i < nr_parts)
 	{
-		if (parts[i].type == SPECIAL)
+		if (parts[i].type == SPECIAL && ft_strchr(parts[i].part, '|'))
 		{
-			if (ft_strchr(parts[i].part, '|'))
-			{
-				if (i == nr_parts - 1)
-					*exit_status = ft_syntax_error_eof(s_env->line_nr);
-				else if (ft_strcmp(parts[i].part, "|") || !i \
-				|| ft_strchr(parts[i + 1].part, '|'))
-					*exit_status = ft_syntax_error(parts, i, s_env->line_nr);
-				else
-					*exit_status = ft_pipex(nr_parts, parts, s_env);
-				return (1);
-			}
+			if (i == nr_parts - 1)
+				*exit_status = ft_syntax_error_eof(s_env->line_nr);
+			else if (ft_strcmp(parts[i].part, "|") || !i \
+			|| ft_strchr(parts[i + 1].part, '|'))
+				*exit_status = ft_syntax_error(parts, i, s_env->line_nr);
+			else
+				*exit_status = ft_pipex(nr_parts, parts, s_env);
+			return (1);
 		}
 		i++;
 	}
