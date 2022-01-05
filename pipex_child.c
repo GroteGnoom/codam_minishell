@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/05 11:04:06 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/05 11:18:49 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,19 @@ static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, char **commands)
 {
 	char	**cmd;
-	int		pipes;
 	int		i;
 	int		j;
 
-	pipes = 0;
 	i = pipex.begin;
 	j = 0;
 	cmd = ft_calloc((pipex.len + 1) * sizeof(char *), 1);
-	while (pipes < pipex.iter)
+	while (j < pipex.iter)
 	{
 		if (!ft_strcmp(commands[i], "|") && parts[i].type == SPECIAL)
-			pipes++;
+			j++;
 		i++;
 	}
+	j = 0;
 	if (pipex.begin)
 		pipex.len -= pipex.end;
 	if (!ft_strcmp(commands[i], "<") || \
