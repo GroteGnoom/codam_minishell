@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/29 09:06:20 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/05 11:12:08 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "Libft/libft.h"
 #include <stdio.h>
 
-static void	ft_write_error_msg(char *str);
+static void	ft_write_error_msg(char *str, t_env *s_env);
 
 void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
 {
@@ -39,7 +39,7 @@ void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
 			free(cmd);
 		i++;
 	}
-	ft_write_error_msg(args[0]);
+	ft_write_error_msg(args[0], s_env);
 	exit(127);
 }
 
@@ -69,10 +69,13 @@ char	**ft_get_paths(char **env)
 	return (paths);
 }
 
-static void	ft_write_error_msg(char *str)
+static void	ft_write_error_msg(char *str, t_env *s_env)
 {
 	ft_putstr_fd(SHELL_NAME, 2);
-	ft_putstr_fd(": ", 2);
+	if (isatty(STDIN_FILENO))
+		ft_putstr_fd(": ", 2);
+	else
+		ft_print_line_nr(s_env->line_nr);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": command not found\n", 2);
 }
