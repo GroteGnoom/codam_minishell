@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/23 13:52:00 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/03 09:43:01 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/05 09:49:49 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	ft_syntax_error_eof(int line_nr)
 	ft_putstr_fd(SHELL_NAME, 2);
 	if (!isatty(STDIN_FILENO))
 		ft_print_line_nr(line_nr + 1);
+	else
+		ft_putstr_fd(": ", 2);
 	ft_putstr_fd("syntax error: unexpected end of file\n", 2);
 	return (2);
 }
