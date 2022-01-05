@@ -60,6 +60,8 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
+shell_test_error 'ls < test_shell_split.c | grep "a"' #should not give an error, but at this moment minishell does
+shell_test 'ls < test_shell_split.c | grep "a"'
 shell_test_error 'ls | | ls'
 shell_test_error 'ls | "|"'
 shell_test_error 'echo < |'
