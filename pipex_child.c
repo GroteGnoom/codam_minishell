@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/04 14:30:27 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/05 09:54:30 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 
 static void	ft_dup2(int first, int second);
 
-static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex);
+static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex, t_env *s_env);
+
+static void ft_check_filename(char **str, t_env *s_env);
 
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 {
@@ -36,7 +38,7 @@ void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 	}
 	close(pipefd[2]);
 	close(pipefd[3]);
-	pipex.cmd_flag = ft_get_cmd_flag(pipex.commands, pipex.iter, pipex);
+	pipex.cmd_flag = ft_get_cmd_flag(pipex.commands, pipex.iter, pipex, s_env);
 	ft_try_paths(pipex.paths, pipex.cmd_flag, s_env, parts);
 }
 
@@ -54,7 +56,7 @@ static void	ft_dup2(int first, int second)
 	}
 }
 
-static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex)
+static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex, t_env *s_env)
 {
 	char	**cmd;
 	int		pipes;
@@ -73,9 +75,26 @@ static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex)
 	}
 	if (pipex.begin)
 		pipex.len -= pipex.end;
+	if (!ft_strcmp(commands[i], "<") || !ft_strcmp(commands[i], ">>") || !ft_strcmp(commands[i], ">"))
+		ft_check_filename(commands + i, s_env);
 	while (commands[i] && i < pipex.len && ft_strcmp(commands[i], "|"))
 		cmd[j++] = ft_strdup(commands[i++]);
 	if (i == pipex.len + pipex.end)
 		free(commands[i]);
 	return (cmd);
+}
+
+static void ft_check_filename(char **str, t_env *s_env)
+{
+	int	fd;
+
+	if (!ft_strcmp(str[0], "<"))
+		fd = open(str[1], O_RDONLY);
+	else
+		fd = open(str[1], O_RDWR | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
+		ft_redir_error(SHELL_NAME, str[1], s_env->line_nr);
+	else
+		close(fd);
+	exit(0);
 }
