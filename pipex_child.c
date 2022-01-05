@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/05 09:54:30 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/05 10:10:18 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@
 
 static void	ft_dup2(int first, int second);
 
-static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex, t_env *s_env);
+static char	**ft_get_cmd_flag(char **commands, int iter, \
+t_pipe pipex, t_env *s_env);
 
-static void ft_check_filename(char **str, t_env *s_env);
+static void	ft_check_filename(char **str, t_env *s_env);
 
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 {
@@ -56,7 +57,8 @@ static void	ft_dup2(int first, int second)
 	}
 }
 
-static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex, t_env *s_env)
+static char	**ft_get_cmd_flag(char **commands, int iter, \
+t_pipe pipex, t_env *s_env)
 {
 	char	**cmd;
 	int		pipes;
@@ -75,7 +77,8 @@ static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex, t_env *s_
 	}
 	if (pipex.begin)
 		pipex.len -= pipex.end;
-	if (!ft_strcmp(commands[i], "<") || !ft_strcmp(commands[i], ">>") || !ft_strcmp(commands[i], ">"))
+	if (!ft_strcmp(commands[i], "<") || !ft_strcmp(commands[i], ">>") \
+	|| !ft_strcmp(commands[i], ">"))
 		ft_check_filename(commands + i, s_env);
 	while (commands[i] && i < pipex.len && ft_strcmp(commands[i], "|"))
 		cmd[j++] = ft_strdup(commands[i++]);
@@ -84,7 +87,7 @@ static char	**ft_get_cmd_flag(char **commands, int iter, t_pipe pipex, t_env *s_
 	return (cmd);
 }
 
-static void ft_check_filename(char **str, t_env *s_env)
+static void	ft_check_filename(char **str, t_env *s_env)
 {
 	int	fd;
 
