@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/05 10:10:18 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/05 10:57:24 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 static void	ft_dup2(int first, int second);
 
-static char	**ft_get_cmd_flag(char **commands, int iter, \
-t_pipe pipex, t_env *s_env);
+static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
+t_env *s_env, char **commands);
 
 static void	ft_check_filename(char **str, t_env *s_env);
 
@@ -39,7 +39,7 @@ void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 	}
 	close(pipefd[2]);
 	close(pipefd[3]);
-	pipex.cmd_flag = ft_get_cmd_flag(pipex.commands, pipex.iter, pipex, s_env);
+	pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env, pipex.commands);
 	ft_try_paths(pipex.paths, pipex.cmd_flag, s_env, parts);
 }
 
@@ -57,8 +57,8 @@ static void	ft_dup2(int first, int second)
 	}
 }
 
-static char	**ft_get_cmd_flag(char **commands, int iter, \
-t_pipe pipex, t_env *s_env)
+static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
+t_env *s_env, char **commands)
 {
 	char	**cmd;
 	int		pipes;
@@ -69,16 +69,16 @@ t_pipe pipex, t_env *s_env)
 	i = pipex.begin;
 	j = 0;
 	cmd = ft_calloc((pipex.len + 1) * sizeof(char *), 1);
-	while (pipes < iter)
+	while (pipes < pipex.iter)
 	{
-		if (!ft_strcmp(commands[i], "|"))
+		if (!ft_strcmp(commands[i], "|") && parts[i].type == SPECIAL)
 			pipes++;
 		i++;
 	}
 	if (pipex.begin)
 		pipex.len -= pipex.end;
-	if (!ft_strcmp(commands[i], "<") || !ft_strcmp(commands[i], ">>") \
-	|| !ft_strcmp(commands[i], ">"))
+	if (!ft_strcmp(commands[i], "<") || \
+	!ft_strcmp(commands[i], ">>") || !ft_strcmp(commands[i], ">"))
 		ft_check_filename(commands + i, s_env);
 	while (commands[i] && i < pipex.len && ft_strcmp(commands[i], "|"))
 		cmd[j++] = ft_strdup(commands[i++]);
