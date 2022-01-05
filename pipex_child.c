@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/05 10:57:24 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/05 11:04:06 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ t_env *s_env, char **commands)
 	if (!ft_strcmp(commands[i], "<") || \
 	!ft_strcmp(commands[i], ">>") || !ft_strcmp(commands[i], ">"))
 		ft_check_filename(commands + i, s_env);
-	while (commands[i] && i < pipex.len && ft_strcmp(commands[i], "|"))
+	while (commands[i] && i < pipex.len && (ft_strcmp(commands[i], "|") \
+	|| parts[i].type != SPECIAL))
 		cmd[j++] = ft_strdup(commands[i++]);
 	if (i == pipex.len + pipex.end)
 		free(commands[i]);
