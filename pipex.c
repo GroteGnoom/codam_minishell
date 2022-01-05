@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/04 14:33:57 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/05 10:11:57 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,6 @@ static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 	int		pipefd[4];
 	int		status;
 
-	//pipefd = (int *)malloc((2 * (pipex.size)) * sizeof(int));
-	//if (!pipefd)
-	//	perror("malloc: ");
-	//pipex = ft_get_pipes(pipex, pipefd);
 	pipex.paths = ft_get_paths(s_env->env);
 	pipex.iter = 0;
 	status = ft_execute_pipes(pipex, s_env, parts, pipefd);
