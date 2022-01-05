@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/23 13:52:00 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/03 09:43:01 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/05 10:25:27 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,6 @@ int	ft_syntax_error_eof(int line_nr)
 	if (!isatty(STDIN_FILENO))
 		ft_print_line_nr(line_nr + 1);
 	ft_putstr_fd("syntax error: unexpected end of file\n", 2);
-	return (2);
-}
-
-int	ft_syntax_error(t_part *parts, int i, int line_nr)
-{
-	if (isatty(STDIN_FILENO))
-	{
-		ft_putstr_fd(SHELL_NAME, 2);
-		ft_putstr_fd(": syntax error near unexpected token `", 2);
-		ft_putchar_fd('|', 2);
-		ft_putstr_fd("'\n", 2);
-	}
-	else
-	{
-		ft_putstr_fd(SHELL_NAME, 2);
-		ft_print_line_nr(line_nr);
-		ft_putstr_fd("syntax error near unexpected token `", 2);
-		ft_putchar_fd('|', 2);
-		ft_putstr_fd("'\n", 2);
-		ft_putstr_fd(SHELL_NAME, 2);
-		ft_print_line_nr(line_nr);
-		ft_putstr_fd("`", 2);
-		i = print_parts_error(parts);
-		ft_putstr_fd(parts[i].part, 2);
-		ft_putstr_fd("'\n", 2);
-	}
 	return (2);
 }
 

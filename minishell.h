@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/05 10:12:46 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/05 10:26:52 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, \
 t_part *parts);
 t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex);
 int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);
+int		ft_open_error(t_pipe pipex, int term_out, \
+t_part *parts, int nr_parts);
 
 void	signals(void);
 
@@ -105,6 +107,7 @@ int		ft_invalid_identifier(t_part *parts, int i, int line_nr);
 int		check_identifier(char *str, int unset);
 int		ft_exit_error(int too_many, char *arg, int line_nr);
 void	ft_print_line_nr(int line_nr);
+int		print_parts_error(t_part *parts);
 
 void	print_parts(t_part *parts);
 void	print_strs(char **strs);

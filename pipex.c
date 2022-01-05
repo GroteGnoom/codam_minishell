@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/05 10:11:57 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/05 10:24:30 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,10 @@ static int		ft_pipex_pipe(t_pipe pipe, t_env *s_env, t_part *parts);
 
 static int		ft_get_size_parts(t_part *parts);
 
-static int		ft_open_error(t_pipe pipex, int term_out, \
-t_part *parts, int nr_parts);
-
 static int		ft_execute_pipes(t_pipe pipex, t_env *s_env, \
 t_part *parts, int *pipefd);
+
+static int		ft_wait_for_child(t_pipe pipex, pid_t child);
 
 int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 {
@@ -54,21 +53,6 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 	close(term_out);
 	ft_free_strs(pipex.commands);
 	return (status);
-}
-
-static int	ft_open_error(t_pipe pipex, int term_out, \
-t_part *parts, int nr_parts)
-{
-	ft_putstr_fd(SHELL_NAME, term_out);
-	write(term_out, ": ", 2);
-	if (pipex.infile < 0)
-		write(1, parts[1].part, ft_strlen(parts[1].part));
-	else
-		write(1, parts[nr_parts - 1].part, ft_strlen(parts[1].part));
-	write(1, ": No such file or directory\n", 28);
-	if (pipex.outfile < 0)
-		return (127);
-	return (0);
 }
 
 static int	ft_get_size_parts(t_part *parts)
@@ -103,7 +87,6 @@ static int	ft_execute_pipes(t_pipe pipex, t_env *s_env, \
 t_part *parts, int *pipefd)
 {
 	pid_t	child;
-	int		status;
 
 	while (pipex.iter < pipex.size)
 	{
@@ -125,6 +108,13 @@ t_part *parts, int *pipefd)
 	}
 	close(pipefd[0]);
 	close(pipefd[1]);
+	return (ft_wait_for_child(pipex, child));
+}
+
+static int	ft_wait_for_child(t_pipe pipex, pid_t child)
+{
+	int	status;
+
 	while (pipex.iter > 0)
 	{
 		waitpid(-1, &status, 0);

@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:13 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/05 10:12:17 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/05 10:23:45 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,19 @@ t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex)
 	else
 		pipex.outfile = STDOUT_FILENO;
 	return (pipex);
+}
+
+int	ft_open_error(t_pipe pipex, int term_out, \
+t_part *parts, int nr_parts)
+{
+	ft_putstr_fd(SHELL_NAME, term_out);
+	write(term_out, ": ", 2);
+	if (pipex.infile < 0)
+		write(1, parts[1].part, ft_strlen(parts[1].part));
+	else
+		write(1, parts[nr_parts - 1].part, ft_strlen(parts[1].part));
+	write(1, ": No such file or directory\n", 28);
+	if (pipex.outfile < 0)
+		return (127);
+	return (0);
 }
