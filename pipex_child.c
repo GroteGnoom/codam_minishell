@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 13:38:04 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 14:22:42 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, char **commands)
 {
 	int		i;
+	static char	*redir[] = {"<", ">>", ">", NULL};
 
 	i = ft_find_first_command(pipex, parts, commands);
 	if (pipex.begin)
 		pipex.len -= pipex.end;
-	if (!ft_strcmp(commands[i], "<") || \
-	!ft_strcmp(commands[i], ">>") || !ft_strcmp(commands[i], ">"))
+	if (!ft_strcmp_multi(commands[i], redir))
 		ft_check_filename(commands + i, s_env, parts, i);
 	return (get_commands_between_pipes(parts + i, pipex, s_env, commands + i));
 }
