@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 14:22:42 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 15:38:29 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,11 @@ static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, char **commands)
 {
 	int		i;
-	static char	*redir[] = {"<", ">>", ">", NULL};
 
-	i = ft_find_first_command(pipex, parts, commands);
+	i = ft_find_first_command(pipex, parts);
 	if (pipex.begin)
 		pipex.len -= pipex.end;
-	if (!ft_strcmp_multi(commands[i], redir))
+	if (ft_is_redir(parts[i]))
 		ft_check_filename(commands + i, s_env, parts, i);
 	return (get_commands_between_pipes(parts + i, pipex, s_env, commands + i));
 }
@@ -74,19 +73,21 @@ t_env *s_env, char **commands)
 static void	ft_check_filename(char **str, t_env *s_env, t_part *parts, int i)
 {
 	int	fd;
+	char	*filename;
 
-	if (!str[1])
+	filename = parts[i + 1].part;
+	if (!filename)
 		ft_syntax_error(parts, 0, s_env->line_nr, "newline");
 	else if (parts[i + 1].type == SPECIAL)
-		ft_syntax_error(parts, 0, s_env->line_nr, str[1]);
+		ft_syntax_error(parts, 0, s_env->line_nr, filename);
 	else
 	{
 		if (!ft_strcmp(str[0], "<"))
-			fd = open(str[1], O_RDONLY);
+			fd = open(filename, O_RDONLY);
 		else
-			fd = open(str[1], O_RDWR | O_CREAT | O_APPEND, 0644);
+			fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
 		if (fd < 0)
-			ft_redir_error(SHELL_NAME, str[1], s_env->line_nr);
+			ft_redir_error(SHELL_NAME, filename, s_env->line_nr);
 		else
 			close(fd);
 	}
