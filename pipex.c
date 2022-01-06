@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 13:40:34 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/06 16:07:17 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 	pipex = ft_set_io(nr_parts, parts, pipex);
 	if (pipex.infile < 0 || pipex.outfile < 0)
 		return (ft_open_error(pipex, term_out, parts, nr_parts));
-	pipex.commands = ft_get_commands_parts(nr_parts, parts, &pipex);
+	pipex.len = nr_parts + pipex.begin - pipex.end;
 	pipex.size = ft_get_size_parts(parts);
 	status = ft_pipex_pipe(pipex, s_env, parts);
 	close(pipex.infile);
@@ -51,7 +51,6 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 		perror("dup2");
 	close(term_in);
 	close(term_out);
-	ft_free_strs(pipex.commands);
 	return (status);
 }
 
