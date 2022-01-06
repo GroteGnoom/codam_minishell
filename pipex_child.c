@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 15:55:24 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 16:14:45 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_env *s_env)
 
 static void	ft_check_filename(t_env *s_env, t_part *parts, int i)
 {
-	int	fd;
+	int		fd;
 	char	*filename;
 
 	filename = parts[i + 1].part;

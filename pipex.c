@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 16:07:17 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 16:18:59 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	ft_get_size_parts(t_part *parts)
 	count = 1;
 	while (parts[i].part)
 	{
-		if (parts[i].type == SPECIAL && !ft_strcmp(parts[i].part, "|"))
+		if (is_pipe(parts[i]))
 			count++;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/06 13:29:39 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/06 15:48:59 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 16:15:03 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ t_env *s_env)
 int	ft_is_redir(t_part part)
 {
 	static char	*redir[] = {"<", ">>", ">", NULL};
-	char	**redir_p;
-
+	char		**redir_p;
 
 	if (part.type != SPECIAL)
 		return (0);
@@ -67,4 +66,9 @@ int	is_pipe(t_part part)
 int	is_input_redir(t_part part)
 {
 	return (!ft_strcmp(part.part, "<") && part.type == SPECIAL);
+}
+
+int	is_output_redir(t_part part)
+{
+	return (!ft_strcmp(part.part, ">") && part.type == SPECIAL);
 }
