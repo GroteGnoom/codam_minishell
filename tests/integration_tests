@@ -49,8 +49,6 @@ function shell_test_no_valgrind()
 
 function output_test()
 {
-	rm -f minishell_outfile
-	rm -f bash_outfile
 	export OUTFILE=minishell_outfile
 	echo -e $1 | valgrind --leak-check=full ../minishell > minishell_stdout 2>leaks_output
 	export OUTFILE=bash_outfile
