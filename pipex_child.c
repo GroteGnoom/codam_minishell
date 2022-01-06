@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 10:52:44 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/06 10:58:16 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ t_env *s_env, char **commands)
 		if (!ft_strcmp(commands[i], "<") || \
 		!ft_strcmp(commands[i], ">>") || !ft_strcmp(commands[i], ">"))
 		{
-			check_for_redirections(&k, parts + i, s_env, i + 1);
+			check_for_redirections(&k, parts + i + 1, s_env, i + 2);
 			i += 2;
-			perror(commands[i]);
 		}
-		cmd[j++] = ft_strdup(commands[i++]);
+		else
+			cmd[j++] = ft_strdup(commands[i++]);
 	}
 	if (i == pipex.len + pipex.end)
 		free(commands[i]);
