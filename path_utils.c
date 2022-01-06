@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/05 11:12:08 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/06 10:34:58 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
 	int		i;
 
 	i = 0;
+	if (!args || !args[i])
+		return ;
 	while (paths[i])
 	{
 		if (!ft_strcmp(args[0], "export"))

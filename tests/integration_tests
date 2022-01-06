@@ -66,6 +66,7 @@ shell_test_error 'ls < test_shell_split.c | grep "a"' #should not give an error,
 shell_test 'ls < test_shell_split.c | grep "a"'
 output_test 'cat > $OUTFILE < test_shell_split.c -e'
 output_test 'cat > $OUTFILE < test_shell_split.c -e | ls'
+# output_test '> > outfile'
 shell_test_error 'ls | >'
 #shell_test_error 'ls | > >' # these create files that will mess up later tests
 #shell_test_error 'ls | > >>' 
