@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 15:25:04 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 15:49:17 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		ft_open_error(t_pipe pipex, int term_out, \
 t_part *parts, int nr_parts);
 int		ft_find_first_command(t_pipe pipex, t_part *parts);
 char	**get_commands_between_pipes(t_part *parts, t_pipe pipex, \
-t_env *s_env, char **commands);
+t_env *s_env);
 int	ft_is_redir(t_part part);
 int		is_pipe(t_part part);
 int		is_input_redir(t_part part);

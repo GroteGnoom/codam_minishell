@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/06 13:29:39 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/06 15:22:31 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 15:48:59 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "Libft/libft.h"
 
 char	**get_commands_between_pipes(t_part *parts, t_pipe pipex, \
-t_env *s_env, char **commands)
+t_env *s_env)
 {
 	char		**cmd;
 	int			i;
@@ -24,7 +24,7 @@ t_env *s_env, char **commands)
 	i = 0;
 	j = 0;
 	cmd = ft_calloc((pipex.len + 1) * sizeof(char *), 1);
-	while (commands[i] && i < pipex.len && !is_pipe(parts[i]))
+	while (parts[i].part && i < pipex.len && !is_pipe(parts[i]))
 	{
 		if (ft_is_redir(parts[i]))
 		{

@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 15:38:29 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 15:55:24 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 static void	ft_dup2(int first, int second);
 
 static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
-t_env *s_env, char **commands);
+t_env *s_env);
 
-static void	ft_check_filename(char **str, t_env *s_env, t_part *parts, int i);
+static void	ft_check_filename(t_env *s_env, t_part *parts, int i);
 
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 {
@@ -39,7 +39,7 @@ void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 	}
 	close(pipefd[2]);
 	close(pipefd[3]);
-	pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env, pipex.commands);
+	pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env);
 	ft_try_paths(pipex.paths, pipex.cmd_flag, s_env, parts);
 }
 
@@ -58,7 +58,7 @@ static void	ft_dup2(int first, int second)
 }
 
 static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
-t_env *s_env, char **commands)
+t_env *s_env)
 {
 	int		i;
 
@@ -66,11 +66,11 @@ t_env *s_env, char **commands)
 	if (pipex.begin)
 		pipex.len -= pipex.end;
 	if (ft_is_redir(parts[i]))
-		ft_check_filename(commands + i, s_env, parts, i);
-	return (get_commands_between_pipes(parts + i, pipex, s_env, commands + i));
+		ft_check_filename(s_env, parts, i);
+	return (get_commands_between_pipes(parts + i, pipex, s_env));
 }
 
-static void	ft_check_filename(char **str, t_env *s_env, t_part *parts, int i)
+static void	ft_check_filename(t_env *s_env, t_part *parts, int i)
 {
 	int	fd;
 	char	*filename;
@@ -82,7 +82,7 @@ static void	ft_check_filename(char **str, t_env *s_env, t_part *parts, int i)
 		ft_syntax_error(parts, 0, s_env->line_nr, filename);
 	else
 	{
-		if (!ft_strcmp(str[0], "<"))
+		if (is_input_redir(parts[i]))
 			fd = open(filename, O_RDONLY);
 		else
 			fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
