@@ -49,6 +49,8 @@ function shell_test_no_valgrind()
 
 function output_test()
 {
+	rm -f minishell_outfile
+	rm -f bash_outfile
 	export OUTFILE=minishell_outfile
 	echo -e $1 | valgrind --leak-check=full ../minishell > minishell_stdout 2>leaks_output
 	export OUTFILE=bash_outfile
@@ -63,6 +65,7 @@ make DEBUG=1 LEAKS=1 -C ..
 shell_test_error 'ls < test_shell_split.c | grep "a"' #should not give an error, but at this moment minishell does
 shell_test 'ls < test_shell_split.c | grep "a"'
 output_test 'cat > $OUTFILE < test_shell_split.c -e'
+output_test 'cat > $OUTFILE < test_shell_split.c -e | ls'
 shell_test_error 'ls | >'
 #shell_test_error 'ls | > >' # these create files that will mess up later tests
 #shell_test_error 'ls | > >>' 
