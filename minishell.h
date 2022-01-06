@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 10:04:44 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/06 11:46:51 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex);
 int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);
 int		ft_open_error(t_pipe pipex, int term_out, \
 t_part *parts, int nr_parts);
+int ft_find_first_command(t_pipe pipex, t_part *parts, char **commands);
 
 void	signals(void);
 
