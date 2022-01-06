@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/06 13:29:39 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/06 13:46:17 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 14:11:25 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@
 char	**get_commands_between_pipes(t_part *parts, t_pipe pipex, \
 t_env *s_env, char **commands)
 {
-	char	**cmd;
-	int		i;
-	int		j;
+	char		**cmd;
+	int			i;
+	int			j;
+	static char	*redir[] = {"<", ">>", ">", NULL};
 
 	i = 0;
 	j = 0;
@@ -27,8 +28,7 @@ t_env *s_env, char **commands)
 	while (commands[i] && i < pipex.len && (ft_strcmp(commands[i], "|") \
 	|| parts[i].type != SPECIAL))
 	{
-		if (!ft_strcmp(commands[i], "<") || \
-		!ft_strcmp(commands[i], ">>") || !ft_strcmp(commands[i], ">"))
+		if (!ft_strcmp_multi(commands[i], redir))
 		{
 			if (open(commands[i + 1], O_RDONLY) < 0)
 			{
