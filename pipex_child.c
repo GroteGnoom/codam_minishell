@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 11:43:08 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 13:38:04 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,40 +60,15 @@ static void	ft_dup2(int first, int second)
 static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, char **commands)
 {
-	char	**cmd;
 	int		i;
-	int		j;
-	int		k;
 
-	k = 0;
-	cmd = ft_calloc((pipex.len + 1) * sizeof(char *), 1);
 	i = ft_find_first_command(pipex, parts, commands);
-	j = 0;
 	if (pipex.begin)
 		pipex.len -= pipex.end;
 	if (!ft_strcmp(commands[i], "<") || \
 	!ft_strcmp(commands[i], ">>") || !ft_strcmp(commands[i], ">"))
 		ft_check_filename(commands + i, s_env, parts, i);
-	while (commands[i] && i < pipex.len && (ft_strcmp(commands[i], "|") \
-	|| parts[i].type != SPECIAL))
-	{
-		if (!ft_strcmp(commands[i], "<") || \
-		!ft_strcmp(commands[i], ">>") || !ft_strcmp(commands[i], ">"))
-		{
-			check_for_redirections(&k, parts + i + 1, s_env, i + 2);
-			if (open(commands[i + 1], O_RDONLY) < 0)
-			{
-				ft_redir_error(SHELL_NAME, commands[i + 1], s_env->line_nr);
-				exit(0);
-			}
-			i += 2;
-		}
-		else
-			cmd[j++] = ft_strdup(commands[i++]);
-	}
-	if (i == pipex.len + pipex.end)
-		free(commands[i]);
-	return (cmd);
+	return (get_commands_between_pipes(parts + i, pipex, s_env, commands + i));
 }
 
 static void	ft_check_filename(char **str, t_env *s_env, t_part *parts, int i)

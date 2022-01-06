@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:13 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 11:49:50 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 13:24:09 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_part *parts, int nr_parts)
 	return (0);
 }
 
-int ft_find_first_command(t_pipe pipex, t_part *parts, char **commands)
+int	ft_find_first_command(t_pipe pipex, t_part *parts, char **commands)
 {
 	int		i;
 	int		j;
