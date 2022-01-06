@@ -6,7 +6,11 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2022/01/06 10:02:20 by sde-rijk      ########   odam.nl         */
+=======
+/*   Updated: 2022/01/05 12:02:18 by daniel        ########   odam.nl         */
+>>>>>>> d085acf84b5b5bdd041cb2acb53225e94ffe8546
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +26,7 @@ static void	ft_dup2(int first, int second);
 static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, char **commands);
 
-static void	ft_check_filename(char **str, t_env *s_env);
+static void	ft_check_filename(char **str, t_env *s_env, t_part *parts, int i);
 
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 {
@@ -61,25 +65,24 @@ static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, char **commands)
 {
 	char	**cmd;
-	int		pipes;
 	int		i;
 	int		j;
 
-	pipes = 0;
 	i = pipex.begin;
 	j = 0;
 	cmd = ft_calloc((pipex.len + 1) * sizeof(char *), 1);
-	while (pipes < pipex.iter)
+	while (j < pipex.iter)
 	{
 		if (!ft_strcmp(commands[i], "|") && parts[i].type == SPECIAL)
-			pipes++;
+			j++;
 		i++;
 	}
+	j = 0;
 	if (pipex.begin)
 		pipex.len -= pipex.end;
 	if (!ft_strcmp(commands[i], "<") || \
 	!ft_strcmp(commands[i], ">>") || !ft_strcmp(commands[i], ">"))
-		ft_check_filename(commands + i, s_env);
+		ft_check_filename(commands + i, s_env, parts, i);
 	while (commands[i] && i < pipex.len && (ft_strcmp(commands[i], "|") \
 	|| parts[i].type != SPECIAL))
 	{
@@ -97,17 +100,24 @@ t_env *s_env, char **commands)
 	return (cmd);
 }
 
-static void	ft_check_filename(char **str, t_env *s_env)
+static void	ft_check_filename(char **str, t_env *s_env, t_part *parts, int i)
 {
 	int	fd;
 
-	if (!ft_strcmp(str[0], "<"))
-		fd = open(str[1], O_RDONLY);
+	if (!str[1])
+		ft_syntax_error(parts, 0, s_env->line_nr, "newline");
+	else if (parts[i + 1].type == SPECIAL)
+		ft_syntax_error(parts, 0, s_env->line_nr, str[1]);
 	else
-		fd = open(str[1], O_RDWR | O_CREAT | O_APPEND, 0644);
-	if (fd < 0)
-		ft_redir_error(SHELL_NAME, str[1], s_env->line_nr);
-	else
-		close(fd);
+	{
+		if (!ft_strcmp(str[0], "<"))
+			fd = open(str[1], O_RDONLY);
+		else
+			fd = open(str[1], O_RDWR | O_CREAT | O_APPEND, 0644);
+		if (fd < 0)
+			ft_redir_error(SHELL_NAME, str[1], s_env->line_nr);
+		else
+			close(fd);
+	}
 	exit(0);
 }

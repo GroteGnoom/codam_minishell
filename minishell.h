@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 09:50:13 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/06 10:04:44 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env);
 int		check_for_redirections(int *last_exit_status, t_part *parts, \
 t_env *s_env, int nr_parts);
 
-int		ft_syntax_error(t_part *parts, int i, int line_nr);
+int		ft_syntax_error(t_part *parts, int i, int line_nr, char *token);
 int		ft_syntax_error_eof(int line_nr);
 int		ft_redir_error(char *str, char *str2, int line_nr);
 int		ft_invalid_identifier(t_part *parts, int i, int line_nr);
