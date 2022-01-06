@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/24 10:32:13 by daniel        #+#    #+#                 */
-/*   Updated: 2021/12/24 10:37:31 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/06 10:26:52 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_strs(char **strs)
 	i = 0;
 	while (strs[i])
 	{
-		printf("%s\n", strs[i]);
+		perror(strs[i]);
 		i++;
 	}
 }
