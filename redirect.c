@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 10:04:37 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 10:34:02 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	ft_get_args(t_part *new_args, t_part *parts, char *c)
 	int	i;
 
 	i = 0;
-	c += 2;;
+	c += 2;
 	while (parts->part)
 	{
 		if ((!ft_strcmp(parts->part, "<") || !ft_strcmp(parts->part, "<<") \
