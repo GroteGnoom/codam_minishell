@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 09:48:14 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/07 10:01:38 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ enum e_part_type {
 
 typedef struct s_part {
 	char				*part;
+	int					*quoted;
 	enum e_part_type	type;
 }	t_part;
 
