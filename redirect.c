@@ -6,11 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2022/01/07 14:31:21 by daniel        ########   odam.nl         */
-=======
-/*   Updated: 2022/01/07 14:13:36 by sde-rijk      ########   odam.nl         */
->>>>>>> e442c4ac10798c2334bfc2f7757bbadfcd8bfa3e
+/*   Updated: 2022/01/07 14:36:58 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

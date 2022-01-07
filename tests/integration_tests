@@ -60,8 +60,8 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
-shell_test '>'
-#shell_test 'echo'
+shell_test_error '>'
+shell_test 'echo'
 output_test 'pwd > $OUTFILE'
 output_test '> $OUTFILE pwd'
 shell_test_error 'ls < lol.c | grep "a"'
