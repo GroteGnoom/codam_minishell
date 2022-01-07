@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 16:16:35 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/07 09:48:14 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int		ft_is_redir(t_part part);
 int		is_pipe(t_part part);
 int		is_input_redir(t_part part);
 int		is_output_redir(t_part part);
+int		is_here_doc(t_part part);
 
 void	signals(void);
 
