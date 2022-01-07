@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 10:33:30 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/07 14:12:48 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ int	ft_check_parts(int *last_exit_status, char *line, t_env *s_env)
 			nr_parts);
 		if (!executed)
 			executed = is_built_in(parts[0].part, nr_parts, parts, s_env);
-		if (executed == 300)
-			*last_exit_status = ft_executable(nr_parts, parts, s_env);
 	}
 	free(line);
 	ft_free_parts(parts);
