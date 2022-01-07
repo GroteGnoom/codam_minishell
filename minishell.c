@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 10:00:15 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 10:33:30 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ t_env *s_env, int nr_parts)
 		if (parts[i].type == SPECIAL)
 		{
 			if (ft_is_redir(parts[i]))
-				*last_exit_status = ft_redirections(nr_parts, parts, s_env, &exec);
+				*last_exit_status = ft_redirections(nr_parts, \
+					parts, s_env, &exec);
 			if (!ft_strcmp(parts[i].part, "<<"))
 				*last_exit_status = redirect_here_doc(nr_parts, parts, \
 				s_env, &exec);
