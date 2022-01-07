@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 14:52:20 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 15:03:55 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,5 @@ static void	ft_check_filename(t_env *s_env, t_part *parts, int i)
 
 	ret = ft_do_redir(parts, s_env->line_nr, i);
 	if (ret)
-		exit(0);
+		exit(ret);
 }
