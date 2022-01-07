@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:13 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 09:44:58 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/07 14:48:37 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex)
 	}
 	else
 		pipex.infile = STDIN_FILENO;
-	if (is_output_redir(parts[nr_parts - 2]))
+	if (nr_parts - 2 >= 0 && &parts[nr_parts - 2] && \
+	is_output_redir(parts[nr_parts - 2]))
 	{
 		pipex.outfile = open(parts[nr_parts - 1].part, \
 		O_RDWR | O_CREAT | O_TRUNC, 0644);
