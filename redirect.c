@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 10:54:55 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 11:21:39 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <stdio.h>
 
 static int	ft_multiple_redir(t_part *parts, int line_nr);
-
-static int	ft_do_redir(t_part *parts, int line_nr, int i);
 
 static int	ft_get_args(t_part *new_args, t_part *parts)
 {
@@ -91,7 +89,7 @@ static int	ft_multiple_redir(t_part *parts, int line_nr)
 	return (ret);
 }
 
-static int	ft_do_redir(t_part *parts, int line_nr, int i)
+int	ft_do_redir(t_part *parts, int line_nr, int i)
 {
 	int	fd;
 

@@ -66,7 +66,7 @@ output_test 'cat > $OUTFILE < test_shell_split.c -e'
 output_test 'cat < test_shell_split.c > $OUTFILE -e'
 output_test 'cat > $OUTFILE < test_shell_split.c -e | ls'
 shell_test 'ls | < integration_tests grep "a" | cat -e'
-output_test '> $OUTFILE ls -l'
+output_test '> $OUTFILE ls -a'
 # output_test '> > outfile'
 shell_test_error 'ls | >'
 #shell_test_error 'ls | > >' # these create files that will mess up later tests

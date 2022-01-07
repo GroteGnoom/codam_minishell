@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 16:14:45 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/07 11:27:17 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,24 +72,22 @@ t_env *s_env)
 
 static void	ft_check_filename(t_env *s_env, t_part *parts, int i)
 {
-	int		fd;
 	char	*filename;
+	int		ret;
 
 	filename = parts[i + 1].part;
 	if (!filename)
-		ft_syntax_error(parts, 0, s_env->line_nr, "newline");
-	else if (parts[i + 1].type == SPECIAL)
-		ft_syntax_error(parts, 0, s_env->line_nr, filename);
-	else
 	{
-		if (is_input_redir(parts[i]))
-			fd = open(filename, O_RDONLY);
-		else
-			fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
-		if (fd < 0)
-			ft_redir_error(SHELL_NAME, filename, s_env->line_nr);
-		else
-			close(fd);
+		ft_syntax_error(parts, 0, s_env->line_nr, "newline");
+		exit(0);
 	}
-	exit(0);
+	else if (parts[i + 1].type == SPECIAL)
+	{
+		ft_syntax_error(parts, 0, s_env->line_nr, filename);
+		exit(0);
+	}
+	else
+		ret = ft_do_redir(parts, s_env->line_nr, i);
+	if (ret == 1)
+		exit(0);
 }
