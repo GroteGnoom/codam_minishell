@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 11:40:03 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 14:11:21 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ static void	ft_check_filename(t_env *s_env, t_part *parts, int i);
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 {
 	if (pipex.iter == 0)
-		ft_dup2(pipex.infile, pipefd[3]);
+	{
+		if (pipex.size > 1)
+			ft_dup2(pipex.infile, pipefd[3]);
+	}
 	else if (pipex.iter == pipex.size - 1)
 		ft_dup2(pipefd[0], pipex.outfile);
 	else
