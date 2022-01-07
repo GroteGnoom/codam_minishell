@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/29 09:07:23 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/07 09:47:54 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 	i = 0;
 	*exec = 1;
 	new_args = ft_calloc((nr_parts) * sizeof(*parts), 1);
-	while (ft_strcmp(parts[i].part, "<<") != 0)
+	while (is_here_doc(parts[i]))
 	{
 		new_args[i].part = ft_strdup(parts[i].part);
 		i++;

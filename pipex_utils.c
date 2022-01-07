@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:13 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 16:13:37 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/07 09:44:58 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex)
 {
-	if (parts[0].type == SPECIAL && !ft_strcmp(parts[0].part, "<"))
+	if (is_input_redir(parts[0]))
 	{
 		pipex.infile = open(parts[1].part, O_RDONLY);
 		pipex.begin = 2;
