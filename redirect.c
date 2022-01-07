@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 10:36:26 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 10:39:15 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	ft_get_args(t_part *new_args, t_part *parts)
 	count = 0;
 	while (parts[i].part)
 	{
-		if (!ft_is_redir(parts[i]))
+		if (ft_is_redir(parts[i]))
 		{
 			if (!parts[i + 1].part || parts[i + 2].part)
 				break ;
