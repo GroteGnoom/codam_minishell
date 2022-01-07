@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 15:03:55 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/07 15:08:31 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 #include <stdio.h>
 #include <errno.h>
 
-static void	ft_dup2(int first, int second);
+static void		ft_dup2(int first, int second);
 
-static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
+static t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env);
 
-static void	ft_check_filename(t_env *s_env, t_part *parts, int i);
+static void		ft_check_filename(t_env *s_env, t_part *parts, int i);
 
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 {
@@ -43,8 +43,8 @@ void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 	close(pipefd[2]);
 	close(pipefd[3]);
 	pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env);
-	perror(pipex.cmd_flag[0]);
-	is_built_in(pipex.cmd_flag[0], pipex.len, parts, s_env);
+	perror(pipex.cmd_flag[0].part);
+	is_built_in(pipex.cmd_flag[0].part, pipex.len, pipex.cmd_flag, s_env);
 	// ft_try_paths(pipex.paths, pipex.cmd_flag, s_env, parts);
 }
 
@@ -62,7 +62,7 @@ static void	ft_dup2(int first, int second)
 	}
 }
 
-static char	**ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
+static t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env)
 {
 	int		i;

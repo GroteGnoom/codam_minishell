@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 11:21:49 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 15:07:37 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_pipe
 	char	**paths;
 
 	char	*cmd;
-	char	**cmd_flag;
+	t_part	*cmd_flag;
 }	t_pipe;
 
 typedef struct s_env
@@ -58,7 +58,7 @@ int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);
 int		ft_open_error(t_pipe pipex, int term_out, \
 t_part *parts, int nr_parts);
 int		ft_find_first_command(t_pipe pipex, t_part *parts);
-char	**get_commands_between_pipes(t_part *parts, t_pipe pipex, \
+t_part	*get_commands_between_pipes(t_part *parts, t_pipe pipex, \
 t_env *s_env);
 int		ft_is_redir(t_part part);
 int		is_pipe(t_part part);
