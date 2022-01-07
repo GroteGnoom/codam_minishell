@@ -60,7 +60,7 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
-#shell_test '>'
+shell_test '>'
 #shell_test 'echo'
 shell_test_error 'ls < lol.c | grep "a"'
 shell_test 'ls < test_shell_split.c | grep "a"'

@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 10:47:40 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 14:21:59 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,12 @@ void	ft_free_parts(t_part *parts)
 	int	i;
 
 	i = 0;
+	if (!parts)
+		return ;
 	while (parts[i].part)
 	{
 		free(parts[i].part);
 		i++;
 	}
-	if (parts)
-		free(parts);
+	free(parts);
 }
