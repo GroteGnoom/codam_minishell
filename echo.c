@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:56 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/15 11:20:04 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 14:29:25 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	ft_echo(int nr_parts, t_part *parts)
 	int	i;
 
 	i = 1;
+	if (!&parts[1] || !parts[1].part)
+		return (write(1, "\n", 1));
 	while (!ft_strcmp(parts[i].part, "-n"))
 		i++;
 	while (i < nr_parts)
