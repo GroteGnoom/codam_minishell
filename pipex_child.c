@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 11:27:17 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 11:40:03 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,9 @@ t_env *s_env)
 
 static void	ft_check_filename(t_env *s_env, t_part *parts, int i)
 {
-	char	*filename;
 	int		ret;
 
-	filename = parts[i + 1].part;
-	if (!filename)
-	{
-		ft_syntax_error(parts, 0, s_env->line_nr, "newline");
-		exit(0);
-	}
-	else if (parts[i + 1].type == SPECIAL)
-	{
-		ft_syntax_error(parts, 0, s_env->line_nr, filename);
-		exit(0);
-	}
-	else
-		ret = ft_do_redir(parts, s_env->line_nr, i);
-	if (ret == 1)
+	ret = ft_do_redir(parts, s_env->line_nr, i);
+	if (ret)
 		exit(0);
 }
