@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 10:42:54 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 10:54:55 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	ft_multiple_redir(t_part *parts, int line_nr)
 	int	i;
 	int	ret;
 
-	i = 1;
+	i = 0;
 	ret = 0;
 	while (parts[i].part && !ft_is_redir(parts[i]))
 		i++;
