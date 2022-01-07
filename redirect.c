@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 11:39:28 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/07 14:13:36 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	ft_redirections(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 		return (ft_redir_error("dup", "", s_env->line_nr));
 	ret = ft_multiple_redir(parts, s_env->line_nr);
 	if (!ret)
-		ret = ft_executable(args, new_args, s_env);
+		ret = is_built_in(new_args[0].part, args, new_args, s_env);
 	ft_free_parts(new_args);
 	if (dup2(term_in, STDIN_FILENO) < 0 || dup2(term_out, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", "", s_env->line_nr));
