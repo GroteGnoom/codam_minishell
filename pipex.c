@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 14:34:06 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/10 14:36:57 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,15 @@ static int	ft_execute_pipes(t_pipe pipex, t_env *s_env, \
 t_part *parts, int *pipefd)
 {
 	pid_t	child;
+	int		status;
 
 	child = 0;
 	if (pipex.size == 1)
 	{
 		pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env);
-		is_built_in(pipex.cmd_flag[0].part, count_parts(pipex.cmd_flag), pipex.cmd_flag, s_env);
+		status = is_built_in(pipex.cmd_flag[0].part, count_parts(pipex.cmd_flag), pipex.cmd_flag, s_env);
 		free(pipex.cmd_flag);
-		return (0); //TODO return correct status
+		return (status);
 	}
 	while (pipex.iter < pipex.size)
 	{
