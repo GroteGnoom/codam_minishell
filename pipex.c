@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 15:53:24 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/10 16:07:30 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,12 @@ t_part *parts, int *pipefd)
 	child = 0;
 	if (pipex.size == 1)
 	{
-		pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env);
-		status = is_built_in(pipex.cmd_flag[0].part, count_parts(pipex.cmd_flag), pipex.cmd_flag, s_env);
-		free(pipex.cmd_flag);
+		pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env, &status);
+		if (!status)
+		{
+			status = is_built_in(pipex.cmd_flag[0].part, count_parts(pipex.cmd_flag), pipex.cmd_flag, s_env);
+			free(pipex.cmd_flag);
+		}
 		return (status);
 	}
 	while (pipex.iter < pipex.size)

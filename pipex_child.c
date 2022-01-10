@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 15:55:56 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/10 16:01:28 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void		ft_dup2(int first, int second);
 
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 {
+	int	status;
+
 	if (pipex.iter == 0)
 		ft_dup2(pipex.infile, pipefd[3]);
 	else if (pipex.iter == pipex.size - 1)
@@ -34,7 +36,9 @@ void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 	}
 	close(pipefd[2]);
 	close(pipefd[3]);
-	pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env);
+	pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env, &status);
+	if (status)
+		exit(status);
 	is_built_in(pipex.cmd_flag[0].part, count_parts(pipex.cmd_flag), pipex.cmd_flag, s_env);
 }
 
@@ -53,7 +57,7 @@ static void	ft_dup2(int first, int second)
 }
 
 t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
-t_env *s_env)
+t_env *s_env, int *status)
 {
 	int		i;
 	int		j;
@@ -65,7 +69,11 @@ t_env *s_env)
 	while (parts[i + j].part && !is_pipe(parts[i + j]))
 	{
 		if (ft_is_redir(parts[i + j]))
-			ft_multiple_redir(parts + i, s_env->line_nr);
+		{
+			*status = ft_multiple_redir(parts + i, s_env->line_nr);
+			if (*status)
+				return (NULL);
+		}
 		j++;
 	}
 	return (get_commands_between_pipes(parts + i, pipex, s_env));
