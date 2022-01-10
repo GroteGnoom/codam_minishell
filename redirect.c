@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 14:36:58 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/10 14:54:00 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	ft_get_args(t_part *new_args, t_part *parts)
 	return (count);
 }
 
-int	ft_redirections(int nr_parts, t_part *parts, t_env *s_env, int *exec)
+int	ft_redirections(int nr_parts, t_part *parts, t_env *s_env)
 {
 	t_part	*new_args;
 	int		ret;
@@ -51,7 +51,6 @@ int	ft_redirections(int nr_parts, t_part *parts, t_env *s_env, int *exec)
 	int		term_out;
 	int		args;
 
-	*exec = 1;
 	if (nr_parts > 1)
 		new_args = ft_calloc((nr_parts - 1) * sizeof(*parts), 1);
 	args = ft_get_args(new_args, parts);

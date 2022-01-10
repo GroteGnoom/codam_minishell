@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 14:32:31 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/10 14:54:13 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	ft_replace(char **sp, int start, int len, char *rep);
 char	*ft_search_name(t_env *s_env, char *envname, int envlen);
 int		get_env_name_length(char *env);
 
-int		ft_redirections(int nr_parts, t_part *parts, t_env *s_env, int *exec);
+int		ft_redirections(int nr_parts, t_part *parts, t_env *s_env);
 void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts);
 int		redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec);
 char	**ft_get_paths(char **env);

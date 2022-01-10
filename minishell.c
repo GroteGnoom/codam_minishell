@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 11:58:26 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/10 14:54:56 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,30 @@
 
 #define PROMPT "> "
 
-int	check_for_redirections(int *last_exit_status, t_part *parts, \
-t_env *s_env, int nr_parts)
-{
-	int	exec;
-	int	i;
+// int	check_for_redirections(int *last_exit_status, t_part *parts, t_env *s_env, int nr_parts)
+// {
+// 	int	exec;
+// 	int	i;
 
-	i = 0;
-	exec = 0;
-	while (i < nr_parts)
-	{
-		if (parts[i].type == SPECIAL)
-		{
-			if (ft_is_redir(parts[i]))
-				*last_exit_status = ft_redirections(nr_parts, \
-					parts, s_env, &exec);
-			if (!ft_strcmp(parts[i].part, "<<"))
-				*last_exit_status = redirect_here_doc(nr_parts, parts, \
-				s_env, &exec);
-			if (exec == 1)
-				return (1);
-		}
-		i++;
-	}
-	if (exec == 1)
-		return (1);
-	return (0);
-}
+// 	i = 0;
+// 	exec = 0;
+// 	while (i < nr_parts)
+// 	{
+// 		if (parts[i].type == SPECIAL)
+// 		{
+// 			if (ft_is_redir(parts[i]))
+// 				*last_exit_status = ft_redirections(nr_parts, parts, s_env, &exec);
+// 			if (!ft_strcmp(parts[i].part, "<<"))
+// 				*last_exit_status = redirect_here_doc(nr_parts, parts, s_env, &exec);
+// 			if (exec == 1)
+// 				return (1);
+// 		}
+// 		i++;
+// 	}
+// 	if (exec == 1)
+// 		return (1);
+// 	return (0);
+// }
 
 int	check_for_pipes(int *exit_status, t_part *parts, \
 t_env *s_env, int nr_parts)
