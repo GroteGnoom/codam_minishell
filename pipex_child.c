@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 15:08:31 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/10 10:25:15 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,25 @@ static void		ft_check_filename(t_env *s_env, t_part *parts, int i);
 
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 {
-	if (pipex.iter == 0)
+	if (pipex.size > 1)
 	{
-		if (pipex.size > 1)
-			ft_dup2(pipex.infile, pipefd[3]);
+		if (pipex.iter == 0)
+				ft_dup2(pipex.infile, pipefd[3]);
+		else if (pipex.iter == pipex.size - 1)
+			ft_dup2(pipefd[0], pipex.outfile);
+		else
+			ft_dup2(pipefd[0], pipefd[3]);
+		if (pipex.iter != 0)
+		{
+			close(pipefd[0]);
+			close(pipefd[1]);
+		}
+		close(pipefd[2]);
+		close(pipefd[3]);
 	}
-	else if (pipex.iter == pipex.size - 1)
-		ft_dup2(pipefd[0], pipex.outfile);
-	else
-		ft_dup2(pipefd[0], pipefd[3]);
-	if (pipex.iter != 0)
-	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-	}
-	close(pipefd[2]);
-	close(pipefd[3]);
 	pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env);
 	perror(pipex.cmd_flag[0].part);
 	is_built_in(pipex.cmd_flag[0].part, pipex.len, pipex.cmd_flag, s_env);
-	// ft_try_paths(pipex.paths, pipex.cmd_flag, s_env, parts);
 }
 
 static void	ft_dup2(int first, int second)

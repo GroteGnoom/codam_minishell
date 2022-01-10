@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 16:18:59 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/10 10:23:30 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,26 +87,35 @@ t_part *parts, int *pipefd)
 {
 	pid_t	child;
 
+	child = 0;
 	while (pipex.iter < pipex.size)
 	{
-		if (pipe(pipefd + 2) < 0)
+		if (pipex.size > 1 && pipe(pipefd + 2) < 0)
 			perror("Pipe: ");
-		child = fork();
-		if (child < 0)
-			perror("Fork: ");
-		if (child == 0)
-			ft_child_process(pipex, pipefd, s_env, parts);
-		if (pipex.iter > 0)
+		if (pipex.size > 1)
 		{
-			close(pipefd[0]);
-			close(pipefd[1]);
+			child = fork();
+			if (child < 0)
+				perror("Fork: ");
+			if (child == 0)
+				ft_child_process(pipex, pipefd, s_env, parts);
+			if (pipex.iter > 0)
+			{
+				close(pipefd[0]);
+				close(pipefd[1]);
+			}
+			pipefd[0] = pipefd[2];
+			pipefd[1] = pipefd[3];
 		}
-		pipefd[0] = pipefd[2];
-		pipefd[1] = pipefd[3];
+		else
+			ft_child_process(pipex, pipefd, s_env, parts);
 		pipex.iter++;
 	}
-	close(pipefd[0]);
-	close(pipefd[1]);
+	if (pipex.size > 1)
+	{
+		close(pipefd[0]);
+		close(pipefd[1]);
+	}
 	return (ft_wait_for_child(pipex, child));
 }
 
