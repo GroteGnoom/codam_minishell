@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 14:54:00 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/10 15:56:56 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "Libft/libft.h"
 #include <fcntl.h>
 #include <stdio.h>
-
-static int	ft_multiple_redir(t_part *parts, int line_nr);
 
 static int	ft_get_args(t_part *new_args, t_part *parts)
 {
@@ -68,7 +66,7 @@ int	ft_redirections(int nr_parts, t_part *parts, t_env *s_env)
 	return (ret);
 }
 
-static int	ft_multiple_redir(t_part *parts, int line_nr)
+int	ft_multiple_redir(t_part *parts, int line_nr)
 {
 	int	i;
 	int	ret;
