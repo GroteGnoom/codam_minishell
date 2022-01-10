@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 15:07:37 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/10 14:32:31 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_env
 	int		line_nr;
 }	t_env;
 
+t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
+t_env *s_env);
 void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, \
 t_part *parts);
 t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex);
