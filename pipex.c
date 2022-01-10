@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 10:23:30 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/10 11:55:27 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	ft_get_size_parts(t_part *parts)
 	count = 1;
 	while (parts[i].part)
 	{
-		if (is_pipe(parts[i]))
+		if (is_pipe(parts[i]) == 1)
 			count++;
 		i++;
 	}
@@ -90,10 +90,10 @@ t_part *parts, int *pipefd)
 	child = 0;
 	while (pipex.iter < pipex.size)
 	{
-		if (pipex.size > 1 && pipe(pipefd + 2) < 0)
-			perror("Pipe: ");
 		if (pipex.size > 1)
 		{
+			if (pipe(pipefd + 2) < 0)
+				perror("Pipe: ");
 			child = fork();
 			if (child < 0)
 				perror("Fork: ");

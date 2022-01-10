@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 10:25:15 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/10 14:03:29 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 	if (pipex.size > 1)
 	{
 		if (pipex.iter == 0)
-				ft_dup2(pipex.infile, pipefd[3]);
+			ft_dup2(pipex.infile, pipefd[3]);
 		else if (pipex.iter == pipex.size - 1)
 			ft_dup2(pipefd[0], pipex.outfile);
 		else
@@ -43,8 +43,7 @@ void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 		close(pipefd[3]);
 	}
 	pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env);
-	perror(pipex.cmd_flag[0].part);
-	is_built_in(pipex.cmd_flag[0].part, pipex.len, pipex.cmd_flag, s_env);
+	is_built_in(pipex.cmd_flag[0].part, count_parts(pipex.cmd_flag), pipex.cmd_flag, s_env);
 }
 
 static void	ft_dup2(int first, int second)
