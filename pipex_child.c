@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 10:35:35 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/11 11:04:35 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_env *s_env, int *status)
 	{
 		if (ft_is_redir(parts[i + j]))
 		{
-			*status = ft_multiple_redir(parts + i, s_env->line_nr);
+			*status = ft_multiple_redir(parts, i, s_env->line_nr);
 			if (*status)
 				return (NULL);
 		}

@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 15:56:56 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/11 11:06:36 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_redirections(int nr_parts, t_part *parts, t_env *s_env)
 	term_out = dup(STDOUT_FILENO);
 	if (term_in < 0 || term_out < 0)
 		return (ft_redir_error("dup", "", s_env->line_nr));
-	ret = ft_multiple_redir(parts, s_env->line_nr);
+	ret = ft_multiple_redir(parts, 0, s_env->line_nr);
 	if (!ret)
 		ret = is_built_in(new_args[0].part, args, new_args, s_env);
 	if (nr_parts > 1)
@@ -66,12 +66,10 @@ int	ft_redirections(int nr_parts, t_part *parts, t_env *s_env)
 	return (ret);
 }
 
-int	ft_multiple_redir(t_part *parts, int line_nr)
+int	ft_multiple_redir(t_part *parts, int i, int line_nr)
 {
-	int	i;
 	int	ret;
 
-	i = 0;
 	ret = 0;
 	while (parts[i].part && !ft_is_redir(parts[i]))
 		i++;
