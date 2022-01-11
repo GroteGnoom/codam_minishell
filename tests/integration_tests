@@ -60,6 +60,7 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
+shell_test_error '<'
 shell_test_error '>'
 shell_test 'echo'
 output_test 'pwd > $OUTFILE'
