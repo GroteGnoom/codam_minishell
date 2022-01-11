@@ -60,6 +60,11 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
+output_test '< test_shell_split.c | cat -e > $OUTFILE'
+output_test '< test_shell_split.c | ls | cat -e > $OUTFILE'
+output_test '< test_shell_split.c grep a | > $OUTFILE'
+output_test '< test_shell_split.c grep a | cat -e > $OUTFILE'
+output_test '< test_shell_split.c grep "a"|grep "m" | wc -l|cat -e > $OUTFILE'
 shell_test_error '<'
 shell_test_error '>'
 shell_test 'echo'
@@ -150,7 +155,6 @@ shell_test 'pwd'
 shell_test 'pwd lalala'
 shell_test_error 'ls ||| cat'
 output_test 'ls | cat > $OUTFILE'
-output_test '< test_shell_split.c grep "a"|grep "m" | wc -l|cat -e > $OUTFILE'
 shell_test_error 'export "|"=10'
 shell_test_error 'export ">"=10'
 shell_test_error 'export "$"=10'
