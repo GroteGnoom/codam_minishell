@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 10:56:41 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/11 13:38:36 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,7 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 	term_in = dup(STDIN_FILENO);
 	if (term_out < 0 || term_in < 0)
 		perror("dup");
-	pipex.infile = STDIN_FILENO;
-	pipex.outfile = STDOUT_FILENO;
-	pipex.len = nr_parts + pipex.begin - pipex.end;
+	pipex.len = nr_parts;
 	pipex.size = ft_get_size_parts(parts);
 	status = ft_pipex_pipe(pipex, s_env, parts);
 	if (dup2(term_out, STDOUT_FILENO) < 0 || dup2(term_in, STDIN_FILENO) < 0)
