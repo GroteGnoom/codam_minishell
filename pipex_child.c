@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 11:04:35 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/11 11:26:10 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,22 @@ static void	ft_dup2(int first, int second)
 		perror("dup2");
 		exit(errno);
 	}
+}
+
+int	ft_find_first_command(t_pipe pipex, t_part *parts)
+{
+	int		i;
+	int		j;
+
+	j = 0;
+	i = pipex.begin;
+	while (j < pipex.iter)
+	{
+		if (is_pipe(parts[i]))
+			j++;
+		i++;
+	}
+	return (i);
 }
 
 t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \

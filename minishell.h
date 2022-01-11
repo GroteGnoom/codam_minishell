@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 11:05:35 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/11 11:26:17 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,7 @@ t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, int *status);
 int	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, \
 t_part *parts);
-t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex);
 int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);
-int		ft_open_error(t_pipe pipex, int term_out, \
-t_part *parts, int nr_parts);
-int		ft_find_first_command(t_pipe pipex, t_part *parts);
 t_part	*get_commands_between_pipes(t_part *parts, t_pipe pipex, \
 t_env *s_env);
 int		ft_is_redir(t_part part);
@@ -97,7 +93,6 @@ void	ft_replace(char **sp, int start, int len, char *rep);
 char	*ft_search_name(t_env *s_env, char *envname, int envlen);
 int		get_env_name_length(char *env);
 
-int		ft_redirections(int nr_parts, t_part *parts, t_env *s_env);
 void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts);
 int		redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec);
 char	**ft_get_paths(char **env);

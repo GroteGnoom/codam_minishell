@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 15:05:59 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/11 11:21:52 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,6 @@
 #include "get_next_line/get_next_line.h"
 
 #define PROMPT "> "
-
-// int	check_for_redirections(int *last_exit_status, t_part *parts, t_env *s_env, int nr_parts)
-// {
-// 	int	exec;
-// 	int	i;
-
-// 	i = 0;
-// 	exec = 0;
-// 	while (i < nr_parts)
-// 	{
-// 		if (parts[i].type == SPECIAL)
-// 		{
-// 			if (ft_is_redir(parts[i]))
-// 				*last_exit_status = ft_redirections(nr_parts, parts, s_env, &exec);
-// 			if (!ft_strcmp(parts[i].part, "<<"))
-// 				*last_exit_status = redirect_here_doc(nr_parts, parts, s_env, &exec);
-// 			if (exec == 1)
-// 				return (1);
-// 		}
-// 		i++;
-// 	}
-// 	if (exec == 1)
-// 		return (1);
-// 	return (0);
-// }
 
 int	check_for_pipes(int *exit_status, t_part *parts, \
 t_env *s_env, int nr_parts)
@@ -85,10 +60,6 @@ int	ft_check_parts(int *last_exit_status, char *line, t_env *s_env)
 		s_env, nr_parts);
 		if (!syntax_error)
 			*last_exit_status = ft_pipex(nr_parts, parts, s_env);
-		// if (!executed)
-		// 	executed = check_for_redirections(last_exit_status, parts, s_env, nr_parts);
-		// if (!executed)
-		// 	executed = is_built_in(parts[0].part, nr_parts, parts, s_env);
 	}
 	free(line);
 	ft_free_parts(parts);
