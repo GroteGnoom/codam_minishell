@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 10:18:53 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/11 10:35:35 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 static void		ft_dup2(int first, int second);
 
-void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
+int	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 {
 	int	status;
 
@@ -39,7 +39,9 @@ void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
 	pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env, &status);
 	if (status)
 		exit(status);
-	is_built_in(pipex.cmd_flag[0].part, count_parts(pipex.cmd_flag), pipex.cmd_flag, s_env);
+	status = is_built_in(pipex.cmd_flag[0].part, count_parts(pipex.cmd_flag), pipex.cmd_flag, s_env);
+	free(pipex.cmd_flag);
+	return (status);
 }
 
 static void	ft_dup2(int first, int second)

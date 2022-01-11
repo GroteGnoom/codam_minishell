@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 16:00:52 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/11 10:35:32 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_env
 
 t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, int *status);
-void	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, \
+int	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, \
 t_part *parts);
 t_pipe	ft_set_io(int nr_parts, t_part *parts, t_pipe pipex);
 int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);
