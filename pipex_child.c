@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 16:01:28 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/11 10:18:53 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_env *s_env, int *status)
 
 	i = ft_find_first_command(pipex, parts);
 	j = 0;
+	*status = 0;
 	if (pipex.begin)
 		pipex.len -= pipex.end;
 	while (parts[i + j].part && !is_pipe(parts[i + j]))
