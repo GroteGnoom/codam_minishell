@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/10 16:07:30 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/11 10:24:04 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 	pipex.iter = 0;
 	status = ft_execute_pipes(pipex, s_env, parts, pipefd);
 	ft_free_strs(pipex.paths);
-	return (WEXITSTATUS(status));
+	return (status);
 }
 
 static int	ft_execute_pipes(t_pipe pipex, t_env *s_env, \
@@ -138,5 +138,5 @@ static int	ft_wait_for_child(t_pipe pipex, pid_t child)
 		pipex.iter--;
 	}
 	waitpid(child, &status, 0);
-	return (status);
+	return (WEXITSTATUS(status));
 }
