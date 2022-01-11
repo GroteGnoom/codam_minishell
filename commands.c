@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/06 13:29:39 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/07 15:09:34 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/11 16:15:44 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ t_env *s_env)
 			}
 			i += 2;
 		}
+		else if (is_here_doc(parts[i]))
+			i += 2;
 		else
 			cmd[j++] = parts[i++];
 	}

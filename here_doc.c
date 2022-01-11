@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 09:47:54 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/11 16:16:38 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,29 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env);
+static void	here_doc(char *final);
 
-int	redirect_here_doc(int nr_parts, t_part *parts, t_env *s_env, int *exec)
+int	redirect_here_doc(t_part *parts, t_env *s_env)
 {
-	t_part	*new_args;
 	char	*final;
 	pid_t	child;
 	int		status;
 	int		i;
 
 	i = 0;
-	*exec = 1;
-	new_args = ft_calloc((nr_parts) * sizeof(*parts), 1);
-	while (is_here_doc(parts[i]))
-	{
-		new_args[i].part = ft_strdup(parts[i].part);
-		i++;
-	}
+	s_env->line_nr = 1;
 	final = ft_strdup(parts[i + 1].part);
 	child = fork();
 	if (child < 0)
 		perror("Fork: ");
 	if (child == 0)
-		here_doc(final, i, new_args, s_env);
+		here_doc(final);
 	waitpid(-1, &status, 0);
-	ft_free_parts(new_args);
 	free(final);
 	return (0);
 }
 
-static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env)
+static void	here_doc(char *final)
 {
 	char	**args;
 	char	*line;
@@ -68,23 +60,21 @@ static void	here_doc(char *final, int nr_parts, t_part *parts, t_env *s_env)
 		line = readline("here_doc> ");
 		size++;
 	}
-	ft_redir_args(args, nr_parts, parts, s_env);
+	ft_redir_args(args);
 	exit(0);
 }
 
-void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env)
+void	ft_redir_args(char **args)
 {
 	int		pipefd[2];
 	int		term_out;
-	int		term_in;
 	int		i;
 
 	i = 0;
-	term_out = 0;
-	term_in = 1;
-	pipe(pipefd);
-	if (dup2(STDOUT_FILENO, term_out) < 0 || dup2(STDIN_FILENO, term_in) < 0)
+	term_out = dup(STDOUT_FILENO);
+	if (term_out < 0)
 		return ;
+	pipe(pipefd);
 	if (dup2(pipefd[1], STDOUT_FILENO) < 0)
 		return ;
 	i = 0;
@@ -93,10 +83,9 @@ void	ft_redir_args(char **args, int nr_parts, t_part *parts, t_env *s_env)
 		ft_putstr_fd(args[i], STDOUT_FILENO);
 		i++;
 	}
-	if (dup2(term_out, STDOUT_FILENO) < 0 || dup2(pipefd[0], STDIN_FILENO) < 0)
+	if (dup2(term_out, STDOUT_FILENO) < 0)
 		return ;
+	close(pipefd[0]);
 	close(pipefd[1]);
-	ft_executable(nr_parts, parts, s_env);
-	if (dup2(term_in, STDIN_FILENO) < 0)
-		return ;
+	ft_free_strs(args);
 }
