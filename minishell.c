@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 11:21:52 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/11 11:46:17 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ t_env *s_env, int nr_parts)
 	{
 		if (parts[i].type == SPECIAL && ft_strchr(parts[i].part, '|'))
 		{
-			if (i && parts[i - 1].type == SPECIAL)
+			if (!i || parts[i - 1].type == SPECIAL)
 				*exit_status = ft_syntax_error(parts, i, s_env->line_nr, "|");
 			else if (i == nr_parts - 1)
 				*exit_status = ft_syntax_error_eof(s_env->line_nr);
-			else if (ft_strcmp(parts[i].part, "|") || !i \
+			else if (ft_strcmp(parts[i].part, "|") \
 		|| (parts[i + 1].type == SPECIAL && ft_strchr(parts[i + 1].part, '|')))
 				*exit_status = ft_syntax_error(parts, i, s_env->line_nr, "|");
 			else

@@ -60,6 +60,10 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
+output_test 'ls -X > $OUTFILE -a'
+shell_test_error '< <'
+shell_test_error '> <'
+shell_test_error '|'
 output_test '< test_shell_split.c | cat -e > $OUTFILE'
 output_test '< test_shell_split.c | ls | cat -e > $OUTFILE'
 output_test '< test_shell_split.c grep a | > $OUTFILE'
