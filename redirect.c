@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 11:08:32 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/11 14:18:17 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_multiple_redir(t_part *parts, int i, int line_nr)
 		i++;
 	ret = ft_do_redir(parts, line_nr, i);
 	i += 2;
-	while (parts[i].part)
+	while (parts[i].part && !is_pipe(parts[i]))
 	{
 		if (parts[i].part && parts[i + 1].part && ft_is_redir(parts[i]))
 		{
