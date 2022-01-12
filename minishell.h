@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 11:23:33 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 13:30:35 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ typedef struct s_pipe
 	int		size;
 	int		iter;
 	int		len;
-	int		begin;
-	int		end;
 	int		term_out;
+	int		term_in;
 
 	char	**paths;
 
