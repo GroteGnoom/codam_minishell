@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 10:50:04 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 10:57:57 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static int		ft_pipex_pipe(t_pipe pipe, t_env *s_env, t_part *parts);
+static int		ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts);
 
 static int		ft_get_size_parts(t_part *parts);
 
-static int		ft_execute_pipes(t_pipe pipex, t_env *s_env, \
-t_part *parts, int *pipefd);
+static int		ft_execute_pipes(t_pipe pipex, t_part *parts, \
+t_env *s_env, int status);
 
-static int	ft_wait_for_child(t_pipe pipex, pid_t child, int *pipefd);
+static int		ft_wait_for_child(t_pipe pipex, pid_t child, int *pipefd);
 
 int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 {
@@ -67,23 +67,10 @@ static int	ft_get_size_parts(t_part *parts)
 
 static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 {
-	int		pipefd[4];
 	int		status;
 
 	pipex.paths = ft_get_paths(s_env->env);
 	pipex.iter = 0;
-	status = ft_execute_pipes(pipex, s_env, parts, pipefd);
-	ft_free_strs(pipex.paths);
-	return (status);
-}
-
-static int	ft_execute_pipes(t_pipe pipex, t_env *s_env, \
-t_part *parts, int *pipefd)
-{
-	pid_t	child;
-	int		status;
-
-	child = 0;
 	if (pipex.size == 1)
 	{
 		pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env, &status);
@@ -93,8 +80,19 @@ t_part *parts, int *pipefd)
 			count_parts(pipex.cmd_flag), pipex.cmd_flag, s_env);
 			free(pipex.cmd_flag);
 		}
-		return (status);
 	}
+	else
+		status = ft_execute_pipes(pipex, parts, s_env, status);
+	ft_free_strs(pipex.paths);
+	return (status);
+}
+
+static int	ft_execute_pipes(t_pipe pipex, t_part *parts, \
+t_env *s_env, int status)
+{
+	int		pipefd[4];
+	pid_t	child;
+
 	while (pipex.iter < pipex.size)
 	{
 		if (pipe(pipefd + 2) < 0)
