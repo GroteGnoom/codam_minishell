@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 16:16:38 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 10:13:31 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,19 @@
 
 static void	here_doc(char *final);
 
-int	redirect_here_doc(t_part *parts, t_env *s_env)
+int	redirect_here_doc(t_part *parts, int line_nr)
 {
 	char	*final;
-	pid_t	child;
-	int		status;
 	int		i;
 
 	i = 0;
-	s_env->line_nr = 1;
+	line_nr = i;
+	while (parts[i].part && ft_strcmp(parts[i].part, "<<"))
+		i++;
 	final = ft_strdup(parts[i + 1].part);
-	child = fork();
-	if (child < 0)
-		perror("Fork: ");
-	if (child == 0)
-		here_doc(final);
-	waitpid(-1, &status, 0);
+	here_doc(final);
 	free(final);
-	return (0);
+	return (line_nr);
 }
 
 static void	here_doc(char *final)
@@ -60,30 +55,23 @@ static void	here_doc(char *final)
 		line = readline("here_doc> ");
 		size++;
 	}
+	free(line);
 	ft_redir_args(args);
-	exit(0);
 }
 
 void	ft_redir_args(char **args)
 {
 	int		pipefd[2];
-	int		term_out;
 	int		i;
 
-	i = 0;
-	term_out = dup(STDOUT_FILENO);
-	if (term_out < 0)
-		return ;
 	pipe(pipefd);
-	if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-		return ;
 	i = 0;
 	while (args[i])
 	{
-		ft_putstr_fd(args[i], STDOUT_FILENO);
+		ft_putstr_fd(args[i], pipefd[1]);
 		i++;
 	}
-	if (dup2(term_out, STDOUT_FILENO) < 0)
+	if (dup2(pipefd[0], STDIN_FILENO))
 		return ;
 	close(pipefd[0]);
 	close(pipefd[1]);

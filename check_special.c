@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/07 09:46:04 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/07 09:47:19 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/12 09:46:43 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	ft_is_redir(t_part part)
 {
-	static char	*redir[] = {"<", ">>", ">", NULL};
+	static char	*redir[] = {"<", "<<", ">>", ">", NULL};
 	char		**redir_p;
 
 	if (part.type != SPECIAL)

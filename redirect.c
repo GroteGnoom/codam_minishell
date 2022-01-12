@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 14:18:17 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 09:48:19 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	ft_do_redir(t_part *parts, int line_nr, int i)
 		return (ft_syntax_error(parts, 0, line_nr, "newline"));
 	if (parts[i + 1].type == SPECIAL)
 		return (ft_syntax_error(parts, 0, line_nr, parts[i + 1].part));
+	if (!ft_strcmp(parts[i].part, "<<"))
+		return (redirect_here_doc(parts, line_nr));
 	if (!ft_strcmp(parts[i].part, "<"))
 		fd = open(parts[i + 1].part, O_RDONLY);
 	else if (!ft_strcmp(parts[i].part, ">"))
