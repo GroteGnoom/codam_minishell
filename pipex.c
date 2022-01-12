@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 13:27:35 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 13:30:29 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 	t_pipe	pipex;
 	int		status;
 
-	pipex.begin = 0;
-	pipex.end = 0;
 	pipex.term_out = dup(STDOUT_FILENO);
 	pipex.term_in = dup(STDIN_FILENO);
 	if (pipex.term_out < 0 || pipex.term_in < 0)
