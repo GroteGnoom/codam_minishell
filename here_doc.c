@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 13:29:16 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 13:42:13 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <readline/readline.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "get_next_line/get_next_line.h"
 
 static int	ft_redir_args(char **args, int line_nr);
 
@@ -29,9 +30,15 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	if (!final)
 		return (ft_syntax_error(parts, 0, line_nr, "newline"));
 	if (dup2(pipex.term_out, STDOUT_FILENO) < 0 || \
-	dup2(pipex.term_in, STDIN_FILENO) < 0)
+			dup2(pipex.term_in, STDIN_FILENO) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
-	line = readline("here_doc> ");
+	if (isatty(STDIN_FILENO))
+		line = readline("here_doc> ");
+	else
+	{
+		line = get_next_line(STDIN_FILENO);
+		line = ft_strtrim_free(&line, "\n");
+	}
 	size = 2;
 	args = ft_calloc(1 * sizeof(char *), 1);
 	while (line)
@@ -39,11 +46,17 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 		if (!ft_strcmp(line, final))
 			break ;
 		args = ft_realloc(args, (size * sizeof(char *)), \
-		((size - 1) * sizeof(char *)));
+				((size - 1) * sizeof(char *)));
 		args[size - 1] = NULL;
 		args[size - 2] = ft_strjoin(line, "\n");
 		free(line);
-		line = readline("here_doc> ");
+		if (isatty(STDIN_FILENO))
+			line = readline("here_doc> ");
+		else
+		{
+			line = get_next_line(STDIN_FILENO);
+			line = ft_strtrim_free(&line, "\n");
+		}
 		size++;
 	}
 	free(line);
