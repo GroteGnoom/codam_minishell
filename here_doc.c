@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 14:12:41 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/12 14:26:21 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,22 +63,18 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 static int	ft_redir_args(char **args, int line_nr)
 {
 	int		pipefd[2];
-	int		pipe_fd;
 	int		i;
 
 	if (pipe(pipefd) < 0)
 		perror("Pipe: ");
-	pipe_fd = dup(STDOUT_FILENO);
-	if (pipe_fd < 0)
-		return (ft_redir_error("dup", "", line_nr));
 	i = 0;
+	if (dup2(pipefd[0], STDIN_FILENO))
+		return (ft_redir_error("dup2", "", line_nr));
 	while (args[i])
 	{
 		ft_putstr_fd(args[i], pipefd[1]);
 		i++;
 	}
-	if (dup2(pipefd[0], STDIN_FILENO) || dup2(pipe_fd, STDOUT_FILENO) < 0)
-		return (ft_redir_error("dup2", "", line_nr));
 	close(pipefd[0]);
 	close(pipefd[1]);
 	ft_free_strs(args);
