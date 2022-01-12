@@ -62,6 +62,7 @@ make DEBUG=1 LEAKS=1 -C ..
 
 shell_test_error '<<'
 shell_test_error '<< <'
+shell_test '<< bla cat < test_shell_split.c\nasdf\nbla\n'
 shell_test 'cat << bla\nasdf\nbla\n' 
 shell_test '<< bla cat\nasdf\nbla\n' 
 shell_test '<< bla\nasdf\nbla\n cat' 
