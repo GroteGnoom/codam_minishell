@@ -29,7 +29,7 @@ function shell_test_error()
 	diff minishell_out bash_out || { echo "test failed for: \"$1\""; exit 1; }
 	diff minishell_err bash_err || { echo "error output test failed for: \"$1\""; exit 1; }
 	check_valgrind_output $1
-	check_status $1 $minishell_status $bash_status
+	check_status "$1" $minishell_status $bash_status
 }
 
 function shell_test()
