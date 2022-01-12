@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 10:36:04 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 10:43:46 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "Libft/libft.h"
 #include <fcntl.h>
 #include <stdio.h>
+
+static int	ft_set_fd(char *part, int fd, int line_nr);
 
 int	ft_multiple_redir(t_part *parts, int i, int line_nr)
 {
@@ -54,7 +56,12 @@ int	ft_do_redir(t_part *parts, int line_nr, int i)
 		fd = open(parts[i + 1].part, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 		return (ft_redir_error(SHELL_NAME, parts[i + 1].part, line_nr));
-	if (!ft_strcmp(parts[i].part, "<"))
+	return (ft_set_fd(parts[i].part, fd, line_nr));
+}
+
+static int	ft_set_fd(char *part, int fd, int line_nr)
+{
+	if (!ft_strcmp(part, "<"))
 	{
 		if (dup2(fd, STDIN_FILENO) < 0)
 			return (ft_redir_error("dup2", "", line_nr));
