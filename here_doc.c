@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 13:42:13 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/12 14:04:58 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,13 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	if (isatty(STDIN_FILENO))
 		line = readline("here_doc> ");
 	else
-	{
 		line = get_next_line(STDIN_FILENO);
-		line = ft_strtrim_free(&line, "\n");
-	}
 	size = 2;
 	args = ft_calloc(1 * sizeof(char *), 1);
 	while (line)
 	{
+		if (isatty(STDIN_FILENO))
+			line = ft_strtrim_free(&line, "\n");
 		if (!ft_strcmp(line, final))
 			break ;
 		args = ft_realloc(args, (size * sizeof(char *)), \
@@ -53,10 +52,7 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 		if (isatty(STDIN_FILENO))
 			line = readline("here_doc> ");
 		else
-		{
 			line = get_next_line(STDIN_FILENO);
-			line = ft_strtrim_free(&line, "\n");
-		}
 		size++;
 	}
 	free(line);
