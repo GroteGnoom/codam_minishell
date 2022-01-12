@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 10:13:31 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 10:35:58 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,17 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static void	here_doc(char *final);
+static int	ft_redir_args(char **args, int line_nr);
 
-int	redirect_here_doc(t_part *parts, int line_nr)
-{
-	char	*final;
-	int		i;
-
-	i = 0;
-	line_nr = i;
-	while (parts[i].part && ft_strcmp(parts[i].part, "<<"))
-		i++;
-	final = ft_strdup(parts[i + 1].part);
-	here_doc(final);
-	free(final);
-	return (line_nr);
-}
-
-static void	here_doc(char *final)
+int	here_doc(char *final, int line_nr, t_part *parts)
 {
 	char	**args;
 	char	*line;
 	int		size;
+	int		ret;
 
+	if (!final)
+		return (ft_syntax_error(parts, 0, line_nr, "newline"));
 	line = readline("here_doc> ");
 	size = 2;
 	args = ft_calloc(1 * sizeof(char *), 1);
@@ -56,15 +44,17 @@ static void	here_doc(char *final)
 		size++;
 	}
 	free(line);
-	ft_redir_args(args);
+	ret = ft_redir_args(args, line_nr);
+	return (ret);
 }
 
-void	ft_redir_args(char **args)
+static int	ft_redir_args(char **args, int line_nr)
 {
 	int		pipefd[2];
 	int		i;
 
-	pipe(pipefd);
+	if (pipe(pipefd) < 0)
+		perror("Pipe: ");
 	i = 0;
 	while (args[i])
 	{
@@ -72,8 +62,9 @@ void	ft_redir_args(char **args)
 		i++;
 	}
 	if (dup2(pipefd[0], STDIN_FILENO))
-		return ;
+		return (ft_redir_error("dup2", "", line_nr));
 	close(pipefd[0]);
 	close(pipefd[1]);
 	ft_free_strs(args);
+	return (0);
 }
