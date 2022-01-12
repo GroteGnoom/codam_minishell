@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 10:36:14 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 11:23:33 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_pipe
 	int		len;
 	int		begin;
 	int		end;
+	int		term_out;
 
 	char	**paths;
 
@@ -61,7 +62,7 @@ int		is_pipe(t_part part);
 int		is_input_redir(t_part part);
 int		is_output_redir(t_part part);
 int		is_here_doc(t_part part);
-int		ft_multiple_redir(t_part *parts, int i, int line_nr);
+int		ft_multiple_redir(t_part *parts, int i, int line_nr, t_pipe pipex);
 
 void	signals(void);
 
@@ -92,7 +93,7 @@ char	*ft_search_name(t_env *s_env, char *envname, int envlen);
 int		get_env_name_length(char *env);
 
 void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts);
-int		here_doc(char *final, int line_nr, t_part *parts);
+int		here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex);
 char	**ft_get_paths(char **env);
 void	expand_wildcard(t_part **parts, int **wild_quoted);
 
@@ -103,7 +104,7 @@ t_env *s_env, int nr_parts);
 int		ft_syntax_error(t_part *parts, int i, int line_nr, char *token);
 int		ft_syntax_error_eof(int line_nr);
 int		ft_redir_error(char *str, char *str2, int line_nr);
-int		ft_do_redir(t_part *parts, int line_nr, int i);
+int		ft_do_redir(t_part *parts, int line_nr, int i, t_pipe pipex);
 int		ft_invalid_identifier(t_part *parts, int i, int line_nr);
 int		check_identifier(char *str, int unset);
 int		ft_exit_error(int too_many, char *arg, int line_nr);

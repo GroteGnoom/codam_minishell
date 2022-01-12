@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 10:35:58 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 11:47:11 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static int	ft_redir_args(char **args, int line_nr);
+static int	ft_redir_args(char **args, int line_nr, t_pipe pipex);
 
-int	here_doc(char *final, int line_nr, t_part *parts)
+int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 {
 	char	**args;
 	char	*line;
@@ -28,6 +28,8 @@ int	here_doc(char *final, int line_nr, t_part *parts)
 
 	if (!final)
 		return (ft_syntax_error(parts, 0, line_nr, "newline"));
+	if (dup2(pipex.term_out, STDOUT_FILENO) < 0)
+		return (ft_redir_error("dup2", "", line_nr));
 	line = readline("here_doc> ");
 	size = 2;
 	args = ft_calloc(1 * sizeof(char *), 1);
@@ -44,27 +46,32 @@ int	here_doc(char *final, int line_nr, t_part *parts)
 		size++;
 	}
 	free(line);
-	ret = ft_redir_args(args, line_nr);
+	ret = ft_redir_args(args, line_nr, pipex);
 	return (ret);
 }
 
-static int	ft_redir_args(char **args, int line_nr)
+static int	ft_redir_args(char **args, int line_nr, t_pipe pipex)
 {
 	int		pipefd[2];
+	int		pipe_fd;
 	int		i;
 
 	if (pipe(pipefd) < 0)
 		perror("Pipe: ");
+	pipe_fd = dup(STDOUT_FILENO);
+	if (pipe_fd < 0)
+		return (ft_redir_error("dup", "", line_nr));
 	i = 0;
 	while (args[i])
 	{
-		ft_putstr_fd(args[i], pipefd[1]);
+		ft_putstr_fd(args[i], STDOUT_FILENO);
 		i++;
 	}
-	if (dup2(pipefd[0], STDIN_FILENO))
+	if (dup2(pipefd[0], STDIN_FILENO) || dup2(pipe_fd, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
 	close(pipefd[0]);
 	close(pipefd[1]);
+	close(pipex.term_out);
 	ft_free_strs(args);
 	return (0);
 }
