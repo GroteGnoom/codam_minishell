@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 10:40:34 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 10:50:04 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int		ft_get_size_parts(t_part *parts);
 static int		ft_execute_pipes(t_pipe pipex, t_env *s_env, \
 t_part *parts, int *pipefd);
 
-static int		ft_wait_for_child(t_pipe pipex, pid_t child);
+static int	ft_wait_for_child(t_pipe pipex, pid_t child, int *pipefd);
 
 int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 {
@@ -116,18 +116,18 @@ t_part *parts, int *pipefd)
 		pipefd[1] = pipefd[3];
 		pipex.iter++;
 	}
+	return (ft_wait_for_child(pipex, child, pipefd));
+}
+
+static int	ft_wait_for_child(t_pipe pipex, pid_t child, int *pipefd)
+{
+	int	status;
+
 	if (pipex.size > 1)
 	{
 		close(pipefd[0]);
 		close(pipefd[1]);
 	}
-	return (ft_wait_for_child(pipex, child));
-}
-
-static int	ft_wait_for_child(t_pipe pipex, pid_t child)
-{
-	int	status;
-
 	while (pipex.iter > 0)
 	{
 		waitpid(-1, &status, 0);
