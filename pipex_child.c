@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 11:18:57 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/12 13:32:52 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ft_find_first_command(t_pipe pipex, t_part *parts)
 	int		j;
 
 	j = 0;
-	i = pipex.begin;
+	i = 0;
 	while (j < pipex.iter)
 	{
 		if (is_pipe(parts[i]))
@@ -85,8 +85,6 @@ t_env *s_env, int *status)
 	i = ft_find_first_command(pipex, parts);
 	j = 0;
 	*status = 0;
-	if (pipex.begin)
-		pipex.len -= pipex.end;
 	while (parts[i + j].part && !is_pipe(parts[i + j]))
 	{
 		if (ft_is_redir(parts[i + j]))
