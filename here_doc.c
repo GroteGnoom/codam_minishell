@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/13 11:33:34 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/13 13:56:52 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <sys/wait.h>
 #include "get_next_line/get_next_line.h"
 
-static int	ft_redir_args(char **args, int line_nr, int term);
+static int	ft_redir_args(char **args, int line_nr);
 
 int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 {
@@ -27,11 +27,13 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	int		term;
 	int		size;
 	int		ret;
+	int		atty;
 
 	if (!final)
 		return (ft_syntax_error(parts, 0, line_nr, "newline"));
 	term = 0;
-	if (isatty(STDIN_FILENO))
+	atty = isatty(STDIN_FILENO);
+	if (atty)
 	{
 		term = dup(STDOUT_FILENO);
 		if (dup2(pipex.term_out, STDOUT_FILENO) < 0)
@@ -63,11 +65,13 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 		size++;
 	}
 	free(line);
-	ret = ft_redir_args(args, line_nr, term);
+	ret = ft_redir_args(args, line_nr);
+	if (atty && dup2(term, STDOUT_FILENO) < 0)
+		return (ft_redir_error("dup2", "", line_nr));
 	return (ret);
 }
 
-static int	ft_redir_args(char **args, int line_nr, int term)
+static int	ft_redir_args(char **args, int line_nr)
 {
 	int		pipefd[2];
 	int		i;
@@ -75,7 +79,7 @@ static int	ft_redir_args(char **args, int line_nr, int term)
 	if (pipe(pipefd) < 0)
 		perror("Pipe: ");
 	i = 0;
-	if (dup2(pipefd[0], STDIN_FILENO) || dup2(term, STDOUT_FILENO))
+	if (dup2(pipefd[0], STDIN_FILENO) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
 	while (args[i])
 	{
