@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/13 11:13:08 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/13 11:19:18 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,15 @@ void	ft_check_here_doc(t_part *parts, t_pipe pipex)
 	int		i;
 
 	i = ft_find_first_command(pipex, parts);
-	while (parts[i].part && !is_pipe(parts[i]) && !isatty(STDIN_FILENO))
+	while (parts[i].part && !is_pipe(parts[i]) && !isatty(pipex.term_in))
 	{
 		if (is_here_doc(parts[i]))
 		{
-			line = get_next_line(STDIN_FILENO);
+			line = get_next_line(pipex.term_in);
 			line = ft_strtrim_free(&line, "\n");
 			while (line && ft_strcmp(line, parts[i + 1].part))
 			{
-				line = get_next_line(STDIN_FILENO);
+				line = get_next_line(pipex.term_in);
 				line = ft_strtrim_free(&line, "\n");
 			}
 			return ;

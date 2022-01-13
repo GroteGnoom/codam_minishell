@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 14:26:21 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/13 11:33:34 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,26 @@
 #include <sys/wait.h>
 #include "get_next_line/get_next_line.h"
 
-static int	ft_redir_args(char **args, int line_nr);
+static int	ft_redir_args(char **args, int line_nr, int term);
 
 int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 {
 	char	**args;
 	char	*line;
+	int		term;
 	int		size;
 	int		ret;
 
 	if (!final)
 		return (ft_syntax_error(parts, 0, line_nr, "newline"));
-	if (dup2(pipex.term_out, STDOUT_FILENO) < 0 || \
-			dup2(pipex.term_in, STDIN_FILENO) < 0)
+	term = 0;
+	if (isatty(STDIN_FILENO))
+	{
+		term = dup(STDOUT_FILENO);
+		if (dup2(pipex.term_out, STDOUT_FILENO) < 0)
+			return (ft_redir_error("dup2", "", line_nr));
+	}
+	if (dup2(pipex.term_in, STDIN_FILENO) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
 	if (isatty(STDIN_FILENO))
 		line = readline("here_doc> ");
@@ -56,11 +63,11 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 		size++;
 	}
 	free(line);
-	ret = ft_redir_args(args, line_nr);
+	ret = ft_redir_args(args, line_nr, term);
 	return (ret);
 }
 
-static int	ft_redir_args(char **args, int line_nr)
+static int	ft_redir_args(char **args, int line_nr, int term)
 {
 	int		pipefd[2];
 	int		i;
@@ -68,7 +75,7 @@ static int	ft_redir_args(char **args, int line_nr)
 	if (pipe(pipefd) < 0)
 		perror("Pipe: ");
 	i = 0;
-	if (dup2(pipefd[0], STDIN_FILENO))
+	if (dup2(pipefd[0], STDIN_FILENO) || dup2(term, STDOUT_FILENO))
 		return (ft_redir_error("dup2", "", line_nr));
 	while (args[i])
 	{
