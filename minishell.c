@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 11:46:17 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/13 10:52:15 by daniel        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	loop_through_lines(char *line, int last_exit_status, t_env *s_env)
 {
 	while (line)
 	{
+		if (!isatty(STDIN_FILENO))
+			line = ft_strtrim_free(&line, "\n");
 		if (isatty(STDIN_FILENO) && ft_strlen(line))
 			add_history(line);
 		last_exit_status = ft_check_parts(&last_exit_status, line, s_env);
@@ -97,10 +99,7 @@ int	main(int argc, char **argv, char **envp)
 	if (isatty(STDIN_FILENO))
 		line = readline(PROMPT);
 	else
-	{
 		line = get_next_line(STDIN_FILENO);
-		line = ft_strtrim_free(&line, "\n");
-	}
 	last_exit_status = 0;
 	last_exit_status = loop_through_lines(line, last_exit_status, &s_env);
 	ft_free_strs(s_env.env);
