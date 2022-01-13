@@ -6,12 +6,13 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 13:58:35 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/13 11:13:08 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "Libft/libft.h"
+#include "get_next_line/get_next_line.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -85,6 +86,29 @@ static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 	return (status);
 }
 
+void	ft_check_here_doc(t_part *parts, t_pipe pipex)
+{
+	char	*line;
+	int		i;
+
+	i = ft_find_first_command(pipex, parts);
+	while (parts[i].part && !is_pipe(parts[i]) && !isatty(STDIN_FILENO))
+	{
+		if (is_here_doc(parts[i]))
+		{
+			line = get_next_line(STDIN_FILENO);
+			line = ft_strtrim_free(&line, "\n");
+			while (line && ft_strcmp(line, parts[i + 1].part))
+			{
+				line = get_next_line(STDIN_FILENO);
+				line = ft_strtrim_free(&line, "\n");
+			}
+			return ;
+		}
+		i++;
+	}
+}
+
 static int	ft_execute_pipes(t_pipe pipex, t_part *parts, \
 t_env *s_env, int status)
 {
@@ -109,6 +133,7 @@ t_env *s_env, int status)
 			close(pipefd[1]);
 		}
 		waitpid(child, &status, 0);
+		ft_check_here_doc(parts, pipex);
 		pipefd[0] = pipefd[2];
 		pipefd[1] = pipefd[3];
 		pipex.iter++;

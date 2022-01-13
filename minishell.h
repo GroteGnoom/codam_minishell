@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 13:41:56 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/13 11:07:27 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, int *status);
 t_part	*get_commands_between_pipes(t_part *parts, t_pipe pipex, \
 t_env *s_env);
+int		ft_find_first_command(t_pipe pipex, t_part *parts);
 
 int		ft_is_redir(t_part part);
 int		is_pipe(t_part part);
