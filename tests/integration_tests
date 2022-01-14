@@ -60,6 +60,11 @@ function output_test()
 
 make DEBUG=1 LEAKS=1 -C ..
 
+output_test "echo 'hoi'"'"bla"'
+output_test 'cat < test_shell_split.c > $OUTFILE << hd -e | echo *$PATH '*'$PATH "*"$PATH *"$PATH" *'\''$PATH'\'' | cat -e\nbla\nhd\n'
+#for the next two tests with multiple output redirections, to the same file, minishell always does the same thing, but bash doesn't. Bash seems to open the file from different forks and they put in information at the same time, which causes race conditions. Minishell puts in information in order.
+#output_test 'rm $OUTFILE | cat >> $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c << hd4 >> $OUTFILE | >> $OUTFILE echo *$PATH * $PATH "*"$PATH -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n'
+#output_test 'cat > $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c >> $OUTFILE << hd4 -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n' 
 shell_test_error '<<'
 shell_test_error '<< <'
 shell_test '<< bla cat < test_shell_split.c\nasdf\nbla\n'
