@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/13 11:19:18 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/17 09:27:39 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 
 	pipex.paths = ft_get_paths(s_env->env);
 	pipex.iter = 0;
+	status = 0;
 	if (pipex.size == 1)
 	{
 		pipex.cmd_flag = ft_get_cmd_flag(parts, pipex, s_env, &status);
