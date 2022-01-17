@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 14:00:00 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/17 14:28:13 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,15 @@ static int	ft_redir_args(char **args, int line_nr);
 
 static void	sigint_here_doc_handler(int sig)
 {
-	// int	pipefd[2];
-
-	// if (pipe(pipefd) < 0)
-	// 	perror("Pipe: ");
-	// write(pipefd[1], "stop", 4);
-	// if (dup2(pipefd[0], STDIN_FILENO) < 0)
-	// 	perror("Dup2: ");
-	// close(pipefd[0]);
-	// close(pipefd[1]);
+	int pipefd[2];
 	global = 1;
 	(void) sig;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
+	if (pipe(pipefd) < 0)
+		perror("Pipe: ");
+	dup2(pipefd[0], STDIN_FILENO);
+	write(pipefd[1], "\n\n", 2);
+	close(pipefd[0]);
+	close(pipefd[1]);
 }
 
 int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
@@ -88,6 +83,7 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 		free(line);
 		if (isatty(STDIN_FILENO))
 			line = readline("here_doc> ");
+
 		else
 			line = get_next_line(STDIN_FILENO);
 		size++;
