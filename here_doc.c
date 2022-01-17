@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 14:28:13 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/17 15:38:46 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	int		ret;
 	int		atty;
 
-	signal(SIGINT, sigint_here_doc_handler);
 	if (!final)
 		return (ft_syntax_error(parts, 0, line_nr, "newline"));
 	term = 0;
@@ -58,7 +57,11 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	if (dup2(pipex.term_in, STDIN_FILENO) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
 	if (isatty(STDIN_FILENO))
+	{
+		signal(SIGINT, sigint_here_doc_handler);
 		line = readline("here_doc> ");
+		signal(SIGINT, sigint_handler);
+	}
 	else
 		line = get_next_line(STDIN_FILENO);
 	size = 2;
@@ -68,6 +71,7 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 		if (global == 1)
 		{
 			free(line);
+			ft_free_strs(args);
 			if (atty && dup2(term, STDOUT_FILENO) < 0)
 				return (ft_redir_error("dup2", "", line_nr));
 			return (1);
@@ -82,8 +86,11 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 		args[size - 2] = ft_strjoin(line, "\n");
 		free(line);
 		if (isatty(STDIN_FILENO))
+		{
+			signal(SIGINT, sigint_here_doc_handler);
 			line = readline("here_doc> ");
-
+			signal(SIGINT, sigint_handler);
+		}
 		else
 			line = get_next_line(STDIN_FILENO);
 		size++;

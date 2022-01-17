@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 09:41:53 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/17 14:57:15 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int		ft_do_redir(t_part *parts, int line_nr, int i, t_pipe pipex);
 int		here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex);
 
 void	signals(void);
+void	sigint_handler(int sig);
 
 int		ft_echo(int nr_parts, t_part *parts);
 int		ft_pwd(void);
