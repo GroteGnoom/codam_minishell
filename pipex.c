@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 13:09:19 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/17 15:46:50 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,12 @@ void	ft_check_here_doc(t_part *parts, t_pipe pipex)
 		if (is_here_doc(parts[i]))
 		{
 			line = get_next_line(pipex.term_in);
+			line = ft_strtrim_free(&line, "\n");
 			while (line && ft_strcmp(line, parts[i + 1].part))
 			{
 				free(line);
 				line = get_next_line(pipex.term_in);
+				line = ft_strtrim_free(&line, "\n");
 			}
 			if (line)
 				free(line);
