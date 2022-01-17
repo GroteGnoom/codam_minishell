@@ -17,3 +17,4 @@ tests/bash_stdout
 minishell-tester
 tags
 *.gdb_history
+*.dSYM
