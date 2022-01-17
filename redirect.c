@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 11:24:40 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/17 09:41:45 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,6 @@
 #include <stdio.h>
 
 static int	ft_set_fd(char *part, int fd, int line_nr);
-
-int	ft_multiple_redir(t_part *parts, int i, int line_nr, t_pipe pipex)
-{
-	int	ret;
-
-	ret = 0;
-	while (parts[i].part && !ft_is_redir(parts[i]))
-		i++;
-	ret = ft_do_redir(parts, line_nr, i, pipex);
-	i += 2;
-	while (parts[i].part && !is_pipe(parts[i]))
-	{
-		if (parts[i].part && parts[i + 1].part && ft_is_redir(parts[i]))
-		{
-			ret = ft_do_redir(parts, line_nr, i, pipex);
-			i++;
-		}
-		i++;
-	}
-	return (ret);
-}
 
 int	ft_do_redir(t_part *parts, int line_nr, int i, t_pipe pipex)
 {

@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/13 11:07:27 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/17 09:41:53 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int		is_input_redir(t_part part);
 int		is_output_redir(t_part part);
 int		is_here_doc(t_part part);
 
-int		ft_multiple_redir(t_part *parts, int i, int line_nr, t_pipe pipex);
 int		ft_do_redir(t_part *parts, int line_nr, int i, t_pipe pipex);
 int		here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex);
 
