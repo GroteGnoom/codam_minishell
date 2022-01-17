@@ -26,7 +26,11 @@ READLINE_DIR = ~/homebrew/Cellar/readline/8.1.1
 all: libft gnl $(NAME)
 
 $(NAME): $(SRC) $(GNL) $(LIBFT) $(NAME).h
+ifndef DEBUG
 	gcc $(FLAGS) -I. $(SRC) $(GNL) $(LIBFT) -I $(READLINE_DIR)/include/ -L $(READLINE_DIR)/lib/ -lreadline -o $(NAME)
+else
+	clang $(FLAGS) -I. $(SRC) $(GNL) $(LIBFT) -I $(READLINE_DIR)/include/ -L $(READLINE_DIR)/lib/ -lreadline -o $(NAME)
+endif
 
 libft:
 	$(MAKE) bonus -C $(LIBFT_DIR)

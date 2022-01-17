@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 11:49:11 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/17 13:33:13 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_exit(int nr_parts, t_part *parts, int line_nr)
 	if (!is_int(parts[1].part))
 	{
 		ft_exit_error(0, parts[1].part, line_nr);
-		exit(2);
+		exit(255);
 	}
 	if (nr_parts > 2)
 	{
