@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/13 13:56:52 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/17 14:00:00 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,27 @@
 #include <sys/wait.h>
 #include "get_next_line/get_next_line.h"
 
+int	global = 0;
+
 static int	ft_redir_args(char **args, int line_nr);
+
+static void	sigint_here_doc_handler(int sig)
+{
+	// int	pipefd[2];
+
+	// if (pipe(pipefd) < 0)
+	// 	perror("Pipe: ");
+	// write(pipefd[1], "stop", 4);
+	// if (dup2(pipefd[0], STDIN_FILENO) < 0)
+	// 	perror("Dup2: ");
+	// close(pipefd[0]);
+	// close(pipefd[1]);
+	global = 1;
+	(void) sig;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+}
 
 int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 {
@@ -29,6 +49,7 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	int		ret;
 	int		atty;
 
+	signal(SIGINT, sigint_here_doc_handler);
 	if (!final)
 		return (ft_syntax_error(parts, 0, line_nr, "newline"));
 	term = 0;
@@ -36,7 +57,7 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	if (atty)
 	{
 		term = dup(STDOUT_FILENO);
-		if (dup2(pipex.term_out, STDOUT_FILENO) < 0)
+		if (dup2(pipex.term_in, STDOUT_FILENO) < 0)
 			return (ft_redir_error("dup2", "", line_nr));
 	}
 	if (dup2(pipex.term_in, STDIN_FILENO) < 0)
@@ -49,6 +70,13 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	args = ft_calloc(1 * sizeof(char *), 1);
 	while (line)
 	{
+		if (global == 1)
+		{
+			free(line);
+			if (atty && dup2(term, STDOUT_FILENO) < 0)
+				return (ft_redir_error("dup2", "", line_nr));
+			return (1);
+		}
 		if (!isatty(STDIN_FILENO))
 			line = ft_strtrim_free(&line, "\n");
 		if (!ft_strcmp(line, final))
