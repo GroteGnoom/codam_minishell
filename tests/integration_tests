@@ -41,86 +41,99 @@ function shell_test()
 #make DEBUG=1 LEAKS=1 -C ..
 make DEBUG=1 -C ..
 
+
+# Generic tests
+shell_test ''
+shell_test '\n\n\n\n'
+shell_test 'ls\nls'
+shell_test '/bin/ls'
+
+# Echo tests
+shell_test 'echo'
+shell_test 'echo < |'
+shell_test 'echo > |'
+shell_test 'echo << |'
+shell_test 'echo >> |'
+shell_test 'echo -nABC'
+shell_test 'echo $BLA$BLA=10$BLA'
+shell_test 'echo a"bc"d'
+shell_test 'echo a"bcd"e'
 shell_test "echo 'hoi'"'"bla"'
-shell_test 'cat < test_shell_split.c > $OUTFILE << hd -e | echo *$PATH '*'$PATH "*"$PATH *"$PATH" *'\''$PATH'\'' | cat -e\nbla\nhd\n'
-#for the next two tests with multiple output redirections, to the same file, minishell always does the same thing, but bash doesn't. Bash seems to open the file from different forks and they put in information at the same time, which causes race conditions. Minishell puts in information in order.
-#output_test 'rm $OUTFILE | cat >> $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c << hd4 >> $OUTFILE | >> $OUTFILE echo *$PATH * $PATH "*"$PATH -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n'
-#output_test 'cat > $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c >> $OUTFILE << hd4 -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n' 
-shell_test '<<'
-shell_test '<< <'
-shell_test '<< bla cat < test_shell_split.c\nasdf\nbla\n'
+
+# CD tests
+shell_test 'cd\npwd'
+shell_test 'cd ../../..\npwd'
+shell_test 'cd banaan'
+
+# PWD Tests
+shell_test 'pwd'
+shell_test 'pwd lalala'
+
+# Export and unset tests
+shell_test 'export ='
+shell_test 'export =10'
+shell_test 'export "|"=10'
+shell_test 'export ">"=10'
+shell_test 'export "$"=10'
+shell_test 'export "111"="222"'
+shell_test 'export A=bla\necho $A'
+shell_test 'export A=bla\nexport A=bloe\necho $A'
+shell_test 'export A=bla\nexport A=$A-bloe\necho $A'
+shell_test 'export PATH=$PATH:/banaan/konijn\necho $PATH'
+shell_test 'export A$B=10\necho $A$B'
+shell_test 'export B=3\necho $A$B'
+shell_test 'export A$B=10\necho $A$B\nexport B=3\necho $A$B'
+shell_test 'export PA=10\necho $PATH'
+shell_test 'export a1=10\nunset a1\necho $a1'
+
+# Exit tests
+shell_test "exit"
+shell_test "exit 0"
+shell_test "exit 1"
+shell_test "exit 42"
+shell_test "exit 1 1"
+shell_test "exit banaan"
+
+# Redirection tests
+shell_test 'pwd > $OUTFILE'
+shell_test '> $OUTFILE pwd'
+shell_test '> $OUTFILE ls -a'
+shell_test 'cat test_shell_split.c > $OUTFILE -e'
+shell_test 'cat > $OUTFILE < test_shell_split.c -e'
+shell_test 'cat < test_shell_split.c > $OUTFILE -e'
 shell_test '< test_shell_split.c << bla cat\nasdf\nbla\n'
+
+# Here doc tests
+shell_test 'cat << bla -e\nasdf\nbla\n' 
 shell_test 'cat << bla\nasdf\nbla\n' 
 shell_test '<< bla cat\nasdf\nbla\n' 
 shell_test '<< bla\nasdf\nbla\n cat' 
-shell_test 'cat << bla -e\nasdf\nbla\n' 
-shell_test 'ls | cat << bla\nasdf\nbla\n' 
 shell_test '<< bla cat\nasdf\nbla\necho banaan'
-shell_test 'cat << bla | cat\nasdf\nbla\n' 
-shell_test '<< bla cat | << bloe cat\nfirst\nbla\nsecond\nbloe\n' 
-shell_test '<< bla cat | << bloe cat\nfirst\nbla\nsecond\nbloe\nls\n'
-shell_test 'cat << bla | echo bla\nasdf\nbla\n' 
-shell_test 'cat test_shell_split.c > $OUTFILE -e'
-shell_test '< <'
-shell_test '> <'
-shell_test '|'
+shell_test '<< bla cat < test_shell_split.c\nasdf\nbla\n'
+
+# Pipe tests
+shell_test 'ls | grep t'
+shell_test 'ls|cat -e'
+shell_test 'ls|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e'
+shell_test 'ls | < banaan | ls'
+shell_test 'ls | cat > $OUTFILE'
+shell_test 'ls < lol.c | grep "a"'
+shell_test 'ls < test_shell_split.c | grep "a"'
 shell_test '< test_shell_split.c grep a | cat -e'
 shell_test '< test_shell_split.c | cat -e > $OUTFILE'
 shell_test '< test_shell_split.c | ls | cat -e > $OUTFILE'
 shell_test '< test_shell_split.c grep a | > $OUTFILE'
 shell_test '< test_shell_split.c grep a | cat -e > $OUTFILE'
 shell_test '< test_shell_split.c grep "a"|grep "m" | wc -l|cat -e > $OUTFILE'
-shell_test '<'
-shell_test '>'
-shell_test 'echo'
-shell_test 'pwd > $OUTFILE'
-shell_test '> $OUTFILE pwd'
-shell_test 'ls < lol.c | grep "a"'
-shell_test 'ls < test_shell_split.c | grep "a"'
-shell_test 'cat > $OUTFILE < test_shell_split.c -e'
 shell_test 'ls | cat > $OUTFILE < test_shell_split.c -e'
-shell_test 'cat < test_shell_split.c > $OUTFILE -e'
 shell_test 'cat > $OUTFILE < test_shell_split.c -e | ls'
 shell_test 'ls | < integration_tests grep "a" | cat -e'
-shell_test '> $OUTFILE ls -a'
-shell_test '> > outfile'
-shell_test 'ls | >'
-shell_test 'ls | > >'
-shell_test 'ls | > >>'
-shell_test 'ls | <'
-shell_test 'ls | banaan'
-shell_test 'ls | "|"'
-shell_test 'echo < |'
-shell_test 'echo > |'
-shell_test 'echo << |'
-shell_test 'echo >> |'
-shell_test 'ls|cat -e|cat -e'
-shell_test 'ls|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e'
-shell_test '| ls'
-shell_test 'ls |'
-shell_test 'ls | | ls'
-shell_test 'ls | < banaan | ls'
-#shell_test 'ls | > tmp_file | ls\nrm tmp_file' #seems to depend on bash version?
-shell_test 'export ='
-shell_test 'export =10'
-shell_test ''
-shell_test 'echo $BLA$BLA=10$BLA'
-shell_test '\n\n\n\n'
-shell_test 'ls\n\n\nls ||| cat'
-shell_test 'ls\n\n\nexit banaan'
-shell_test 'ls\n\n\nexport "$"=10'
-shell_test 'ls\n\n\ncd banaan'
-shell_test "exit"
-shell_test "exit 0"
-shell_test "exit 1"
-shell_test "exit 42"
-shell_test "exit 1 1"
-#shell_test "exit 1000000000" # seems to work when tested by hand
-shell_test "exit banaan"
-shell_test 'export A=bla\necho $A'
-shell_test 'export A=bla\nexport A=bloe\necho $A'
-shell_test 'export A=bla\nexport A=$A-bloe\necho $A'
-shell_test 'export PATH=$PATH:/banaan/konijn\necho $PATH'
+
+# Wildcard and dollar extension tests
+shell_test 'echo "*"'
+shell_test 'echo *bla'
+shell_test "echo '$PATH'"
+shell_test 'echo "$     a"'
 shell_test 'echo $'
 shell_test 'echo $9'
 shell_test 'echo $9a'
@@ -128,48 +141,63 @@ shell_test 'echo $98a'
 shell_test 'echo $PA'
 shell_test 'echo $PA:'
 shell_test 'echo $PATH:'
-shell_test 'ls\nls'
-shell_test 'export A$B=10\necho $A$B'
-shell_test 'export B=3\necho $A$B'
-shell_test 'export A$B=10\necho $A$B\nexport B=3\necho $A$B'
-shell_test 'export PA=10\necho $PATH'
-shell_test 'echo "*"'
-shell_test 'echo *bla'
-shell_test 'echo "$?"lala $?asdf $PATH "$PATH" * *bla *"bla"'
-shell_test "echo '$PATH'"
-shell_test 'ls | ls | ls | ls | ls | ls'
-shell_test 'echo bla | export $BLA=bla\necho $BLA'
-shell_test 'echo *konijn'
-shell_test 'echo * *bla'
-shell_test 'ls *.c | cat'
-shell_test 'echo *$PATH'
-shell_test 'echo $PATH*'
-shell_test 'echo "*"$PATH'
-shell_test 'echo $PATH"*"'
-shell_test '/bin/ls'
-shell_test 'echo a"bc"d'
-shell_test 'echo a"bcd"e'
 shell_test 'echo $HOME'
 shell_test 'echo "$HOME"'
 shell_test 'echo $HO"ME"'
 shell_test 'echo $"HOME"'
-shell_test 'echo -nABC'
-shell_test 'echo "$     a"'
-shell_test 'pwd'
-shell_test 'pwd lalala'
+shell_test 'echo *konijn'
+shell_test 'echo * *bla'
+shell_test 'echo *$PATH'
+shell_test 'echo $PATH*'
+shell_test 'echo "*"$PATH'
+shell_test 'echo $PATH"*"'
+shell_test 'echo "$?"lala $?asdf $PATH "$PATH" * *bla *"bla"'
+
+# Combination tests
+shell_test 'ls *.c | cat'
+shell_test 'echo bla | export $BLA=bla\necho $BLA'
+shell_test 'ls | cat << bla\nasdf\nbla\n' 
+shell_test 'cat << bla | cat\nasdf\nbla\n' 
+shell_test '<< bla cat | << bloe cat\nfirst\nbla\nsecond\nbloe\n' 
+shell_test '<< bla cat | << bloe cat\nfirst\nbla\nsecond\nbloe\nls\n'
+shell_test 'cat << bla | echo bla\nasdf\nbla\n' 
+shell_test 'cat < test_shell_split.c > $OUTFILE << hd -e | echo *$PATH '*'$PATH "*"$PATH *"$PATH" *'\''$PATH'\'' | cat -e\nbla\nhd\n'
+
+# Error tests
+shell_test '|'
+shell_test '<'
+shell_test '>'
+shell_test '< <'
+shell_test '> <'
+shell_test '<<'
+shell_test '<< <'
+shell_test '> > outfile'
+shell_test 'ls | >'
+shell_test 'ls | > >'
+shell_test 'ls | > >>'
+shell_test 'ls | <'
+shell_test 'ls | banaan'
+shell_test 'ls | "|"'
+shell_test '| ls'
+shell_test 'ls |'
+shell_test 'ls | | ls'
 shell_test 'ls ||| cat'
-shell_test 'ls | cat > $OUTFILE'
-shell_test 'export "|"=10'
-shell_test 'export ">"=10'
-shell_test 'export "$"=10'
-shell_test 'export "111"="222"'
-shell_test 'export a1=10\nunset a1\necho $a1'
+shell_test 'ls\n\n\nls ||| cat'
+shell_test 'ls\n\n\nexit banaan'
+shell_test 'ls\n\n\nexport "$"=10'
+shell_test 'ls\n\n\ncd banaan'
+
+
+#shell_test "exit 1000000000" # seems to work when tested by hand
+
+#for the next two tests with multiple output redirections, to the same file, minishell always does the same thing, but bash doesn't. Bash seems to open the file from different forks and they put in information at the same time, which causes race conditions. Minishell puts in information in order.
+#output_test 'rm $OUTFILE | cat >> $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c << hd4 >> $OUTFILE | >> $OUTFILE echo *$PATH * $PATH "*"$PATH -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n'
+#output_test 'cat > $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c >> $OUTFILE << hd4 -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n' 
+
+#shell_test 'ls | > tmp_file | ls\nrm tmp_file' #seems to depend on bash version?
+
 #shell_test 'unset a1=10' #works differently for different bash versions
-shell_test 'cd\npwd'
-shell_test 'cd ../../..\npwd'
-shell_test 'cd banaan'
-shell_test 'ls | grep t'
-shell_test 'ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls'
+
 # shell_test_ 'export'
 # shell_test_ 'env'
 
