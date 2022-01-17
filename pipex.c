@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 15:46:50 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/17 16:41:00 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,36 +116,20 @@ void	ft_check_here_doc(t_part *parts, t_pipe pipex)
 static int	ft_execute_pipes(t_pipe pipex, t_part *parts, \
 t_env *s_env, int status)
 {
-	int		pipefd[4];
-	pid_t	child;
-
 	while (pipex.iter < pipex.size)
 	{
-		if (pipe(pipefd + 2) < 0)
+		if (pipe(pipex.pipefd + 2) < 0)
 			perror("Pipe: ");
-		child = fork();
-		if (child < 0)
-			perror("Fork: ");
-		if (child == 0)
-		{
-			status = ft_child_process(pipex, pipefd, s_env, parts);
-			exit(status);
-		}
-		if (pipex.iter > 0)
-		{
-			close(pipefd[0]);
-			close(pipefd[1]);
-		}
-		waitpid(child, &status, 0);
+		status = ft_do_forks(pipex, parts, s_env, status);
 		ft_check_here_doc(parts, pipex);
-		pipefd[0] = pipefd[2];
-		pipefd[1] = pipefd[3];
+		pipex.pipefd[0] = pipex.pipefd[2];
+		pipex.pipefd[1] = pipex.pipefd[3];
 		pipex.iter++;
 	}
 	if (pipex.size > 1)
 	{
-		close(pipefd[0]);
-		close(pipefd[1]);
+		close(pipex.pipefd[0]);
+		close(pipex.pipefd[1]);
 	}
 	return (WEXITSTATUS(status));
 }

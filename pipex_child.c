@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 09:41:37 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/17 16:41:06 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,34 @@
 #include <stdio.h>
 #include <errno.h>
 
+static int		ft_child_process(t_pipe pipex, int *pipefd, \
+t_env *s_env, t_part *parts);
+
 static void		ft_dup2(int first, int second);
 
-int	ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, t_part *parts)
+int	ft_do_forks(t_pipe pipex, t_part *parts, t_env *s_env, int status)
+{
+	pid_t	child;
+
+	child = fork();
+	if (child < 0)
+		perror("Fork: ");
+	if (child == 0)
+	{
+		status = ft_child_process(pipex, pipex.pipefd, s_env, parts);
+		exit(status);
+	}
+	if (pipex.iter > 0)
+	{
+		close(pipex.pipefd[0]);
+		close(pipex.pipefd[1]);
+	}
+	waitpid(child, &status, 0);
+	return (status);
+}
+
+static int	ft_child_process(t_pipe pipex, int *pipefd, \
+t_env *s_env, t_part *parts)
 {
 	int	status;
 

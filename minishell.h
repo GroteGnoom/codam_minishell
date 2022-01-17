@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 14:57:15 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/17 16:41:21 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ typedef struct s_pipe
 	int		term_out;
 	int		term_in;
 
+	int		pipefd[4];
+
 	char	**paths;
 
 	char	*cmd;
@@ -50,8 +52,7 @@ typedef struct s_env
 }	t_env;
 
 int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);
-int		ft_child_process(t_pipe pipex, int *pipefd, t_env *s_env, \
-t_part *parts);
+int		ft_do_forks(t_pipe pipex, t_part *parts, t_env *s_env, int status);
 t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, int *status);
 t_part	*get_commands_between_pipes(t_part *parts, t_pipe pipex, \
