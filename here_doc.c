@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 15:38:46 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/17 16:44:58 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,15 @@
 #include <sys/wait.h>
 #include "get_next_line/get_next_line.h"
 
-int	global = 0;
+int	g_global = 0;
 
 static int	ft_redir_args(char **args, int line_nr);
 
 static void	sigint_here_doc_handler(int sig)
 {
-	int pipefd[2];
-	global = 1;
+	int	pipefd[2];
+
+	g_global = 1;
 	(void) sig;
 	if (pipe(pipefd) < 0)
 		perror("Pipe: ");
@@ -68,7 +69,7 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	args = ft_calloc(1 * sizeof(char *), 1);
 	while (line)
 	{
-		if (global == 1)
+		if (g_global == 1)
 		{
 			free(line);
 			ft_free_strs(args);
