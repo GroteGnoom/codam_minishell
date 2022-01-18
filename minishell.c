@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 14:30:51 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 14:36:47 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int	loop_through_lines(char *line, int last_exit_status, t_env *s_env)
 		signal(SIGINT, sigint_handler);
 		s_env->line_nr++;
 	}
-	printf("exit\n");
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
 	return (last_exit_status);
 }
 
