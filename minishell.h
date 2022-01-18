@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 16:41:21 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/18 09:12:33 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ int		is_here_doc(t_part part);
 
 int		ft_do_redir(t_part *parts, int line_nr, int i, t_pipe pipex);
 int		here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex);
+char	*next_line(void);
+int		return_from_sigint(char *line, char **args, int term, int line_nr);
+void	add_to_args_free(char ***args_p, char *line, int *size);
 
 void	signals(void);
 void	sigint_handler(int sig);

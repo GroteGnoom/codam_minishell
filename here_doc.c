@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 16:44:58 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/18 09:17:32 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,6 @@
 int	g_global = 0;
 
 static int	ft_redir_args(char **args, int line_nr);
-
-static void	sigint_here_doc_handler(int sig)
-{
-	int	pipefd[2];
-
-	g_global = 1;
-	(void) sig;
-	if (pipe(pipefd) < 0)
-		perror("Pipe: ");
-	dup2(pipefd[0], STDIN_FILENO);
-	write(pipefd[1], "\n\n", 2);
-	close(pipefd[0]);
-	close(pipefd[1]);
-}
 
 int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 {
@@ -55,16 +41,7 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 		if (dup2(pipex.term_in, STDOUT_FILENO) < 0)
 			return (ft_redir_error("dup2", "", line_nr));
 	}
-	if (dup2(pipex.term_in, STDIN_FILENO) < 0)
-		return (ft_redir_error("dup2", "", line_nr));
-	if (isatty(STDIN_FILENO))
-	{
-		signal(SIGINT, sigint_here_doc_handler);
-		line = readline("here_doc> ");
-		signal(SIGINT, sigint_handler);
-	}
-	else
-		line = get_next_line(STDIN_FILENO);
+	line = next_line();
 	size = 2;
 	args = ft_calloc(1 * sizeof(char *), 1);
 	while (line)
@@ -86,14 +63,7 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 		args[size - 1] = NULL;
 		args[size - 2] = ft_strjoin(line, "\n");
 		free(line);
-		if (isatty(STDIN_FILENO))
-		{
-			signal(SIGINT, sigint_here_doc_handler);
-			line = readline("here_doc> ");
-			signal(SIGINT, sigint_handler);
-		}
-		else
-			line = get_next_line(STDIN_FILENO);
+		line = next_line();
 		size++;
 	}
 	free(line);
