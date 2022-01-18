@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/18 08:54:00 by dnoom         #+#    #+#                 */
-/*   Updated: 2022/01/18 10:32:29 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 14:57:53 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*next_line(void)
 	{
 		g_global = 0;
 		signal(SIGINT, sigint_here_doc_handler);
-		line = readline("here_doc> ");
+		line = readline("> ");
 		signal(SIGINT, sigint_handler);
 	}
 	else

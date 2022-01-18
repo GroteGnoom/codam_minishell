@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 14:36:47 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 14:57:16 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "minishell.h"
 #include "get_next_line/get_next_line.h"
 
-#define PROMPT "> "
+#define PROMPT "minishell-1.0$ "
 
 int	check_for_pipes(int *exit_status, t_part *parts, \
 t_env *s_env, int nr_parts)
