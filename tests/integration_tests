@@ -57,7 +57,7 @@ function environment_test()
 }
 
 #make DEBUG=1 LEAKS=1 -C ..
-make DEBUG=1 -C ..
+make re DEBUG=1 -C ..
 
 
 # Generic tests
