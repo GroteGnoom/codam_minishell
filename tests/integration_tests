@@ -38,6 +38,24 @@ function shell_test()
 	check_status "$1" $minishell_status $bash_status
 }
 
+function environment_test()
+{
+	> minishell_outfile
+	> bash_outfile
+	export OUTFILE=minishell_outfile
+	set +e
+	echo -e $1 | ../minishell | sort | grep -v -f environment_exceptions > minishell_out 2> minishell_err
+	export minishell_status=$?
+	export OUTFILE=bash_outfile
+	echo -e $1 | bash | sort | grep -v -f environment_exceptions > bash_out 2> bash_err
+	export bash_status=$?
+	set -e
+	diff minishell_out bash_out || { echo "std output test failed for: \"$1\""; exit 1; }
+	diff minishell_err bash_err || { echo "error output test failed for: \"$1\""; exit 1; }
+	diff minishell_outfile bash_outfile || { echo "outfile of output test failed for: \"$1\""; exit 1;}
+	check_status "$1" $minishell_status $bash_status
+}
+
 #make DEBUG=1 LEAKS=1 -C ..
 make DEBUG=1 -C ..
 
@@ -62,6 +80,7 @@ shell_test "echo 'hoi'"'"bla"'
 
 # CD tests
 shell_test 'cd\npwd'
+shell_test 'cd\npwd'
 shell_test 'cd ../../..\npwd'
 shell_test 'cd banaan'
 
@@ -70,6 +89,8 @@ shell_test 'pwd'
 shell_test 'pwd lalala'
 
 # Export and unset tests
+environment_test 'export'
+shell_test 'unset a1=10'
 shell_test 'export ='
 shell_test 'export =10'
 shell_test 'export "|"=10'
@@ -86,6 +107,9 @@ shell_test 'export A$B=10\necho $A$B\nexport B=3\necho $A$B'
 shell_test 'export PA=10\necho $PATH'
 shell_test 'export a1=10\nunset a1\necho $a1'
 
+# ENV tests
+environment_test 'env'
+
 # Exit tests
 shell_test "exit"
 shell_test "exit 0"
@@ -93,6 +117,7 @@ shell_test "exit 1"
 shell_test "exit 42"
 shell_test "exit 1 1"
 shell_test "exit banaan"
+shell_test "exit 1000000000"
 
 # Redirection tests
 shell_test 'pwd > $OUTFILE'
@@ -157,6 +182,7 @@ shell_test 'echo "$?"lala $?asdf $PATH "$PATH" * *bla *"bla"'
 # Combination tests
 shell_test 'ls *.c | cat'
 shell_test 'echo bla | export $BLA=bla\necho $BLA'
+shell_test 'ls | > tmp_file | ls\nrm tmp_file'
 shell_test 'ls | cat << bla\nasdf\nbla\n' 
 shell_test 'cat << bla | cat\nasdf\nbla\n' 
 shell_test '<< bla cat | << bloe cat\nfirst\nbla\nsecond\nbloe\n' 
@@ -189,17 +215,10 @@ shell_test 'ls\n\n\nexport "$"=10'
 shell_test 'ls\n\n\ncd banaan'
 
 
-#shell_test "exit 1000000000" # seems to work when tested by hand
+# For the next two tests with multiple output redirections, to the same file, minishell always does the same thing, but bash doesn't. 
+# Bash seems to open the file from different forks and they put in information at the same time, which causes race conditions. Minishell puts in information in order.
 
-#for the next two tests with multiple output redirections, to the same file, minishell always does the same thing, but bash doesn't. Bash seems to open the file from different forks and they put in information at the same time, which causes race conditions. Minishell puts in information in order.
-#output_test 'rm $OUTFILE | cat >> $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c << hd4 >> $OUTFILE | >> $OUTFILE echo *$PATH * $PATH "*"$PATH -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n'
-#output_test 'cat > $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c >> $OUTFILE << hd4 -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n' 
-
-#shell_test 'ls | > tmp_file | ls\nrm tmp_file' #seems to depend on bash version?
-
-#shell_test 'unset a1=10' #works differently for different bash versions
-
-# shell_test_ 'export'
-# shell_test_ 'env'
+# shell_test 'rm $OUTFILE | cat >> $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c << hd4 >> $OUTFILE | >> $OUTFILE echo *$PATH * $PATH "*"$PATH -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n'
+# shell_test 'cat > $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c >> $OUTFILE << hd4 -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n' 
 
 echo integration tests finished!
