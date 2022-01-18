@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/18 08:54:00 by dnoom         #+#    #+#                 */
-/*   Updated: 2022/01/18 10:24:56 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 10:32:29 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ char	*next_line(void)
 	else
 	{
 		line = get_next_line(STDIN_FILENO);
+		if (line)
+			line = ft_strtrim_free(&line, "\n");
 	}
 	return (line);
 }
@@ -55,7 +57,7 @@ char	*next_line(void)
 int	return_from_sigint(char *line, char **args, int term, int line_nr)
 {
 	free(line);
-	ft_free_strs(args);
+	ft_free_ptr_array((void **)args);
 	if (isatty(STDIN_FILENO) && dup2(term, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 10:24:51 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 10:35:47 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,21 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	char	**args;
 	char	*line;
 	int		term;
-	int		atty;
 
 	if (!final)
 		return (ft_syntax_error(parts, 0, line_nr, "newline"));
 	term = 0;
-	atty = isatty(STDIN_FILENO);
-	if (atty)
-	{
+	if (isatty(STDIN_FILENO))
 		term = dup(STDOUT_FILENO);
+	if (isatty(STDIN_FILENO))
 		if (dup2(pipex.term_in, STDOUT_FILENO) < 0)
 			return (ft_redir_error("dup2", "", line_nr));
-	}
 	line = next_line();
 	args = ft_calloc(1 * sizeof(char *), 1);
 	while (line)
 	{
 		if (g_global == 1)
 			return (return_from_sigint(line, args, term, line_nr));
-		if (!isatty(STDIN_FILENO))
-			line = ft_strtrim_free(&line, "\n");
 		if (!ft_strcmp(line, final))
 			break ;
 		add_to_args_free(&args, line);
@@ -73,7 +68,7 @@ static int	ft_redir_args(char **args, int line_nr, int term)
 	}
 	close(pipefd[0]);
 	close(pipefd[1]);
-	ft_free_strs(args);
+	ft_free_ptr_array((void **)args);
 	if (isatty(term) && dup2(term, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", "", line_nr));
 	return (0);
