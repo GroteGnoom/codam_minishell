@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 09:22:49 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 09:47:20 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,8 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 			line = ft_strtrim_free(&line, "\n");
 		if (!ft_strcmp(line, final))
 			break ;
-		args = ft_realloc(args, (size * sizeof(char *)), \
-				((size - 1) * sizeof(char *)));
-		args[size - 1] = NULL;
-		args[size - 2] = ft_strjoin(line, "\n");
-		free(line);
+		add_to_args_free(&args, line, &size);
 		line = next_line();
-		size++;
 	}
 	free(line);
 	ret = ft_redir_args(args, line_nr);

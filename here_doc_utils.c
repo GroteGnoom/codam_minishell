@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/18 08:54:00 by dnoom         #+#    #+#                 */
-/*   Updated: 2022/01/18 09:13:16 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 09:47:37 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,12 @@ int	return_from_sigint(char *line, char **args, int term, int line_nr)
 	return (1);
 }
 
-void	add_to_args_free(char ***args_p, char *line, int *size)
+void	add_to_args_free(char ***args, char *line, int *size)
 {
-	char	**args;
-
-	args = *args_p;
-	args = ft_realloc(args, (*size * sizeof(char *)), \
-			((*size - 1) * sizeof(char *)));
-	args[*size - 1] = NULL;
-	args[*size - 2] = ft_strjoin(line, "\n");
+	*args = ft_realloc(*args, ((*size) * sizeof(char *)), \
+			(((*size) - 1) * sizeof(char *)));
+	(*args)[(*size) - 1] = NULL;
+	(*args)[(*size) - 2] = ft_strjoin(line, "\n");
 	free(line);
 	(*size)++;
 }
