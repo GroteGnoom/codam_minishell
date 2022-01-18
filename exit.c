@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/17 13:33:13 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 14:33:21 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	is_int(char *s)
 
 int	ft_exit(int nr_parts, t_part *parts, int line_nr)
 {
+	ft_putstr_fd("exit\n", 1);
 	if (nr_parts == 1)
 		exit(0);
 	if (!is_int(parts[1].part))
