@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 13:32:35 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/23 13:50:09 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/18 10:28:53 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char	*ft_get_args(struct dirent *dir, char *args, DIR *open_dir,
 
 static char	*free_ret_null(char **strs)
 {
-	ft_free_strs(strs);
+	ft_free_ptr_array((void **)strs);
 	return (NULL);
 }
 
@@ -95,7 +95,7 @@ static char	*ft_get_wildcard(char *file, char *wildcard, int *wild_quoted)
 	file2 = ft_get_file2(file, wild_split, split_len);
 	if (!file2)
 		return (NULL);
-	ft_free_strs(wild_split);
+	ft_free_ptr_array((void **)wild_split);
 	return (file);
 }
 

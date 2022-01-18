@@ -49,7 +49,7 @@ FILES =	ft_atoi.c\
 		ft_numlen.c\
 		ft_realloc.c\
 		ft_count_strs.c\
-		ft_free_strs.c\
+		ft_free_ptr_array.c\
 		ft_strtrim_free.c\
 		ft_skip.c\
 		ft_skip_until.c\

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_split.c                                         :+:    :+:            */
+/*   split_unquoted.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:23:06 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/23 09:56:57 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/18 10:28:37 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**ft_split_unquoted(char const *s, char c, const int *quoted)
 		arr[i] = ft_copy(arr[i], (char *)s, c, quoted);
 		if (!arr[i])
 		{
-			ft_free_strs(arr);
+			ft_free_ptr_array((void **)arr);
 			return (0);
 		}
 		ft_next_word((char **)&s, c, (int **)&quoted);
