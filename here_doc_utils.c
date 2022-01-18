@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/18 08:54:00 by dnoom         #+#    #+#                 */
-/*   Updated: 2022/01/18 09:47:37 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 10:24:56 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ char	*next_line(void)
 		signal(SIGINT, sigint_handler);
 	}
 	else
+	{
 		line = get_next_line(STDIN_FILENO);
+	}
 	return (line);
 }
 
@@ -59,12 +61,14 @@ int	return_from_sigint(char *line, char **args, int term, int line_nr)
 	return (1);
 }
 
-void	add_to_args_free(char ***args, char *line, int *size)
+void	add_to_args_free(char ***args, char *line)
 {
-	*args = ft_realloc(*args, ((*size) * sizeof(char *)), \
-			(((*size) - 1) * sizeof(char *)));
-	(*args)[(*size) - 1] = NULL;
-	(*args)[(*size) - 2] = ft_strjoin(line, "\n");
+	int	size;
+
+	size = ft_count_strs(*args) + 2;
+	*args = ft_realloc(*args, (size * sizeof(char *)), \
+			((size - 1) * sizeof(char *)));
+	(*args)[size - 1] = NULL;
+	(*args)[size - 2] = ft_strjoin(line, "\n");
 	free(line);
-	(*size)++;
 }
