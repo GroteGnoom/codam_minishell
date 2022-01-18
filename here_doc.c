@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 09:17:32 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 09:22:49 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,7 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 	while (line)
 	{
 		if (g_global == 1)
-		{
-			free(line);
-			ft_free_strs(args);
-			if (atty && dup2(term, STDOUT_FILENO) < 0)
-				return (ft_redir_error("dup2", "", line_nr));
-			return (1);
-		}
+			return (return_from_sigint(line, args, term, line_nr));
 		if (!isatty(STDIN_FILENO))
 			line = ft_strtrim_free(&line, "\n");
 		if (!ft_strcmp(line, final))
