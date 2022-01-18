@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:23:06 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/13 10:23:08 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/18 10:26:56 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**ft_split(char const *s, char c)
 		arr[i] = ft_copy(arr[i], (char *)s, c);
 		if (!arr[i])
 		{
-			ft_free_strs(arr);
+			ft_free_ptr_array((void **)arr);
 			return (0);
 		}
 		s = ft_next_word((char *)s, c);

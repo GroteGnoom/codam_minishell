@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:11 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/06 14:15:53 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/18 10:25:21 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 void	ft_strjoin_free(char **s1, char const *s2);
 void	ft_substr_free(char **s, unsigned int start, size_t len);
 int		ft_count_strs(char **s);
-void	ft_free_strs(char **arr);
+void	ft_free_ptr_array(void **arr);
 char	*ft_strtrim_free(char **s1, char const *set);
 int		ft_skip(char **s, char c);
 int		ft_skip_until(char **s, char c);

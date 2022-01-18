@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   test_shell_split.c                                 :+:    :+:            */
+/*   test_split_unquoted.c                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:34:40 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/23 13:43:31 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/18 10:24:06 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print_free(char **result)
 		i++;
 	}
 	printf("\n");
-	ft_free_strs(result);
+	ft_free_ptr_array(result);
 }
 
 int	main(void)

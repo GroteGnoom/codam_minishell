@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/15 14:34:40 by dnoom         #+#    #+#                 */
-/*   Updated: 2021/12/24 10:35:06 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/18 10:24:03 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,5 @@ int	main(int argc, char **argv, char **env)
 	print_parts1("''hallo hallo'' ''", s_env);
 	print_parts1("$? asd'$?'fasdf dsfasdf\"bla$?\" ''", s_env);
 	print_parts1("test_shel*.c", s_env);
-	ft_free_strs(s_env.env);
+	ft_free_ptr_array(s_env.env);
 }
