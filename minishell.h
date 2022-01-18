@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 09:50:52 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 11:38:21 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	add_to_args_free(char ***args_p, char *line);
 
 void	signals(void);
 void	sigint_handler(int sig);
+void	sigint_handler_nonl(int sig);
 
 int		ft_echo(int nr_parts, t_part *parts);
 int		ft_pwd(void);

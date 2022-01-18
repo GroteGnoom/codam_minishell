@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 10:35:47 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/18 11:38:26 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
 			break ;
 		add_to_args_free(&args, line);
 		line = next_line();
+		if (!line)
+			signal(SIGINT, sigint_handler_nonl);
 	}
 	free(line);
 	return (ft_redir_args(args, line_nr, term));
