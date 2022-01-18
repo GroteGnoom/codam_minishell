@@ -5,11 +5,6 @@ set -e
 export ASAN_OPTIONS='detect_leaks=1'
 export LSAN_OPTIONS='suppressions=leak_suppression.txt print_suppressions=0'
 
-function check_valgrind_output()
-{
-	grep -q ' 0 errors from 0 contexts' leaks_output || { echo "found valgrind error for: \"$1\""; cat leaks_output; exit 1; }
-}
-
 function check_status()
 {
 	if [ $2 -ne $3 ]; then
@@ -220,5 +215,7 @@ shell_test 'ls\n\n\ncd banaan'
 
 # shell_test 'rm $OUTFILE | cat >> $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c << hd4 >> $OUTFILE | >> $OUTFILE echo *$PATH * $PATH "*"$PATH -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n'
 # shell_test 'cat > $OUTFILE << hd1 << hd2 -e | >> $OUTFILE << hd3 | cat < test_shell_split.c >> $OUTFILE << hd4 -e\n1\nhd1\n2\nhd2\n3\nhd3\n4\nhd4\n' 
+
+norminette ..
 
 echo integration tests finished!
