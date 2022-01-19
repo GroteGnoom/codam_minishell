@@ -83,6 +83,7 @@ shell_test 'echo -n'
 shell_test 'echo bla -n'
 shell_test 'echo -n -n -n'
 shell_test 'echo -n -n -n bla'
+shell_test 'ls | echo -n bla'
 shell_test 'echo -nnnn'
 shell_test 'echo -nnnn bla'
 
