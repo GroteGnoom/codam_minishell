@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:56 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/12 10:49:38 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/19 11:28:38 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_echo(int nr_parts, t_part *parts)
 		write(1, "\n", 1);
 		return (0);
 	}
-	while (!ft_strcmp(parts[i].part, "-n"))
+	while (parts[i].part && !ft_strcmp(parts[i].part, "-n"))
 		i++;
 	ret = ft_write_echo(parts, i, nr_parts);
 	if (!ret && ft_strcmp(parts[1].part, "-n"))
