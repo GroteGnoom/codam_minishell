@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 13:45:03 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/19 13:50:29 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,23 @@ static char	*get_prev_var(t_env *s_env, char *envname, int *i)
 
 int	check_identifier(char *str, int unset)
 {
-	char	*invalid;
 	int		i;
 
 	i = 0;
-	invalid = "<>|$";
-	if (unset)
-		invalid = "<>|$=";
-	if (ft_isdigit(str[i]))
+	if (ft_isdigit(str[0]))
 		return (1);
-	if (str[i] == '=')
+	if (str[0] == '=')
 		return (1);
 	while (str[i])
 	{
-		if (ft_strchr(invalid, str[i]))
+		if (str[i] == '=')
+		{
+			if (unset)
+				return (1);
+			else
+				return (0);
+		}
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (1);
 		i++;
 	}
