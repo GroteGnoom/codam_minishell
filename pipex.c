@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 10:28:17 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/19 16:20:18 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,11 @@ t_env *s_env, int status)
 	{
 		close(pipex.pipefd[0]);
 		close(pipex.pipefd[1]);
+	}
+	while (pipex.iter > 0)
+	{
+		waitpid(-1, &status, 0);
+		pipex.iter--;
 	}
 	return (WEXITSTATUS(status));
 }
