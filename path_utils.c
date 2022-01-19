@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/11 11:24:49 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/19 11:47:13 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,17 @@ char	**ft_get_paths(char **env)
 	{
 		line = ft_strnstr(env[i], "PATH=", 5);
 		i++;
+		if (!env[i])
+			paths = ft_calloc(sizeof(*paths), 1);
+		if (!env[i])
+			return (paths);
 	}
 	path = ft_substr(line, 5, ft_strlen(line) - 5);
 	paths = ft_split(path, ':');
 	free(path);
 	i = 0;
 	while (paths[i])
-	{
-		ft_strjoin_free(&paths[i], "/");
-		i++;
-	}
+		ft_strjoin_free(&paths[i++], "/");
 	return (paths);
 }
 
