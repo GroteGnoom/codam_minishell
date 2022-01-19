@@ -1,18 +1,20 @@
 #!/bin/bash
-set -x
-set -e
+#set -x
+#set -e
 
 export ASAN_OPTIONS='detect_leaks=1'
 export LSAN_OPTIONS='suppressions=leak_suppression.txt print_suppressions=0'
 
-function check_status()
+function check()
 {
 	if [ $2 -ne $3 ]; then
 		echo "found exit status difference for: \"$1\"";
 		echo "bash exit status:" $3;
 		echo "minishell exit status:" $2;
-		exit 1;
 	fi
+	diff minishell_out bash_out || { echo "std output test failed for: \"$1\""; echo -e "\n\n\n";}
+	diff minishell_err bash_err || { echo "error output test failed for: \"$1\""; echo -e "\n\n\n";}
+	diff minishell_outfile bash_outfile || { echo "outfile of output test failed for: \"$1\""; echo -e "\n\n\n";}
 }
 
 function shell_test()
@@ -20,17 +22,12 @@ function shell_test()
 	> minishell_outfile
 	> bash_outfile
 	export OUTFILE=minishell_outfile
-	set +e
 	echo -e $1 | ../minishell > minishell_out 2> minishell_err
 	export minishell_status=$?
 	export OUTFILE=bash_outfile
 	echo -e $1 | bash > bash_out 2> bash_err
 	export bash_status=$?
-	set -e
-	diff minishell_out bash_out || { echo "std output test failed for: \"$1\""; exit 1; }
-	diff minishell_err bash_err || { echo "error output test failed for: \"$1\""; exit 1; }
-	diff minishell_outfile bash_outfile || { echo "outfile of output test failed for: \"$1\""; exit 1;}
-	check_status "$1" $minishell_status $bash_status
+	check "$1" $minishell_status $bash_status
 }
 
 function environment_test()
@@ -38,17 +35,12 @@ function environment_test()
 	> minishell_outfile
 	> bash_outfile
 	export OUTFILE=minishell_outfile
-	set +e
 	echo -e $1 | ../minishell 2> minishell_err | sort | grep -v -f environment_exceptions > minishell_out
 	export minishell_status=$?
 	export OUTFILE=bash_outfile
 	echo -e $1 | bash 2> bash_err | sort | grep -v -f environment_exceptions > bash_out
 	export bash_status=$?
-	set -e
-	diff minishell_out bash_out || { echo "std output test failed for: \"$1\""; exit 1; }
-	diff minishell_err bash_err || { echo "error output test failed for: \"$1\""; exit 1; }
-	diff minishell_outfile bash_outfile || { echo "outfile of output test failed for: \"$1\""; exit 1;}
-	check_status "$1" $minishell_status $bash_status
+	check "$1" $minishell_status $bash_status
 }
 
 #test by hand:
