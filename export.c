@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 09:52:22 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/19 13:45:03 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,49 +19,52 @@ static int	export_attribute(t_env *s_env, char *attr);
 
 static void	ft_free(t_env *s_env);
 
-static char	*get_env_str(t_env *s_env, char *env, int *i);
+static char	*get_prev_var(t_env *s_env, char *envname, int *i);
 
 int	ft_export(t_part *parts, t_env *s_env)
 {
-	char	*env;
-	char	*env_str;
+	char	*envname;
+	char	*prev_var;
 	int		i;
 
 	if (!parts[1].part || parts[1].type != NORMAL)
 		return (ft_export_print(s_env->env));
 	if (check_identifier(parts[1].part, 0))
 		return (ft_invalid_identifier(parts, 0, s_env->line_nr));
-	i = 0;
-	env = ft_strchr(parts[1].part, '=');
-	if (env != 0)
-		env = ft_substr(parts[1].part, 0, ft_strlen(parts[1].part) \
-		- ft_strlen(env));
+	envname = ft_strchr(parts[1].part, '=');
+	if (envname)
+		envname = ft_substr(parts[1].part, 0, ft_strlen(parts[1].part) \
+		- ft_strlen(envname));
 	else
+		envname = ft_strdup(parts[1].part);
+	i = 0;
+	prev_var = get_prev_var(s_env, envname, &i);
+	if (i == s_env->size && !prev_var)
 		return (export_attribute(s_env, parts[1].part));
-	env_str = get_env_str(s_env, env, &i);
-	if (i == s_env->size)
-		return (export_attribute(s_env, parts[1].part));
-	if (env_str && ft_search_name(s_env, env, ft_strlen(env)))
+	if (prev_var)
 		i -= 1;
-	free(env);
-	free(s_env->env[i]);
-	s_env->env[i] = ft_strdup(parts[1].part);
+	free(envname);
+	if (ft_strchr(parts[1].part, '='))
+	{
+		free(s_env->env[i]);
+		s_env->env[i] = ft_strdup(parts[1].part);
+	}
 	return (0);
 }
 
-static char	*get_env_str(t_env *s_env, char *env, int *i)
+static char	*get_prev_var(t_env *s_env, char *envname, int *i)
 {
-	char	*env_str;
+	char	*prev_var;
 
-	env_str = NULL;
-	while (s_env->env[*i] && *i < s_env->size && !env_str)
+	prev_var = NULL;
+	while (s_env->env[*i] && *i < s_env->size && !prev_var)
 	{
-		env_str = ft_strnstr(s_env->env[*i], env, ft_strlen(env));
+		prev_var = ft_strnstr(s_env->env[*i], envname, ft_strlen(envname));
 		*i += 1;
 	}
-	if (*i == s_env->size)
-		free(env);
-	return (env_str);
+	if (*i == s_env->size && !prev_var)
+		free(envname);
+	return (prev_var);
 }
 
 int	check_identifier(char *str, int unset)
