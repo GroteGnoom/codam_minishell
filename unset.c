@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:13:14 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/29 09:11:00 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/19 13:13:28 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 int	ft_unset(t_part *parts, t_env *s_env)
 {
-	char	*env;
 	int		i;
 
 	i = 0;
@@ -28,9 +27,9 @@ int	ft_unset(t_part *parts, t_env *s_env)
 		i++;
 	if (i >= s_env->size)
 		return (1);
-	env = ft_strchr(s_env->env[i], '=');
-	if (env != 0)
-		ft_substr_free(&s_env->env[i], 0, \
-		ft_strlen(s_env->env[i]) - ft_strlen(env));
+	free(s_env->env[i]);
+	s_env->env[i] = s_env->env[s_env->size -1];
+	s_env->env[s_env->size - 1] = NULL;
+	s_env->size--;
 	return (0);
 }
