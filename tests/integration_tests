@@ -142,7 +142,7 @@ shell_test '<< bla cat\nasdf\nbla\n'
 shell_test '<< bla\nasdf\nbla\n cat'
 shell_test '<< bla cat\nasdf\nbla\necho banaan'
 shell_test '<< bla cat < test_shell_split.c\nasdf\nbla\n'
-shell_test '<< wildcard.c ls -la | wc -w >> out.txt\nwildcard.c'
+shell_test '<< wildcard.c ls -la | wc -w >> $OUTFILE\nwildcard.c'
 
 # Pipe tests
 shell_test 'ls | grep t'

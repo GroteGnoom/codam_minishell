@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:48 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 09:40:24 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/19 13:48:50 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	print_env_export(char *env)
 		len_before_equals++;
 	ft_putstr_fd("declare -x ", 1);
 	write(1, env, len_before_equals);
-	if (!env[len_before_equals])
+	if (!ft_strchr(env, '='))
 	{
 		ft_putchar_fd('\n', 1);
 		return ;
