@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 13:50:29 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/19 15:04:52 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,15 @@ int	ft_export(t_part *parts, t_env *s_env)
 static char	*get_prev_var(t_env *s_env, char *envname, int *i)
 {
 	char	*prev_var;
+	int		len;
 
+	len = ft_strlen(envname);
 	prev_var = NULL;
 	while (s_env->env[*i] && *i < s_env->size && !prev_var)
 	{
-		prev_var = ft_strnstr(s_env->env[*i], envname, ft_strlen(envname));
+		prev_var = ft_strnstr(s_env->env[*i], envname, len);
+		if (prev_var && s_env->env[*i][len] != 0 && s_env->env[*i][len] != '=')
+			prev_var = NULL;
 		*i += 1;
 	}
 	if (*i == s_env->size && !prev_var)
