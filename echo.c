@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:56 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 11:41:35 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/19 14:01:55 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ static int	ft_check_flags(char *flag)
 {
 	int	i;
 
-	i = 1;
+	i = 0;
+	if (flag[i] == '-')
+		i++;
 	while (flag[i] && flag[i] == 'n')
 		i++;
 	if (!flag[i])
