@@ -33,6 +33,7 @@ function shell_test()
 function environment_test()
 {
 	export minishell_status=0
+	export bash_status=0
 	> minishell_outfile
 	> bash_outfile
 	export OUTFILE=minishell_outfile
