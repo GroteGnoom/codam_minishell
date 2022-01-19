@@ -32,6 +32,7 @@ function shell_test()
 
 function environment_test()
 {
+	export minishell_status=0
 	> minishell_outfile
 	> bash_outfile
 	export OUTFILE=minishell_outfile
@@ -101,15 +102,16 @@ shell_test 'export ">"=10'
 shell_test 'export "$"=10'
 shell_test 'export "["=10'
 shell_test 'export "111"="222"'
-shell_test 'export A=bla\necho $A'
-shell_test 'export A=bla\nexport A=bloe\necho $A'
-shell_test 'export A=bla\nexport A=$A-bloe\necho $A'
-shell_test 'export PATH=$PATH:/banaan/konijn\necho $PATH'
+environment_test 'export A=bla\nexport'
+environment_test 'export A=bla\nexport A=bloe\nexport'
+environment_test 'export A=bla\nexport A=$A-bloe\nexport'
+environment_test 'export PATH=$PATH:/banaan/konijn\nexport'
 shell_test 'export A$B=10\necho $A$B'
 shell_test 'export B=3\necho $A$B'
 shell_test 'export A$B=10\necho $A$B\nexport B=3\necho $A$B'
-shell_test 'export PA=10\necho $PATH'
-shell_test 'export a1=10\nunset a1\necho $a1'
+environment_test 'export PA=10\nexport'
+environment_test 'export a1=10\nunset a1\nexport'
+environment_test 'export a=5=5\nexport'
 
 # unset tests
 environment_test 'unset a1=10\nexport'
