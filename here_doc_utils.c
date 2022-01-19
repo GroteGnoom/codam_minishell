@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/18 08:54:00 by dnoom         #+#    #+#                 */
-/*   Updated: 2022/01/18 14:57:53 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/19 14:57:36 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	sigint_here_doc_handler(int sig)
 	close(pipefd[1]);
 }
 
-char	*next_line(void)
+char	*next_line(t_env *s_env)
 {
 	char	*line;
 
@@ -51,6 +51,8 @@ char	*next_line(void)
 		if (line)
 			line = ft_strtrim_free(&line, "\n");
 	}
+	if (line)
+		expand_args(&line, 0, s_env, 0);
 	return (line);
 }
 

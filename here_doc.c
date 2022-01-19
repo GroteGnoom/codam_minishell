@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 11:56:13 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/19 14:40:30 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,46 +22,46 @@ int	g_global = 0;
 
 static int	ft_redir_args(char **args, int line_nr, int term);
 
-static char	**ft_get_lines(char *final, int *ret, int term, int line_nr);
+static char	**ft_get_lines(char *final, int *ret, int term, t_env *s_env);
 
-int	here_doc(char *final, int line_nr, t_part *parts, t_pipe pipex)
+int	here_doc(char *final, t_env *s_env, t_part *parts, t_pipe pipex)
 {
 	char	**args;
 	int		term;
 	int		ret;
 
 	if (!final)
-		return (ft_syntax_error(parts, 0, line_nr, "newline"));
+		return (ft_syntax_error(parts, 0, s_env->line_nr, "newline"));
 	term = 0;
 	if (isatty(STDIN_FILENO))
 		term = dup(STDOUT_FILENO);
 	if (isatty(STDIN_FILENO))
 		if (dup2(pipex.term_in, STDOUT_FILENO) < 0)
-			return (ft_redir_error("dup2", "", line_nr));
-	args = ft_get_lines(final, &ret, term, line_nr);
+			return (ft_redir_error("dup2", "", s_env->line_nr));
+	args = ft_get_lines(final, &ret, term, s_env);
 	if (ret)
 		return (ret);
-	return (ft_redir_args(args, line_nr, term));
+	return (ft_redir_args(args, s_env->line_nr, term));
 }
 
-static char	**ft_get_lines(char *final, int *ret, int term, int line_nr)
+static char	**ft_get_lines(char *final, int *ret, int term, t_env *s_env)
 {
 	char	**args;
 	char	*line;
 
-	line = next_line();
+	line = next_line(s_env);
 	args = ft_calloc(1 * sizeof(char *), 1);
 	while (line)
 	{
 		if (g_global == 1)
 		{
-			*ret = return_from_sigint(line, args, term, line_nr);
+			*ret = return_from_sigint(line, args, term, s_env->line_nr);
 			return (NULL);
 		}
 		if (!ft_strcmp(line, final))
 			break ;
 		add_to_args_free(&args, line);
-		line = next_line();
+		line = next_line(s_env);
 		if (!line)
 			signal(SIGINT, sigint_handler_nonl);
 	}
