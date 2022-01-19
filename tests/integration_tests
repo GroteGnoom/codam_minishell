@@ -51,6 +51,13 @@ function environment_test()
 	check_status "$1" $minishell_status $bash_status
 }
 
+#test by hand:
+##########
+# cat
+# <ctrl>-\
+#fix : signals should be reset before executing function
+##########
+
 #make DEBUG=1 LEAKS=1 -C ..
 make re DEBUG=1 -C ..
 
@@ -72,6 +79,12 @@ shell_test 'echo $BLA$BLA=10$BLA'
 shell_test 'echo a"bc"d'
 shell_test 'echo a"bcd"e'
 shell_test "echo 'hoi'"'"bla"'
+shell_test 'echo -n'
+shell_test 'echo bla -n'
+shell_test 'echo -n -n -n'
+shell_test 'echo -n -n -n bla'
+shell_test 'echo -nnnn'
+shell_test 'echo -nnnn bla'
 
 # CD tests
 shell_test 'cd\npwd'
@@ -85,7 +98,12 @@ shell_test 'pwd lalala'
 
 # Export and unset tests
 environment_test 'export'
-shell_test 'unset a1=10'
+environment_test 'export a\nexport a=42\nexport'
+environment_test 'export a=\nexport a=42\nexport'
+environment_test 'export a=\nexport a\nexport'
+environment_test 'unset a1=10\nexport'
+environment_test 'unset $PATH\nexport'
+environment_test 'unset PATH\nexport'
 shell_test 'export ='
 shell_test 'export =10'
 shell_test 'export "|"=10'
@@ -131,6 +149,7 @@ shell_test '<< bla cat\nasdf\nbla\n'
 shell_test '<< bla\nasdf\nbla\n cat'
 shell_test '<< bla cat\nasdf\nbla\necho banaan'
 shell_test '<< bla cat < test_shell_split.c\nasdf\nbla\n'
+shell_test '<< wildcard.c ls -la | wc -w >> out.txt\nwildcard.c'
 
 # Pipe tests
 shell_test 'ls | grep t'
@@ -149,6 +168,7 @@ shell_test '< test_shell_split.c grep "a"|grep "m" | wc -l|cat -e > $OUTFILE'
 shell_test 'ls | cat > $OUTFILE < test_shell_split.c -e'
 shell_test 'cat > $OUTFILE < test_shell_split.c -e | ls'
 shell_test 'ls | < integration_tests grep "a" | cat -e'
+shell_test 'cat | cat | ls\nbla'
 
 # Wildcard and dollar extension tests
 shell_test 'echo "*"'
