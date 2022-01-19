@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:40 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/18 13:39:19 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/19 15:34:59 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ int	ft_executable(int nr_parts, t_part *parts, t_env *s_env)
 	char	**args;
 	char	**paths;
 	int		status;
-	sig_t	old_signal;
+	sig_t	old_signal[2];
 
 	paths = ft_get_paths(s_env->env);
 	args = ft_get_args(nr_parts, parts);
-	old_signal = signal(SIGINT, signal_handler_in_process);
+	old_signal[0] = signal(SIGINT, sigint_handler_in_process);
+	old_signal[1] = signal(SIGQUIT, sigquit_handler_in_process);
 	child = fork();
 	if (child < 0)
 	{
@@ -38,7 +39,8 @@ int	ft_executable(int nr_parts, t_part *parts, t_env *s_env)
 	if (child == 0)
 		ft_try_paths(paths, args, s_env, parts);
 	waitpid(-1, &status, 0);
-	signal(SIGINT, old_signal);
+	signal(SIGINT, old_signal[0]);
+	signal(SIGQUIT, old_signal[1]);
 	ft_free_ptr_array((void **)paths);
 	ft_free_ptr_array((void **)args);
 	return (WEXITSTATUS(status));
