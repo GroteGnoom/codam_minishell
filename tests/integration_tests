@@ -39,10 +39,10 @@ function environment_test()
 	> bash_outfile
 	export OUTFILE=minishell_outfile
 	set +e
-	echo -e $1 | ../minishell | sort | grep -v -f environment_exceptions > minishell_out 2> minishell_err
+	echo -e $1 | ../minishell 2> minishell_err | sort | grep -v -f environment_exceptions > minishell_out
 	export minishell_status=$?
 	export OUTFILE=bash_outfile
-	echo -e $1 | bash | sort | grep -v -f environment_exceptions > bash_out 2> bash_err
+	echo -e $1 | bash 2> bash_err | sort | grep -v -f environment_exceptions > bash_out
 	export bash_status=$?
 	set -e
 	diff minishell_out bash_out || { echo "std output test failed for: \"$1\""; exit 1; }
@@ -58,7 +58,7 @@ function environment_test()
 #fix : signals should be reset before executing function
 ##########
 
-#make DEBUG=1 LEAKS=1 -C ..
+#make DEBUG=1 -C ..
 make re DEBUG=1 -C ..
 
 
