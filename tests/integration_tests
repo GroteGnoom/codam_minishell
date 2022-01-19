@@ -82,7 +82,7 @@ shell_test 'echo -nnnn bla'
 
 # CD tests
 shell_test 'cd\npwd'
-shell_test 'cd\npwd'
+shell_test 'cd ..\ncd tests\npwd'
 shell_test 'cd ../../..\npwd'
 shell_test 'cd banaan'
 
