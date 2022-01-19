@@ -89,19 +89,17 @@ shell_test 'cd banaan'
 shell_test 'pwd'
 shell_test 'pwd lalala'
 
-# Export and unset tests
+# Export tests
 environment_test 'export'
 environment_test 'export a\nexport a=42\nexport'
 environment_test 'export a=\nexport a=42\nexport'
 environment_test 'export a=\nexport a\nexport'
-environment_test 'unset a1=10\nexport'
-environment_test 'unset $PATH\nexport'
-environment_test 'unset PATH\nexport'
 shell_test 'export ='
 shell_test 'export =10'
 shell_test 'export "|"=10'
 shell_test 'export ">"=10'
 shell_test 'export "$"=10'
+shell_test 'export "-"=10'
 shell_test 'export "111"="222"'
 shell_test 'export A=bla\necho $A'
 shell_test 'export A=bla\nexport A=bloe\necho $A'
@@ -112,6 +110,15 @@ shell_test 'export B=3\necho $A$B'
 shell_test 'export A$B=10\necho $A$B\nexport B=3\necho $A$B'
 shell_test 'export PA=10\necho $PATH'
 shell_test 'export a1=10\nunset a1\necho $a1'
+
+# unset tests
+environment_test 'unset a1=10\nexport'
+environment_test 'unset $PATH\nexport'
+environment_test 'unset PATH\nexport'
+environment_test 'unset 1a\nexport'
+environment_test 'unset a-\nexport'
+environment_test 'unset a-\nexport'
+environment_test 'unset a_\nexport'
 
 # ENV tests
 environment_test 'env'
