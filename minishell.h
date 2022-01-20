@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 15:36:23 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/20 10:01:02 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # define SHELL_NAME "bash"
+
+# include <unistd.h>
 
 enum e_part_type {
 	SPACES,
@@ -52,7 +54,7 @@ typedef struct s_env
 }	t_env;
 
 int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);
-int		ft_do_forks(t_pipe pipex, t_part *parts, t_env *s_env, int status);
+pid_t	ft_do_forks(t_pipe pipex, t_part *parts, t_env *s_env, int status);
 t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, int *status);
 t_part	*get_commands_between_pipes(t_part *parts, t_pipe pipex, \
