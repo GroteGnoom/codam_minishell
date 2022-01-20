@@ -61,7 +61,6 @@ shell_test ''
 shell_test '\n\n\n\n'
 shell_test 'ls\nls'
 shell_test '/bin/ls'
-shell_test 'cat -e\nbla'
 
 # Echo tests
 shell_test 'echo'
@@ -172,7 +171,7 @@ shell_test '< test_shell_split.c grep "a"|grep "m" | wc -l|cat -e > $OUTFILE'
 shell_test 'ls | cat > $OUTFILE < test_shell_split.c -e'
 shell_test 'cat > $OUTFILE < test_shell_split.c -e | ls'
 shell_test 'ls | < integration_tests grep "a" | cat -e'
-shell_test 'cat | cat | ls\nbla'
+shell_test 'cat | cat | ls\n'
 
 # Wildcard and dollar extension tests
 shell_test 'echo "*"'
