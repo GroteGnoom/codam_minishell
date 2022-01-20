@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/20 11:00:13 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/20 11:07:41 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,11 @@ int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 			return (1);
 	}
 	else if (parts[1].part[0] == '/')
-		return (chdir(parts[1].part));
+	{
+		if (chdir(parts[1].part))
+			return (ft_redir_error("cd", parts[1].part, line_nr));
+		return (0);
+	}
 	else if (parts[1].part[0] == '.' && parts[1].part[1] == '.')
 		return (ft_relative(parts[1].part, parts, line_nr));
 	else
