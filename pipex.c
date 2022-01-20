@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/20 10:21:06 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/20 10:29:17 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ static int	ft_execute_pipes(t_pipe pipex, t_part *parts, \
 t_env *s_env, int status)
 {
 	pid_t	*child;
-	int		i;
 
 	child = ft_calloc(pipex.size + 1, sizeof(*child));
 	while (pipex.iter < pipex.size)
@@ -130,8 +129,7 @@ t_env *s_env, int status)
 		pipex.pipefd[1] = pipex.pipefd[3];
 		pipex.iter++;
 	}
-	i = 0;
-	while (i < pipex.iter)
+	while (0 < pipex.iter)
 	{
 		waitpid(child[pipex.iter], &status, 0);
 		pipex.iter--;
