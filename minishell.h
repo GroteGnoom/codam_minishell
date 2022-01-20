@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/20 10:29:23 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/20 10:40:23 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ char	**parts_to_strings(t_part *parts);
 int		count_parts(t_part *s);
 void	ft_free_parts(t_part *parts);
 int		get_env_name_length(char *env);
+void	ft_free_env(t_env *s_env);
 
 char	*ft_search_name(t_env *s_env, char *envname, int envlen);
 int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env);
