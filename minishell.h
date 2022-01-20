@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 15:36:23 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/20 10:26:49 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	sigquit_handler_in_process(int sig);
 
 int		ft_echo(int nr_parts, t_part *parts);
 int		ft_pwd(void);
-int		ft_cd(t_part *parts, int line_nr);
+int		ft_cd(t_part *parts, int line_nr, t_env *s_env);
 int		ft_env(char **envp);
 int		ft_export(t_part *parts, t_env *s_env);
 int		ft_exit(int nr_parts, t_part *parts, int line_nr);

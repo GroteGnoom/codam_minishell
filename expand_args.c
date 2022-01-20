@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 11:04:01 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/20 10:25:08 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	ft_replace(char **sp, int start, int len, char *rep)
 
 char	*ft_search_name(t_env *s_env, char *envname, int envlen)
 {
-	char	*values;
 	int		i;
 
 	i = 0;
@@ -41,10 +40,7 @@ char	*ft_search_name(t_env *s_env, char *envname, int envlen)
 	{
 		if (!ft_strncmp(s_env->env[i], envname, envlen) && \
 		s_env->env[i][envlen] == '=')
-		{
-			values = s_env->env[i] + envlen + 1;
-			return (values);
-		}
+			return (s_env->env[i] + envlen + 1);
 		i++;
 	}
 	return (NULL);

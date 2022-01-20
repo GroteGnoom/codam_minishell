@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2021/12/28 14:48:49 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/20 10:41:36 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,20 @@ static int	ft_relative(char *path_str, t_part *parts, int line_nr);
 
 static int	ft_search_slash(char *cur_dir, int i);
 
-int	ft_cd(t_part *parts, int line_nr)
+int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 {
 	char	*home_dir;
 	char	*buf;
 	char	*cur_dir;
 	char	*new_dir;
+	int		err;
 
-	home_dir = getenv("HOME");
+	err = 0;
+	home_dir = ft_search_name(s_env, "HOME", 4);
 	if (!parts[1].part)
 	{
 		if (chdir(home_dir) < 0)
 			return (1);
-		return (0);
 	}
 	else if (parts[1].part[0] == '/')
 		return (ft_absolute(parts[1].part, home_dir, parts, line_nr));
@@ -52,9 +53,10 @@ int	ft_cd(t_part *parts, int line_nr)
 		cur_dir = getcwd(buf, PATH_MAX);
 		new_dir = ft_strjoin(cur_dir, "/");
 		free(cur_dir);
-		return (ft_absolute(parts[1].part, new_dir, parts, line_nr));
+		err = ft_absolute(parts[1].part, new_dir, parts, line_nr);
+		free(new_dir);
 	}
-	return (0);
+	return (err);
 }
 
 static int	ft_absolute(char *path_str, char *home_dir, \
@@ -63,7 +65,6 @@ t_part *parts, int line_nr)
 	char	*new_dir;
 
 	new_dir = ft_strjoin(home_dir, path_str);
-	free(home_dir);
 	if (chdir(new_dir) < 0)
 	{
 		free(new_dir);
