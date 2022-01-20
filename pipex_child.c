@@ -6,15 +6,15 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:26 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 16:18:14 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/20 10:29:15 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "Libft/libft.h"
 #include <unistd.h>
-#include <fcntl.h>
 #include <stdio.h>
+#include <fcntl.h>
 #include <errno.h>
 
 static int		ft_child_process(t_pipe pipex, int *pipefd, \
@@ -22,7 +22,7 @@ t_env *s_env, t_part *parts);
 
 static void		ft_dup2(int first, int second);
 
-int	ft_do_forks(t_pipe pipex, t_part *parts, t_env *s_env, int status)
+pid_t	ft_do_forks(t_pipe pipex, t_part *parts, t_env *s_env, int status)
 {
 	pid_t	child;
 
@@ -39,7 +39,7 @@ int	ft_do_forks(t_pipe pipex, t_part *parts, t_env *s_env, int status)
 		close(pipex.pipefd[0]);
 		close(pipex.pipefd[1]);
 	}
-	return (status);
+	return (child);
 }
 
 static int	ft_child_process(t_pipe pipex, int *pipefd, \

@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/20 10:26:49 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/20 10:43:10 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # define SHELL_NAME "bash"
+
+# include <unistd.h>
 
 enum e_part_type {
 	SPACES,
@@ -52,7 +54,7 @@ typedef struct s_env
 }	t_env;
 
 int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);
-int		ft_do_forks(t_pipe pipex, t_part *parts, t_env *s_env, int status);
+pid_t	ft_do_forks(t_pipe pipex, t_part *parts, t_env *s_env, int status);
 t_part	*ft_get_cmd_flag(t_part *parts, t_pipe pipex, \
 t_env *s_env, int *status);
 t_part	*get_commands_between_pipes(t_part *parts, t_pipe pipex, \
@@ -107,6 +109,7 @@ char	**parts_to_strings(t_part *parts);
 int		count_parts(t_part *s);
 void	ft_free_parts(t_part *parts);
 int		get_env_name_length(char *env);
+void	ft_free_env(t_env *s_env);
 
 char	*ft_search_name(t_env *s_env, char *envname, int envlen);
 int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env);
