@@ -92,7 +92,7 @@ shell_test 'cd /usr\npwd'
 shell_test 'cd /usr/bin\npwd'
 shell_test 'cd /bla'
 shell_test 'cd /\npwd'
-shell_test 'unset HOME\necho home after uset: $HOME\ncd\npwd'
+shell_test 'unset HOME\necho home after unset: $HOME\ncd\npwd'
 shell_test 'mkdir TESTDIR\ncd TESTDIR\nrmdir ../TESTDIR\npwd'
 
 # PWD Tests
@@ -216,6 +216,8 @@ shell_test 'echo *$PATH'
 shell_test 'echo $PATH*'
 shell_test 'echo "*"$PATH'
 shell_test 'echo $PATH"*"'
+shell_test 'echo bla $bla'
+shell_test 'echo bla $bla | cat -e'
 shell_test 'echo "$?"lala $?asdf $PATH "$PATH" * *bla *"bla"'
 
 # Quote tests

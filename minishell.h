@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/20 11:08:30 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/21 15:26:13 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	**ft_get_paths(char **env);
 t_part	*quote_split(char *s);
 t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env);
 
-void	expand_args(char **sp, int last_exit_status, t_env *s_env, \
+int		expand_args(char **sp, int last_exit_status, t_env *s_env, \
 			int next_is_quoted);
 void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env);
 void	expand_wildcard(t_part **parts, int **wild_quoted);
