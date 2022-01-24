@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 10:31:30 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 10:48:40 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int	main(int argc, char **argv, char **envp)
 	s_env.line_nr = 1;
 	signals();
 	copy_env(envp, &s_env);
-	ft_export_var(&s_env, "OLDPWD", ft_strdup("OLDPWD"));
 	if (isatty(STDIN_FILENO))
 		line = readline(PROMPT);
 	else
