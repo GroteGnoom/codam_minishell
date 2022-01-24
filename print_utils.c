@@ -6,12 +6,13 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/24 10:32:13 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/06 10:26:52 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/24 14:34:25 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "minishell.h"
+#include "./Libft/libft.h"
 
 void	print_parts(t_part *parts)
 {
@@ -36,4 +37,11 @@ void	print_strs(char **strs)
 		perror(strs[i]);
 		i++;
 	}
+}
+
+void	ft_print_line_nr(int line_nr)
+{
+	ft_putstr_fd(": line ", 2);
+	ft_putnbr_fd(line_nr, 2);
+	ft_putstr_fd(": ", 2);
 }

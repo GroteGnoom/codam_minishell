@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 11:47:13 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 14:31:56 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	**ft_get_paths(char **env)
 static void	ft_write_error_msg(char *str, t_env *s_env)
 {
 	ft_putstr_fd(SHELL_NAME, 2);
-	if (isatty(STDIN_FILENO))
+	if (isatty(s_env->term_in))
 		ft_putstr_fd(": ", 2);
 	else
 		ft_print_line_nr(s_env->line_nr);
