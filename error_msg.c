@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/23 13:52:00 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/24 11:29:40 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:05:41 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	ft_exit_error(int too_many, char *arg, int line_nr)
 	return (1);
 }
 
-int	ft_home_not_set(t_part *parts, int i, int line_nr)
+int	ft_home_not_set(t_part *parts, int i, int line_nr, char *envvar)
 {
 	ft_putstr_fd(SHELL_NAME, 2);
 	if (isatty(STDIN_FILENO))
@@ -87,6 +87,8 @@ int	ft_home_not_set(t_part *parts, int i, int line_nr)
 	else
 		ft_print_line_nr(line_nr);
 	ft_putstr_fd(parts[i].part, 2);
-	ft_putstr_fd(": HOME not set\n", 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(envvar, 2);
+	ft_putstr_fd(" not set\n", 2);
 	return (1);
 }
