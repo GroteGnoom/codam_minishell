@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 11:40:00 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 11:44:39 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 {
 	char	*home_dir;
 	char	*old_dir;
-	char	*cur_dir;
 	int		err;
 
 	err = 0;
@@ -47,19 +46,12 @@ int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 		if (chdir(home_dir) < 0)
 			err = 1;
 	}
-	else if (parts[1].part[0] == '/')
-	{
-		if (chdir(parts[1].part))
-			err = ft_redir_error("cd", parts[1].part, line_nr);
-	}
+	else if (parts[1].part[0] == '/' && chdir(parts[1].part))
+		err = ft_redir_error("cd", parts[1].part, line_nr);
 	else if (parts[1].part[0] == '.' && parts[1].part[1] == '.')
 		err = ft_relative(parts[1].part, parts, line_nr);
 	else
-	{
-		cur_dir = getcwd(NULL, PATH_MAX);
-		err = ft_absolute(parts[1].part, cur_dir, parts, line_nr);
-		free(cur_dir);
-	}
+		err = ft_absolute(parts[1].part, old_dir, parts, line_nr);
 	if (err == 0)
 		old_dir = ft_set_pwds(old_dir, s_env);
 	free(old_dir);
