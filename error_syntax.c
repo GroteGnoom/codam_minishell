@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/05 10:25:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/05 11:48:13 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/24 11:29:44 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,18 @@ int	ft_syntax_error(t_part *parts, int i, int line_nr, char *token)
 		ft_putstr_fd("'\n", 2);
 	}
 	return (2);
+}
+
+int	ft_invalid_identifier(t_part *parts, int i, int line_nr)
+{
+	ft_putstr_fd(SHELL_NAME, 2);
+	if (isatty(STDIN_FILENO))
+		ft_putstr_fd(": ", 2);
+	else
+		ft_print_line_nr(line_nr);
+	ft_putstr_fd(parts[i].part, 2);
+	ft_putstr_fd(": `", 2);
+	ft_putstr_fd(parts[i + 1].part, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	return (1);
 }

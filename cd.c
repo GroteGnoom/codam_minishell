@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 11:04:05 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 11:33:18 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ static int	ft_relative(char *path_str, t_part *parts, int line_nr);
 
 static int	ft_search_slash(char *cur_dir, int i);
 
+static char	*ft_set_pwds(char *old_dir);
+
 int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 {
 	char	*home_dir;
 	char	*old_dir;
-	char	*old_dir_env;
 	char	*cur_dir;
 	int		err;
 
@@ -60,18 +61,26 @@ int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 		free(cur_dir);
 	}
 	if (err == 0)
-	{
-		old_dir_env = ft_strjoin("OLDPWD=", old_dir);
-		ft_export_var(s_env, old_dir_env, ft_strdup("OLDPWD"));
-		free(old_dir_env);
-		free(old_dir);
-		old_dir = getcwd(NULL, PATH_MAX);
-		old_dir_env = ft_strjoin("PWD=", old_dir);
-		ft_export_var(s_env, old_dir_env, ft_strdup("PWD"));
-		free(old_dir_env);
-	}
+		old_dir = ft_set_pwds(old_dir);
 	free(old_dir);
 	return (err);
+}
+
+static char	*ft_set_pwds(char *old_dir)
+{
+	char	*old_dir_env;
+	char	*cur_dir;
+	char	*cur_dir_env;
+
+	old_dir_env = ft_strjoin("OLDPWD=", old_dir);
+	ft_export_var(s_env, old_dir_env, ft_strdup("OLDPWD"));
+	free(old_dir_env);
+	free(old_dir);
+	cur_dir = getcwd(NULL, PATH_MAX);
+	cur_dir_env = ft_strjoin("PWD=", cur_dir);
+	ft_export_var(s_env, cur_dir_env, ft_strdup("PWD"));
+	free(cur_dir_env);
+	return (cur_dir);
 }
 
 static int	ft_absolute(char *path_str, char *cur_dir, \
