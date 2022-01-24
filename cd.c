@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 11:44:39 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 11:45:27 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ static char	*ft_set_pwds(char *old_dir, t_env *s_env)
 	char	*cur_dir_env;
 
 	old_dir_env = ft_strjoin("OLDPWD=", old_dir);
-	ft_export_var(s_env, old_dir_env, ft_strdup("OLDPWD"));
+	ft_export_var(s_env, old_dir_env, "OLDPWD");
 	free(old_dir_env);
 	free(old_dir);
 	cur_dir = getcwd(NULL, PATH_MAX);
 	cur_dir_env = ft_strjoin("PWD=", cur_dir);
-	ft_export_var(s_env, cur_dir_env, ft_strdup("PWD"));
+	ft_export_var(s_env, cur_dir_env, "PWD");
 	free(cur_dir_env);
 	return (cur_dir);
 }
