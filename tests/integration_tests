@@ -55,6 +55,9 @@ function environment_test()
 #make DEBUG=1 -C ..
 make re DEBUG=1 -C ..
 
+# New not working tests
+shell_test 'cd ..\necho $OLDPWD\ncd tests\necho $OLDPWD'
+shell_test 'echo $OLDPWDcd /\necho $OLDPWD\ncd tests\necho $OLDPWD'
 
 # Generic tests
 shell_test ''
