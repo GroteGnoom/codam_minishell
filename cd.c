@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 13:04:16 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:07:33 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 	old_dir = getcwd(buf, PATH_MAX);
 	if (!parts[1].part)
 		err = ft_cd_home(s_env, parts);
-	else if (parts[1].part == '-')
+	else if (!ft_strcmp(parts[1].part, "-"))
 		err = ft_cd_oldpwd(s_env, parts);
 	else if (parts[1].part[0] == '/')
 	{
