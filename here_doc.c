@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 14:40:30 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:40:13 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	ft_redir_args(char **args, int line_nr, int term);
 
 static char	**ft_get_lines(char *final, int *ret, int term, t_env *s_env);
 
-int	here_doc(char *final, t_env *s_env, t_part *parts, t_pipe pipex)
+int	here_doc(char *final, t_env *s_env, t_part *parts)
 {
 	char	**args;
 	int		term;
@@ -36,7 +36,7 @@ int	here_doc(char *final, t_env *s_env, t_part *parts, t_pipe pipex)
 	if (isatty(STDIN_FILENO))
 		term = dup(STDOUT_FILENO);
 	if (isatty(STDIN_FILENO))
-		if (dup2(pipex.term_in, STDOUT_FILENO) < 0)
+		if (dup2(s_env->term_in, STDOUT_FILENO) < 0)
 			return (ft_redir_error("dup2", "", s_env->line_nr));
 	args = ft_get_lines(final, &ret, term, s_env);
 	if (ret)

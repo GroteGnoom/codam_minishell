@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:43 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/20 10:29:17 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:38:41 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,18 @@ int	ft_pipex(int nr_parts, t_part *parts, t_env *s_env)
 	t_pipe	pipex;
 	int		status;
 
-	pipex.term_out = dup(STDOUT_FILENO);
-	pipex.term_in = dup(STDIN_FILENO);
-	if (pipex.term_out < 0 || pipex.term_in < 0)
+	s_env->term_out = dup(STDOUT_FILENO);
+	s_env->term_in = dup(STDIN_FILENO);
+	if (s_env->term_out < 0 || s_env->term_in < 0)
 		perror("dup");
 	pipex.len = nr_parts;
 	pipex.size = ft_get_size_parts(parts);
 	status = ft_pipex_pipe(pipex, s_env, parts);
-	if (dup2(pipex.term_out, STDOUT_FILENO) < 0 || \
-	dup2(pipex.term_in, STDIN_FILENO) < 0)
+	if (dup2(s_env->term_out, STDOUT_FILENO) < 0 || \
+	dup2(s_env->term_in, STDIN_FILENO) < 0)
 		perror("dup2");
-	close(pipex.term_in);
-	close(pipex.term_out);
+	close(s_env->term_in);
+	close(s_env->term_out);
 	return (status);
 }
 
@@ -87,22 +87,22 @@ static int	ft_pipex_pipe(t_pipe pipex, t_env *s_env, t_part *parts)
 	return (status);
 }
 
-void	ft_check_here_doc(t_part *parts, t_pipe pipex)
+void	ft_check_here_doc(t_part *parts, t_pipe pipex, t_env *s_env)
 {
 	char	*line;
 	int		i;
 
 	i = ft_find_first_command(pipex, parts);
-	while (parts[i].part && !is_pipe(parts[i]) && !isatty(pipex.term_in))
+	while (parts[i].part && !is_pipe(parts[i]) && !isatty(s_env->term_in))
 	{
 		if (is_here_doc(parts[i]))
 		{
-			line = get_next_line(pipex.term_in);
+			line = get_next_line(s_env->term_in);
 			line = ft_strtrim_free(&line, "\n");
 			while (line && ft_strcmp(line, parts[i + 1].part))
 			{
 				free(line);
-				line = get_next_line(pipex.term_in);
+				line = get_next_line(s_env->term_in);
 				line = ft_strtrim_free(&line, "\n");
 			}
 			if (line)
@@ -124,7 +124,7 @@ t_env *s_env, int status)
 		if (pipe(pipex.pipefd + 2) < 0)
 			perror("Pipe: ");
 		child[pipex.iter] = ft_do_forks(pipex, parts, s_env, status);
-		ft_check_here_doc(parts, pipex);
+		ft_check_here_doc(parts, pipex, s_env);
 		pipex.pipefd[0] = pipex.pipefd[2];
 		pipex.pipefd[1] = pipex.pipefd[3];
 		pipex.iter++;

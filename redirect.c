@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:57:22 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 14:32:36 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:40:52 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static int	ft_set_fd(char *part, int fd, int line_nr);
 
-int	ft_do_redir(t_part *parts, t_env *s_env, int i, t_pipe pipex)
+int	ft_do_redir(t_part *parts, t_env *s_env, int i)
 {
 	int	fd;
 
@@ -26,7 +26,7 @@ int	ft_do_redir(t_part *parts, t_env *s_env, int i, t_pipe pipex)
 	if (parts[i + 1].type == SPECIAL)
 		return (ft_syntax_error(parts, 0, s_env->line_nr, parts[i + 1].part));
 	if (!ft_strcmp(parts[i].part, "<<"))
-		return (here_doc(parts[i + 1].part, s_env, parts, pipex));
+		return (here_doc(parts[i + 1].part, s_env, parts));
 	if (!ft_strcmp(parts[i].part, "<"))
 		fd = open(parts[i + 1].part, O_RDONLY);
 	else if (!ft_strcmp(parts[i].part, ">"))
