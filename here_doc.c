@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 13:40:13 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:53:02 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 int	g_global = 0;
 
-static int	ft_redir_args(char **args, int line_nr, int term);
+static int	ft_redir_args(char **args, t_env *s_env, int term);
 
 static char	**ft_get_lines(char *final, int *ret, int term, t_env *s_env);
 
@@ -31,17 +31,17 @@ int	here_doc(char *final, t_env *s_env, t_part *parts)
 	int		ret;
 
 	if (!final)
-		return (ft_syntax_error(parts, 0, s_env->line_nr, "newline"));
+		return (ft_syntax_error(parts, 0, s_env, "newline"));
 	term = 0;
 	if (isatty(STDIN_FILENO))
 		term = dup(STDOUT_FILENO);
 	if (isatty(STDIN_FILENO))
 		if (dup2(s_env->term_in, STDOUT_FILENO) < 0)
-			return (ft_redir_error("dup2", "", s_env->line_nr));
+			return (ft_redir_error("dup2", "", s_env));
 	args = ft_get_lines(final, &ret, term, s_env);
 	if (ret)
 		return (ret);
-	return (ft_redir_args(args, s_env->line_nr, term));
+	return (ft_redir_args(args, s_env, term));
 }
 
 static char	**ft_get_lines(char *final, int *ret, int term, t_env *s_env)
@@ -55,7 +55,7 @@ static char	**ft_get_lines(char *final, int *ret, int term, t_env *s_env)
 	{
 		if (g_global == 1)
 		{
-			*ret = return_from_sigint(line, args, term, s_env->line_nr);
+			*ret = return_from_sigint(line, args, term, s_env);
 			return (NULL);
 		}
 		if (!ft_strcmp(line, final))
@@ -70,7 +70,7 @@ static char	**ft_get_lines(char *final, int *ret, int term, t_env *s_env)
 	return (args);
 }
 
-static int	ft_redir_args(char **args, int line_nr, int term)
+static int	ft_redir_args(char **args, t_env *s_env, int term)
 {
 	int		pipefd[2];
 	int		i;
@@ -79,7 +79,7 @@ static int	ft_redir_args(char **args, int line_nr, int term)
 		perror("Pipe: ");
 	i = 0;
 	if (dup2(pipefd[0], STDIN_FILENO) < 0)
-		return (ft_redir_error("dup2", "", line_nr));
+		return (ft_redir_error("dup2", "", s_env));
 	while (args[i])
 	{
 		ft_putstr_fd(args[i], pipefd[1]);
@@ -89,6 +89,6 @@ static int	ft_redir_args(char **args, int line_nr, int term)
 	close(pipefd[1]);
 	ft_free_ptr_array((void **)args);
 	if (isatty(term) && dup2(term, STDOUT_FILENO) < 0)
-		return (ft_redir_error("dup2", "", line_nr));
+		return (ft_redir_error("dup2", "", s_env));
 	return (0);
 }
