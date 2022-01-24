@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 11:51:29 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:50:14 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_export(t_part *parts, t_env *s_env)
 	if (!parts[1].part || parts[1].type != NORMAL)
 		return (ft_export_print(s_env->env));
 	if (check_identifier(parts[1].part, 0))
-		return (ft_invalid_identifier(parts, 0, s_env->line_nr));
+		return (ft_invalid_identifier(parts, 0, s_env));
 	envname = ft_strchr(parts[1].part, '=');
 	if (envname)
 		envname = ft_substr(parts[1].part, 0, ft_strlen(parts[1].part) \

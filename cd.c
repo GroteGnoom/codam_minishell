@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 13:18:05 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:49:34 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #endif
 
 static int	ft_relative(char *path_str, char *cur_dir, \
-t_part *parts, int line_nr);
+t_part *parts, t_env *s_env);
 
 static void	ft_set_pwds(char *old_dir, t_env *s_env);
 
@@ -30,7 +30,7 @@ static int	ft_cd_home(t_env *s_env, t_part *parts);
 
 static int	ft_cd_oldpwd(t_env *s_env, t_part *parts);
 
-int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
+int	ft_cd(t_part *parts, t_env *s_env)
 {
 	char	*old_dir;
 	int		err;
@@ -45,10 +45,10 @@ int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 	else if (parts[1].part[0] == '/')
 	{
 		if (chdir(parts[1].part))
-			err = ft_redir_error("cd", parts[1].part, line_nr);
+			err = ft_redir_error("cd", parts[1].part, s_env);
 	}
 	else
-		err = ft_relative(parts[1].part, old_dir, parts, line_nr);
+		err = ft_relative(parts[1].part, old_dir, parts, s_env);
 	if (err == 0)
 		ft_set_pwds(old_dir, s_env);
 	return (err);
@@ -60,7 +60,7 @@ static int	ft_cd_oldpwd(t_env *s_env, t_part *parts)
 
 	old_pwd = ft_search_name(s_env, "OLDPWD", 6);
 	if (!old_pwd)
-		return (ft_home_not_set(parts, 0, s_env->line_nr, "OLDPWD"));
+		return (ft_home_not_set(parts, 0, s_env, "OLDPWD"));
 	if (chdir(old_pwd) < 0)
 		return (1);
 	ft_pwd(s_env);
@@ -73,7 +73,7 @@ static int	ft_cd_home(t_env *s_env, t_part *parts)
 
 	home_dir = ft_search_name(s_env, "HOME", 4);
 	if (!home_dir)
-		return (ft_home_not_set(parts, 0, s_env->line_nr, "HOME"));
+		return (ft_home_not_set(parts, 0, s_env, "HOME"));
 	if (chdir(home_dir) < 0)
 		return (1);
 	return (0);
@@ -96,7 +96,7 @@ static void	ft_set_pwds(char *old_dir, t_env *s_env)
 }
 
 static int	ft_relative(char *path_str, char *cur_dir, \
-t_part *parts, int line_nr)
+t_part *parts, t_env *s_env)
 {
 	char	*home_dir;
 	char	*new_dir;
@@ -106,7 +106,7 @@ t_part *parts, int line_nr)
 	home_dir = ft_strjoin(cur_dir, "/");
 	new_dir = ft_strjoin(home_dir, path_str);
 	if (chdir(new_dir) < 0)
-		err = ft_redir_error("cd", parts[1].part, line_nr);
+		err = ft_redir_error("cd", parts[1].part, s_env);
 	free(home_dir);
 	free(new_dir);
 	return (err);
