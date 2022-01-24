@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 10:25:02 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 10:33:14 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 	if (err == 0)
 	{
 		old_dir_env = ft_strjoin("OLDPWD=", old_dir);
-		ft_export_var(s_env, old_dir, ft_strdup("OLDPWD"));
+		ft_export_var(s_env, old_dir_env, ft_strdup("OLDPWD"));
 		free(old_dir_env);
 	}
 	free(old_dir);
