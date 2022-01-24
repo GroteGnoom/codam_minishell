@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 14:35:26 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 14:45:52 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*ft_wildcard(char *args, int *wild_quoted);
 char	**ft_split_unquoted(char const *s, char c, const int *quoted);
 
 int		ft_executable(int nr_parts, t_part *parts, t_env *s_env);
-void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts);
+void	ft_try_paths(char **paths, char **args, t_env *s_env);
 char	**ft_get_paths(char **env);
 void	ft_remove_part(t_part *parts);
 

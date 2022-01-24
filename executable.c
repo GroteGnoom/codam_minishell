@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:40 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/19 15:34:59 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 14:46:25 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ft_executable(int nr_parts, t_part *parts, t_env *s_env)
 		return (1);
 	}
 	if (child == 0)
-		ft_try_paths(paths, args, s_env, parts);
+		ft_try_paths(paths, args, s_env);
 	waitpid(-1, &status, 0);
 	signal(SIGINT, old_signal[0]);
 	signal(SIGQUIT, old_signal[1]);

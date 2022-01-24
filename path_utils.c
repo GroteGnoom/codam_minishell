@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 14:31:56 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 14:45:33 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static void	ft_write_error_msg(char *str, t_env *s_env);
 
-void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
+void	ft_try_paths(char **paths, char **args, t_env *s_env)
 {
 	char	*cmd;
 	int		i;
@@ -26,17 +26,16 @@ void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts)
 		return ;
 	while (paths[i])
 	{
-		if (!ft_strcmp(args[0], "export"))
-		{
-			ft_export(parts, s_env);
-			exit(0);
-		}
 		if (!ft_strchr(args[0], '/'))
 			cmd = ft_strjoin(paths[i], args[0]);
 		else
 			cmd = args[0];
 		if (!access(cmd, F_OK) && !access(cmd, X_OK))
+		{
+			close(s_env->term_in);
+			close(s_env->term_out);
 			execve(cmd, args, s_env->env);
+		}
 		if (!ft_strchr(args[0], '/'))
 			free(cmd);
 		i++;
