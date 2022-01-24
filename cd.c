@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/20 11:19:24 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 09:57:57 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,21 @@ int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 	{
 		home_dir = ft_search_name(s_env, "HOME", 4);
 		if (!home_dir)
-			return (ft_home_not_set(parts, 0, s_env->line_nr));
+			err = ft_home_not_set(parts, 0, s_env->line_nr);
 		if (chdir(home_dir) < 0)
-			return (1);
+			 err = 1;
+		else
+			err = 0;
 	}
 	else if (parts[1].part[0] == '/')
 	{
 		if (chdir(parts[1].part))
-			return (ft_redir_error("cd", parts[1].part, line_nr));
-		return (0);
+			err = ft_redir_error("cd", parts[1].part, line_nr);
+		else
+			err = 0;
 	}
 	else if (parts[1].part[0] == '.' && parts[1].part[1] == '.')
-		return (ft_relative(parts[1].part, parts, line_nr));
+		err = ft_relative(parts[1].part, parts, line_nr);
 	else
 	{
 		cur_dir = getcwd(NULL, PATH_MAX);
