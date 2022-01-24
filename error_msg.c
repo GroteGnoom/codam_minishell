@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/23 13:52:00 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/21 14:11:32 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 11:29:40 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,6 @@ int	ft_redir_error(char *str, char *str2, int line_nr)
 	return (1);
 }
 
-int	ft_invalid_identifier(t_part *parts, int i, int line_nr)
-{
-	ft_putstr_fd(SHELL_NAME, 2);
-	if (isatty(STDIN_FILENO))
-		ft_putstr_fd(": ", 2);
-	else
-		ft_print_line_nr(line_nr);
-	ft_putstr_fd(parts[i].part, 2);
-	ft_putstr_fd(": `", 2);
-	ft_putstr_fd(parts[i + 1].part, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	return (1);
-}
-
 int	ft_exit_error(int too_many, char *arg, int line_nr)
 {
 	ft_putstr_fd(SHELL_NAME, 2);
@@ -104,4 +90,3 @@ int	ft_home_not_set(t_part *parts, int i, int line_nr)
 	ft_putstr_fd(": HOME not set\n", 2);
 	return (1);
 }
-
