@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/24 10:32:13 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/24 14:35:14 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 14:37:45 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,3 @@ void	ft_print_shell_line(t_env *s_env)
 	else
 		ft_print_line_nr(s_env->line_nr);
 }
-
