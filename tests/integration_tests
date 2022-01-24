@@ -56,6 +56,9 @@ function environment_test()
 #make DEBUG=1 -C ..
 make re DEBUG=1 -C ..
 
+#new tests
+shell_test 'export bla="s -l"\nl$bla'
+
 # Generic tests
 shell_test ''
 shell_test '\n\n\n\n'
