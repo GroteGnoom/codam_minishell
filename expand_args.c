@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/21 15:38:52 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 11:48:27 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,29 +79,14 @@ int	expand_args(char **sp, int last_exit_status, t_env *s_env,
 			if (envlen == 0 && !next_is_quoted)
 				continue ;
 			env = ft_search_name(s_env, *sp + i, envlen);
+			if (!env && i == 1 && envlen == ft_strlen((*sp) + i))
+				return (1);
 			if (!env)
-			{
-				if (i == 1 && envlen == ft_strlen((*sp) + i))
-					return (1);
 				env = "";
-			}
 			ft_replace(sp, --i, envlen + 1, env);
 		}
 	}
 	return (0);
-}
-
-void	ft_remove_part(t_part *parts)
-{
-	char	*old_part;
-
-	old_part = parts->part;
-	while (parts->part)
-	{
-		parts[0] = parts[1];
-		parts++;
-	}
-	free(old_part);
 }
 
 void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env)

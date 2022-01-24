@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 10:17:18 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 11:48:49 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ char	**ft_split_unquoted(char const *s, char c, const int *quoted);
 int		ft_executable(int nr_parts, t_part *parts, t_env *s_env);
 void	ft_try_paths(char **paths, char **args, t_env *s_env, t_part *parts);
 char	**ft_get_paths(char **env);
+void	ft_remove_part(t_part *parts);
 
 t_part	*quote_split(char *s);
 t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env);
