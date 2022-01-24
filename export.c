@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 10:18:19 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 11:48:26 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,10 @@
 
 static int	export_attribute(t_env *s_env, char *attr);
 
-int			ft_export_var(t_env *s_env, char *part, char *envname);
-
 int	ft_export(t_part *parts, t_env *s_env)
 {
 	char	*envname;
+	int		err;
 
 	if (!parts[1].part || parts[1].type != NORMAL)
 		return (ft_export_print(s_env->env));
@@ -33,7 +32,9 @@ int	ft_export(t_part *parts, t_env *s_env)
 		- ft_strlen(envname));
 	else
 		envname = ft_strdup(parts[1].part);
-	return (ft_export_var(s_env, parts[1].part, envname));
+	err = ft_export_var(s_env, parts[1].part, envname);
+	free(envname);
+	return(err);
 }
 
 int	ft_export_var(t_env *s_env, char *part, char *envname)
@@ -47,7 +48,6 @@ int	ft_export_var(t_env *s_env, char *part, char *envname)
 		return (export_attribute(s_env, part));
 	if (prev_var)
 		i -= 1;
-	free(envname);
 	if (ft_strchr(part, '='))
 	{
 		free(s_env->env[i]);
@@ -70,8 +70,6 @@ char	*get_prev_var(t_env *s_env, char *envname, int *i)
 			prev_var = NULL;
 		*i += 1;
 	}
-	if (*i == s_env->size && !prev_var)
-		free(envname);
 	return (prev_var);
 }
 
