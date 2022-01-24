@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 10:05:13 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 10:17:18 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,12 @@ void	sigint_handler_in_process(int sig);
 void	sigquit_handler_in_process(int sig);
 
 int		ft_echo(int nr_parts, t_part *parts);
-int		ft_pwd(void);
+int		ft_pwd(t_env *s_env);
 int		ft_cd(t_part *parts, int line_nr, t_env *s_env);
 int		ft_env(char **envp);
 int		ft_export(t_part *parts, t_env *s_env);
 int		ft_export_var(t_env *s_env, char *part, char *envname);
+char	*get_prev_var(t_env *s_env, char *envname, int *i);
 int		ft_exit(int nr_parts, t_part *parts, int line_nr);
 int		ft_unset(t_part *parts, t_env *s_env);
 void	copy_env(char **envp, t_env *s_env);
