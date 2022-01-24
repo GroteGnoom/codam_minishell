@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/20 10:40:46 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 10:18:19 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <stdio.h>
 
 static int	export_attribute(t_env *s_env, char *attr);
-
-static char	*get_prev_var(t_env *s_env, char *envname, int *i);
 
 int			ft_export_var(t_env *s_env, char *part, char *envname);
 
@@ -58,7 +56,7 @@ int	ft_export_var(t_env *s_env, char *part, char *envname)
 	return (0);
 }
 
-static char	*get_prev_var(t_env *s_env, char *envname, int *i)
+char	*get_prev_var(t_env *s_env, char *envname, int *i)
 {
 	char	*prev_var;
 	int		len;
