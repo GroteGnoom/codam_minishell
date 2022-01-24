@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/21 15:26:13 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 10:05:13 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int		ft_pwd(void);
 int		ft_cd(t_part *parts, int line_nr, t_env *s_env);
 int		ft_env(char **envp);
 int		ft_export(t_part *parts, t_env *s_env);
+int		ft_export_var(t_env *s_env, char *part, char *envname);
 int		ft_exit(int nr_parts, t_part *parts, int line_nr);
 int		ft_unset(t_part *parts, t_env *s_env);
 void	copy_env(char **envp, t_env *s_env);
