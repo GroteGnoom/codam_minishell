@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:15:03 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 10:24:13 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 10:52:13 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@
 
 int	print_old_pwd(t_env *s_env)
 {
-	char	*old_pwd;
+	char	*pwd;
 	char	*print_str;
 	int		i;
 
 	i = 0;
-	old_pwd = get_prev_var(s_env, "OLDPWD", &i);
-	if (old_pwd)
-		print_str = ft_strjoin(old_pwd + 7, "\n");
-	if (!old_pwd || write(1, print_str, ft_strlen(print_str)) < 0)
+	pwd = get_prev_var(s_env, "PWD", &i);
+	if (pwd)
+		print_str = ft_strjoin(pwd + 4, "\n");
+	if (!pwd || write(1, print_str, ft_strlen(print_str)) < 0)
 		return (1);
 	free(print_str);
 	return (0);
