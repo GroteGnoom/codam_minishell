@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 13:40:54 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:44:52 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		is_here_doc(t_part part);
 int		ft_do_redir(t_part *parts, t_env *s_env, int i);
 int		here_doc(char *final, t_env *s_env, t_part *parts);
 char	*next_line(t_env *s_env);
-int		return_from_sigint(char *line, char **args, int term, int line_nr);
+int		return_from_sigint(char *line, char **args, int term, t_env *s_env);
 void	add_to_args_free(char ***args_p, char *line);
 
 void	signals(void);
@@ -81,12 +81,12 @@ void	sigquit_handler_in_process(int sig);
 
 int		ft_echo(int nr_parts, t_part *parts);
 int		ft_pwd(t_env *s_env);
-int		ft_cd(t_part *parts, int line_nr, t_env *s_env);
+int		ft_cd(t_part *parts, t_env *s_env);
 int		ft_env(char **envp);
 int		ft_export(t_part *parts, t_env *s_env);
 int		ft_export_var(t_env *s_env, char *part, char *envname);
 char	*get_prev_var(t_env *s_env, char *envname, int *i);
-int		ft_exit(int nr_parts, t_part *parts, int line_nr);
+int		ft_exit(int nr_parts, t_part *parts, t_env *s_env);
 int		ft_unset(t_part *parts, t_env *s_env);
 void	copy_env(char **envp, t_env *s_env);
 
@@ -120,13 +120,13 @@ int		check_for_redirections(int *last_exit_status, t_part *parts, \
 t_env *s_env, int nr_parts);
 int		check_identifier(char *str, int unset);
 
-int		ft_syntax_error(t_part *parts, int i, int line_nr, char *token);
-int		ft_syntax_error_eof(int line_nr);
-int		ft_redir_error(char *str, char *str2, int line_nr);
-int		ft_invalid_identifier(t_part *parts, int i, int line_nr);
-int		ft_exit_error(int too_many, char *arg, int line_nr);
-void	ft_print_line_nr(int line_nr);
-int		ft_home_not_set(t_part *parts, int i, int line_nr, char *envvar);
+int		ft_syntax_error(t_part *parts, int i, t_env *s_env, char *token);
+int		ft_syntax_error_eof(t_env *s_env);
+int		ft_redir_error(char *str, char *str2, t_env *s_env);
+int		ft_invalid_identifier(t_part *parts, int i, t_env *s_env);
+int		ft_exit_error(int too_many, char *arg, t_env *s_env);
+void	ft_print_line_nr(t_env *s_env);
+int		ft_home_not_set(t_part *parts, int i, t_env *s_env, char *envvar);
 
 void	print_parts(t_part *parts);
 int		print_parts_error(t_part *parts);
