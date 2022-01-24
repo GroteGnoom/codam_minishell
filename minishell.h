@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 13:06:12 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 13:37:47 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ typedef struct s_pipe
 	int		len;
 	int		size;
 	int		iter;
-	int		term_out;
-	int		term_in;
 
 	int		pipefd[4];
 
@@ -51,6 +49,8 @@ typedef struct s_env
 	char	**env;
 	int		size;
 	int		line_nr;
+	int		term_in;
+	int		term_out;
 }	t_env;
 
 int		ft_pipex(int nr_parts, t_part *parts, t_env *s_env);

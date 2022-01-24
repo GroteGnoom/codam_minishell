@@ -51,6 +51,8 @@ function environment_test()
 # <ctrl>-\
 #fix : signals should be reset before executing function
 ##########
+# cd < minishell.c -
+##########
 
 #make DEBUG=1 -C ..
 make re DEBUG=1 -C ..
