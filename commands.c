@@ -6,7 +6,7 @@
 /*   By: daniel <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/06 13:29:39 by daniel        #+#    #+#                 */
-/*   Updated: 2022/01/12 09:58:19 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:48:18 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_env *s_env)
 		{
 			if (!is_here_doc(parts[i]) && open(parts[i + 1].part, O_RDONLY) < 0)
 			{
-				ft_redir_error(SHELL_NAME, parts[i + 1].part, s_env->line_nr);
+				ft_redir_error(SHELL_NAME, parts[i + 1].part, s_env);
 				exit(0);
 			}
 			i += 2;

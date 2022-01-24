@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/18 08:54:00 by dnoom         #+#    #+#                 */
-/*   Updated: 2022/01/19 14:57:36 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 13:48:02 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ char	*next_line(t_env *s_env)
 	return (line);
 }
 
-int	return_from_sigint(char *line, char **args, int term, int line_nr)
+int	return_from_sigint(char *line, char **args, int term, t_env *s_env)
 {
 	free(line);
 	ft_free_ptr_array((void **)args);
 	if (isatty(STDIN_FILENO) && dup2(term, STDOUT_FILENO) < 0)
-		return (ft_redir_error("dup2", "", line_nr));
+		return (ft_redir_error("dup2", "", s_env));
 	return (1);
 }
 
