@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 13:07:33 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 13:18:05 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,12 @@ static int	ft_cd_oldpwd(t_env *s_env, t_part *parts)
 {
 	char	*old_pwd;
 
-	old_pwd = ft_search_name(s_env, "OLDPWD", 7);
+	old_pwd = ft_search_name(s_env, "OLDPWD", 6);
 	if (!old_pwd)
 		return (ft_home_not_set(parts, 0, s_env->line_nr, "OLDPWD"));
 	if (chdir(old_pwd) < 0)
 		return (1);
+	ft_pwd(s_env);
 	return (0);
 }
 

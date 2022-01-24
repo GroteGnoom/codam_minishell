@@ -87,6 +87,7 @@ shell_test 'echo -nnnn bla'
 
 # CD tests
 shell_test 'cd\npwd'
+shell_test 'cd\npwd\ncd -\npwd'
 shell_test 'cd ..\ncd tests\npwd'
 shell_test 'cd ..\ncd tests/\npwd'
 shell_test 'cd ../../..\npwd'
@@ -95,6 +96,8 @@ shell_test 'cd /usr\npwd'
 shell_test 'cd /usr/bin\npwd'
 shell_test 'cd /bla'
 shell_test 'cd /\npwd'
+shell_test 'cd\nunset OLDPWD\necho oldpwd after unset: $OLDPWD\ncd -\npwd'
+shell_test 'ls | ls | unset OLDPWD\necho oldpwd after unset: $OLDPWD\ncd -\npwd'
 #shell_test 'unset HOME\necho home after unset: $HOME\ncd\npwd'
 shell_test 'mkdir TESTDIR\ncd TESTDIR\nrmdir ../TESTDIR\npwd'
 
