@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:10 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 13:48:11 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 14:20:33 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	loop_through_lines(char *line, int last_exit_status, t_env *s_env)
 		else
 			line = get_next_line(STDIN_FILENO);
 		signal(SIGINT, sigint_handler);
-		s_env++;
+		s_env->line_nr++;
 	}
 	if (isatty(STDIN_FILENO))
 		printf("exit\n");
