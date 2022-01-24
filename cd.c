@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:17:01 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 11:33:18 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 11:40:00 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	ft_relative(char *path_str, t_part *parts, int line_nr);
 
 static int	ft_search_slash(char *cur_dir, int i);
 
-static char	*ft_set_pwds(char *old_dir);
+static char	*ft_set_pwds(char *old_dir, t_env *s_env);
 
 int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 {
@@ -61,12 +61,12 @@ int	ft_cd(t_part *parts, int line_nr, t_env *s_env)
 		free(cur_dir);
 	}
 	if (err == 0)
-		old_dir = ft_set_pwds(old_dir);
+		old_dir = ft_set_pwds(old_dir, s_env);
 	free(old_dir);
 	return (err);
 }
 
-static char	*ft_set_pwds(char *old_dir)
+static char	*ft_set_pwds(char *old_dir, t_env *s_env)
 {
 	char	*old_dir_env;
 	char	*cur_dir;
