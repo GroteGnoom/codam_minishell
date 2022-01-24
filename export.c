@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 11:48:26 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/24 11:51:29 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_export(t_part *parts, t_env *s_env)
 		envname = ft_strdup(parts[1].part);
 	err = ft_export_var(s_env, parts[1].part, envname);
 	free(envname);
-	return(err);
+	return (err);
 }
 
 int	ft_export_var(t_env *s_env, char *part, char *envname)
