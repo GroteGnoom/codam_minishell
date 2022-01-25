@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 15:46:55 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/25 10:54:53 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	ft_replace(char **sp, int start, int len, char *rep)
 	int		new_length;
 	char	*last_part;
 
+	if (!rep)
+		rep = "";
 	new_length = ft_strlen(*sp) + ft_strlen(rep) - len + 1;
 	last_part = *sp + start + len;
 	new = ft_calloc(new_length, 1);
@@ -87,24 +89,4 @@ int	expand_args(char **sp, int last_exit_status, t_env *s_env,
 		}
 	}
 	return (0);
-}
-
-void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env)
-{
-	int	next_is_quoted;
-
-	while (parts->part)
-	{
-		next_is_quoted = 0;
-		if (parts[1].part && (parts[1].type == SINGLE_QUOTED
-				|| parts[1].type == DOUBLE_QUOTED))
-			next_is_quoted = 1;
-		if (parts->type == NORMAL || parts->type == DOUBLE_QUOTED)
-		{
-			if (expand_args(&(parts->part), last_exit_status, s_env,
-					next_is_quoted) == 1)
-				ft_remove_part(parts);
-		}
-		parts++;
-	}
 }
