@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/07 14:21:59 by daniel        ########   odam.nl         */
+/*   Updated: 2022/01/25 10:08:32 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,28 +71,78 @@ int	part_len_type(char *s, enum e_part_type *type)
 	return (ft_skip_until(&s, *s));
 }
 
-t_part	*quote_split(char *s)
+void	ft_expand_args(char **s, int last_exit_status, t_env *s_env)
+{
+	int	i;
+	int	is_single_quoted;
+	int	is_double_quoted;
+	int	envlen;
+	char *env;
+
+	i = 0;
+	is_single_quoted = 0;
+	is_double_quoted = 0;
+	while ((*s)[i])
+	{
+		if ((*s)[i] == '\'' && !is_double_quoted)
+		{
+			is_single_quoted = !is_single_quoted;
+			i++;
+		}
+		else if ((*s)[i] == '"' && !is_single_quoted)
+		{
+			is_double_quoted = !is_double_quoted;
+			i++;
+		}
+		else if ((*s)[i] == '$' && !is_single_quoted)
+		{
+			i++;
+			if (ft_insert_exit_status(s, i, last_exit_status))
+				continue ;
+			envlen = get_env_name_length((*s) + i);
+			if (envlen == 0 && (*s)[i] != '\'' && (*s)[i] != '"')
+				continue ;
+			if (envlen == 0 && is_double_quoted && (*s)[i] == '"')
+				continue ;
+			if (envlen == 0 && is_single_quoted && (*s)[i] == '\'')
+				continue ;
+			env = ft_search_name(s_env, *s + i, envlen);
+			if (!env)
+				env = "";
+			ft_replace(s, --i, envlen + 1, env);
+		}
+		else
+			i++;
+	}
+}
+
+t_part	*quote_split(char *s, int last_exit_status, t_env *s_env)
 {
 	int		nr_parts;
 	int		i;
+	int		j;
 	int		len;
 	t_part	*parts;
 
+	s = ft_strdup(s);
+	ft_expand_args(&s, last_exit_status, s_env);
 	nr_parts = ft_count_parts_in_str(s);
 	parts = ft_calloc((nr_parts + 1) * sizeof(*parts), 1);
 	i = 0;
+	j = 0;
 	while (i < nr_parts)
 	{
-		len = part_len_type(s, &(parts[i].type));
+		len = part_len_type(s + j, &(parts[i].type));
 		parts[i].part = ft_calloc((len + 1) * sizeof(char), 1);
 		if (parts[i].type == NORMAL || parts[i].type == SPACES
 			|| parts[i].type == SPECIAL)
-			ft_memcpy(parts[i].part, s, len);
+			ft_memcpy(parts[i].part, s + j, len);
 		else
-			ft_memcpy(parts[i].part, s + 1, len - 2);
-		s += len;
+			ft_memcpy(parts[i].part, s + j + 1, len - 2);
+		j += len;
 		i++;
 	}
+	free(s);
 	return (parts);
 }
 

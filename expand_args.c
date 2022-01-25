@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:31 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 11:48:27 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/24 15:46:55 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	expand_unquoted_args(t_part *parts, int last_exit_status, t_env *s_env)
 		if (parts->type == NORMAL || parts->type == DOUBLE_QUOTED)
 		{
 			if (expand_args(&(parts->part), last_exit_status, s_env,
-					next_is_quoted))
+					next_is_quoted) == 1)
 				ft_remove_part(parts);
 		}
 		parts++;
