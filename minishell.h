@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/25 10:22:35 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/25 10:48:39 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int		is_built_in(char *str, int nr_parts, t_part *parts, t_env *s_env);
 int		check_for_redirections(int *last_exit_status, t_part *parts, \
 t_env *s_env, int nr_parts);
 int		check_identifier(char *str, int unset);
+void	expand_env(t_env *s_env);
 
 int		ft_syntax_error(t_part *parts, int i, t_env *s_env, char *token);
 int		ft_syntax_error_eof(t_env *s_env);
