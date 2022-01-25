@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/25 11:01:06 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/25 11:26:51 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,39 +71,27 @@ int	part_len_type(char *s, enum e_part_type *type)
 	return (ft_skip_until(&s, *s));
 }
 
-int	next_open_quote(char *s, int is_s_q, int is_d_q)
-{
-	return ((!is_s_q && s[0] == '\'')
-		|| (!is_d_q && s[0] == '"'));
-}
-
 void	ft_expand_args(char **s, int last_exit_status, t_env *s_env)
 {
 	int		i;
-	int		is_s_q;
-	int		is_d_q;
-	int		envlen;
-	char	*env;
+	int		is_q[3];
 
 	i = 0;
-	is_s_q = 0;
-	is_d_q = 0;
+	is_q[1] = 0;
+	is_q[2] = 0;
 	while ((*s)[i])
 	{
-		if ((*s)[i] == '\'' && !is_d_q)
-			is_s_q = !is_s_q;
-		else if ((*s)[i] == '"' && !is_s_q)
-			is_d_q = !is_d_q;
-		else if ((*s)[i] == '$' && !is_s_q)
+		if ((*s)[i] == '\'' && !is_q[2])
+			is_q[1] = !is_q[1];
+		else if ((*s)[i] == '"' && !is_q[1])
+			is_q[2] = !is_q[2];
+		else if ((*s)[i] == '$' && !is_q[1])
 		{
 			i++;
 			if (ft_insert_exit_status(s, i, last_exit_status))
 				continue ;
-			envlen = get_env_name_length((*s) + i);
-			if (envlen == 0 && !next_open_quote((*s) + i, is_s_q, is_d_q))
+			if (replace_arg(s, &i, s_env, is_q))
 				continue ;
-			env = ft_search_name(s_env, *s + i, envlen);
-			ft_replace(s, --i, envlen + 1, env);
 			i--;
 		}
 		i++;

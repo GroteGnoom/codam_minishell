@@ -4,7 +4,7 @@ SRC = minishell.c signals.c echo.c pwd.c cd.c expand_args.c env.c export.c\
 	  expand_wildcard.c is_built_in.c shell_split.c split_unquoted.c\
 	  error_msg.c shell_split_utils.c print_utils.c copy_env.c\
 	  expand_args_utils.c error_syntax.c commands.c\
-	  check_special.c here_doc_utils.c export_utils.c
+	  check_special.c here_doc_utils.c export_utils.c quote_split_utils.c
 
 NAME = minishell
 LIBFT_DIR = Libft

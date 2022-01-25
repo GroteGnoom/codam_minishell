@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:05 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/25 10:48:39 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/25 11:25:44 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	ft_remove_part(t_part *parts);
 
 t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env);
 t_part	*quote_split(char *s);
+int		next_open_quote(char *s, int is_s_q, int is_d_q);
+int		replace_arg(char **s, int *i, t_env *s_env, int *is_q);
 
 int		expand_args(char **sp, int last_exit_status, t_env *s_env, \
 			int next_is_quoted);
