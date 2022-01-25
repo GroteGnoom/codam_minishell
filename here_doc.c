@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 09:52:34 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 13:53:02 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/25 11:04:46 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ int	here_doc(char *final, t_env *s_env, t_part *parts)
 	if (!final)
 		return (ft_syntax_error(parts, 0, s_env, "newline"));
 	term = 0;
-	if (isatty(STDIN_FILENO))
+	if (isatty(s_env->term_in))
 		term = dup(STDOUT_FILENO);
-	if (isatty(STDIN_FILENO))
-		if (dup2(s_env->term_in, STDOUT_FILENO) < 0)
+	if (isatty(s_env->term_in))
+		if (dup2(s_env->term_out, STDOUT_FILENO) < 0)
 			return (ft_redir_error("dup2", "", s_env));
 	args = ft_get_lines(final, &ret, term, s_env);
 	if (ret)
@@ -88,7 +88,7 @@ static int	ft_redir_args(char **args, t_env *s_env, int term)
 	close(pipefd[0]);
 	close(pipefd[1]);
 	ft_free_ptr_array((void **)args);
-	if (isatty(term) && dup2(term, STDOUT_FILENO) < 0)
+	if (isatty(s_env->term_in) && dup2(term, STDOUT_FILENO) < 0)
 		return (ft_redir_error("dup2", "", s_env));
 	return (0);
 }
