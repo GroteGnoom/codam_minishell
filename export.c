@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/24 13:50:14 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/25 10:48:04 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <termios.h>
 #include <stdio.h>
 
-static int	export_attribute(t_env *s_env, char *attr);
+static int	export_new_var(t_env *s_env, char *envname, char *part);
 
 int	ft_export(t_part *parts, t_env *s_env)
 {
@@ -27,6 +27,8 @@ int	ft_export(t_part *parts, t_env *s_env)
 	if (check_identifier(parts[1].part, 0))
 		return (ft_invalid_identifier(parts, 0, s_env));
 	envname = ft_strchr(parts[1].part, '=');
+	if (ft_strchr(parts[1].part, '+'))
+		envname--;
 	if (envname)
 		envname = ft_substr(parts[1].part, 0, ft_strlen(parts[1].part) \
 		- ft_strlen(envname));
@@ -45,10 +47,14 @@ int	ft_export_var(t_env *s_env, char *part, char *envname)
 	i = 0;
 	prev_var = get_prev_var(s_env, envname, &i);
 	if (i == s_env->size && !prev_var)
-		return (export_attribute(s_env, part));
+		expand_env(s_env);
+	if (!prev_var)
+		return (export_new_var(s_env, envname, part));
 	if (prev_var)
 		i -= 1;
-	if (ft_strchr(part, '='))
+	if (ft_strchr(part, '+'))
+		ft_strjoin_free(&s_env->env[i], part + ft_strlen(envname) + 2);
+	else if (ft_strchr(part, '='))
 	{
 		free(s_env->env[i]);
 		s_env->env[i] = ft_strdup(part);
@@ -73,54 +79,20 @@ char	*get_prev_var(t_env *s_env, char *envname, int *i)
 	return (prev_var);
 }
 
-int	check_identifier(char *str, int unset)
+static int	export_new_var(t_env *s_env, char *envname, char *part)
 {
+	char	*new_var;
 	int		i;
-
-	i = 0;
-	if (ft_isdigit(str[0]))
-		return (1);
-	if (str[0] == '=')
-		return (1);
-	while (str[i])
-	{
-		if (str[i] == '=')
-		{
-			if (unset)
-				return (1);
-			else
-				return (0);
-		}
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-static int	export_attribute(t_env *s_env, char *attr)
-{
-	int		i;
-	char	**copy;
 
 	i = 0;
 	while (s_env->env[i])
 		i++;
-	if (i == s_env->size)
+	if (!ft_strchr(part, '+'))
+		s_env->env[i] = ft_strdup(part);
+	else
 	{
-		copy = ft_calloc((s_env->size + 11) * sizeof(char *), 1);
-		i = 0;
-		while (s_env->env[i])
-		{
-			copy[i] = ft_calloc(ft_strlen(s_env->env[i]) + 1, 1);
-			ft_memcpy(copy[i], s_env->env[i], ft_strlen(s_env->env[i]));
-			i++;
-		}
-		ft_free_env(s_env);
-		s_env->env = copy;
-		s_env->size += 10;
+		new_var = ft_strjoin(envname, part + ft_strlen(envname) + 1);
+		s_env->env[i] = new_var;
 	}
-	s_env->env[i] = ft_calloc(ft_strlen(attr) + 1, 1);
-	ft_memmove(s_env->env[i], attr, ft_strlen(attr));
 	return (0);
 }
