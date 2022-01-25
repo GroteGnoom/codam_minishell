@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:16:23 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/25 10:48:04 by sde-rijk      ########   odam.nl         */
+/*   Updated: 2022/01/25 11:37:10 by sde-rijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int	export_new_var(t_env *s_env, char *envname, char *part);
 int	ft_export(t_part *parts, t_env *s_env)
 {
 	char	*envname;
+	char	*plus_pos;
 	int		err;
 
 	if (!parts[1].part || parts[1].type != NORMAL)
@@ -27,7 +28,8 @@ int	ft_export(t_part *parts, t_env *s_env)
 	if (check_identifier(parts[1].part, 0))
 		return (ft_invalid_identifier(parts, 0, s_env));
 	envname = ft_strchr(parts[1].part, '=');
-	if (ft_strchr(parts[1].part, '+'))
+	plus_pos = ft_strchr(parts[1].part, '+');
+	if (plus_pos && plus_pos[1] == '=')
 		envname--;
 	if (envname)
 		envname = ft_substr(parts[1].part, 0, ft_strlen(parts[1].part) \
@@ -42,6 +44,7 @@ int	ft_export(t_part *parts, t_env *s_env)
 int	ft_export_var(t_env *s_env, char *part, char *envname)
 {
 	char	*prev_var;
+	char	*plus_pos;
 	int		i;
 
 	i = 0;
@@ -52,7 +55,8 @@ int	ft_export_var(t_env *s_env, char *part, char *envname)
 		return (export_new_var(s_env, envname, part));
 	if (prev_var)
 		i -= 1;
-	if (ft_strchr(part, '+'))
+	plus_pos = ft_strchr(part, '+');
+	if (plus_pos && plus_pos[1] == '=')
 		ft_strjoin_free(&s_env->env[i], part + ft_strlen(envname) + 2);
 	else if (ft_strchr(part, '='))
 	{
