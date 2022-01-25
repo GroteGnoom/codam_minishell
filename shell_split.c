@@ -6,7 +6,7 @@
 /*   By: dnoom <marvin@codam.nl>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/16 11:47:17 by dnoom         #+#    #+#                 */
-/*   Updated: 2022/01/24 16:18:57 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/25 10:23:13 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ t_part	*ft_shell_split(char *s, int last_exit_status, t_env *s_env)
 	int		**wild_quoted;
 	int		count;
 
-	parts = quote_split(s, last_exit_status, s_env);
-	//expand_unquoted_args(parts, last_exit_status, s_env);
+	s = ft_strdup(s);
+	ft_expand_args(&s, last_exit_status, s_env);
+	parts = quote_split(s);
+	free(s);
 	count = count_combined_parts(parts);
 	outparts = ft_calloc(count + 1, sizeof(*outparts));
 	wild_quoted = ft_calloc(count + 1, sizeof(*wild_quoted));

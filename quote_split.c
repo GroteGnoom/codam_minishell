@@ -6,7 +6,7 @@
 /*   By: sde-rijk <sde-rijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/13 10:14:58 by sde-rijk      #+#    #+#                 */
-/*   Updated: 2022/01/25 10:08:32 by dnoom         ########   odam.nl         */
+/*   Updated: 2022/01/25 10:22:55 by dnoom         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ int	part_len_type(char *s, enum e_part_type *type)
 
 void	ft_expand_args(char **s, int last_exit_status, t_env *s_env)
 {
-	int	i;
-	int	is_single_quoted;
-	int	is_double_quoted;
-	int	envlen;
-	char *env;
+	int		i;
+	int		is_single_quoted;
+	int		is_double_quoted;
+	int		envlen;
+	char	*env;
 
 	i = 0;
 	is_single_quoted = 0;
@@ -85,38 +85,30 @@ void	ft_expand_args(char **s, int last_exit_status, t_env *s_env)
 	while ((*s)[i])
 	{
 		if ((*s)[i] == '\'' && !is_double_quoted)
-		{
 			is_single_quoted = !is_single_quoted;
-			i++;
-		}
 		else if ((*s)[i] == '"' && !is_single_quoted)
-		{
 			is_double_quoted = !is_double_quoted;
-			i++;
-		}
 		else if ((*s)[i] == '$' && !is_single_quoted)
 		{
 			i++;
 			if (ft_insert_exit_status(s, i, last_exit_status))
 				continue ;
 			envlen = get_env_name_length((*s) + i);
-			if (envlen == 0 && (*s)[i] != '\'' && (*s)[i] != '"')
-				continue ;
-			if (envlen == 0 && is_double_quoted && (*s)[i] == '"')
-				continue ;
-			if (envlen == 0 && is_single_quoted && (*s)[i] == '\'')
+			if (envlen == 0 && (((*s)[i] != '\'' && (*s)[i] != '"')
+					|| (is_double_quoted && (*s)[i] == '"')
+					|| (is_single_quoted && (*s)[i] == '\'')))
 				continue ;
 			env = ft_search_name(s_env, *s + i, envlen);
 			if (!env)
 				env = "";
 			ft_replace(s, --i, envlen + 1, env);
+			i--;
 		}
-		else
-			i++;
+		i++;
 	}
 }
 
-t_part	*quote_split(char *s, int last_exit_status, t_env *s_env)
+t_part	*quote_split(char *s)
 {
 	int		nr_parts;
 	int		i;
@@ -124,8 +116,6 @@ t_part	*quote_split(char *s, int last_exit_status, t_env *s_env)
 	int		len;
 	t_part	*parts;
 
-	s = ft_strdup(s);
-	ft_expand_args(&s, last_exit_status, s_env);
 	nr_parts = ft_count_parts_in_str(s);
 	parts = ft_calloc((nr_parts + 1) * sizeof(*parts), 1);
 	i = 0;
@@ -142,7 +132,6 @@ t_part	*quote_split(char *s, int last_exit_status, t_env *s_env)
 		j += len;
 		i++;
 	}
-	free(s);
 	return (parts);
 }
 
