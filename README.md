@@ -1,5 +1,5 @@
 # Minishell
-In this 42 project you have to recreate a bash-like shell. This is a group project which you do in duos.
+In this 42 project you have to recreate a bash-like shell. This is a group project which you do in duos, I did the project together with Daniel Noom.
 
 The aim of this project is to understand how a shell works and is structured.
 You learn how to structure your first large project.
