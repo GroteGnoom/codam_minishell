@@ -21,7 +21,7 @@ else
 endif
 endif
 
-READLINE_DIR = ~/homebrew/Cellar/readline/8.1.1
+READLINE_DIR = ~/homebrew/Cellar/readline/8.1.2
 
 all: libft gnl $(NAME)
 
